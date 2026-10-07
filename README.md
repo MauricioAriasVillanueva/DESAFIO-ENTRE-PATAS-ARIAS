@@ -39,10 +39,10 @@ El consultorio requiere mantener información organizada de los propietarios, la
 
 Proyecto desarrollado colaborativamente por el equipo de 4 integrantes:
 
-1. **[Mauricio Arias]** - *Rol / Desarrollador*
-2. **[Joaquín Sanchez]** - *Rol / Desarrollador*
-3. **[Piero Alvarez]** - *Rol / Desarrollador*
-4. **[Maximo Arriagada]** - *Rol / Desarrollador*
+1. **Mauricio Arias** - *Rol / Desarrollador*
+2. **Joaquín Sanchez** - *Rol / Desarrollador*
+3. **Piero Alvarez** - *Rol / Desarrollador*
+4. **Maximo Arriagada** - *Rol / Desarrollador*
 
 ---
 
