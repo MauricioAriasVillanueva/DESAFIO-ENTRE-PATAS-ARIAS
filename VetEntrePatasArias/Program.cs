@@ -2,7 +2,6 @@
 
 class Program
 {
-    // Capacidad maxima del prototipo
     const int MAX_REGISTROS = 100;
 
     // Datos del propietario
@@ -15,13 +14,10 @@ class Program
     static string[] mascota = new string[MAX_REGISTROS];
     static string[] especie = new string[MAX_REGISTROS];
 
-    // Control de registros
+    // Control
     static int cantidad = 0;
-
-    // Correlativos para generar codigos posteriormente
     static int correlativoPropietario = 0;
     static int correlativoMascota = 0;
-
 
     static void Main()
     {
@@ -51,7 +47,7 @@ class Program
             switch (opcion)
             {
                 case 1:
-                    Console.WriteLine("REGISTRAR PROPIETARIO Y MASCOTA");
+                    RegistrarMascota();
                     break;
 
                 case 2:
@@ -91,5 +87,55 @@ class Program
             }
 
         } while (opcion != 7);
+    }
+
+
+    static void RegistrarMascota()
+    {
+        if (cantidad >= MAX_REGISTROS)
+        {
+            Console.WriteLine("No se pueden registrar mas datos.");
+            return;
+        }
+
+        correlativoPropietario++;
+        correlativoMascota++;
+
+        codigoPropietario[cantidad] = 2000 + correlativoPropietario;
+        codigoMascota[cantidad] = 1000 + correlativoMascota;
+
+        Console.WriteLine("======================================");
+        Console.WriteLine("        REGISTRO DE PROPIETARIO");
+        Console.WriteLine("======================================");
+
+        Console.Write("Ingrese nombre del propietario: ");
+        propietario[cantidad] = Console.ReadLine()!;
+
+        Console.Write("Ingrese telefono del propietario: ");
+        telefono[cantidad] = Console.ReadLine()!;
+
+        Console.WriteLine();
+        Console.WriteLine("Codigo de propietario generado: "
+            + codigoPropietario[cantidad]);
+
+        Console.WriteLine();
+        Console.WriteLine("======================================");
+        Console.WriteLine("          REGISTRO DE MASCOTA");
+        Console.WriteLine("======================================");
+
+        Console.Write("Ingrese nombre de la mascota: ");
+        mascota[cantidad] = Console.ReadLine()!;
+
+        Console.Write("Ingrese especie: ");
+        especie[cantidad] = Console.ReadLine()!;
+
+        Console.WriteLine();
+        Console.WriteLine("Codigo de mascota generado: "
+            + codigoMascota[cantidad]);
+
+        cantidad++;
+
+        Console.WriteLine();
+        Console.WriteLine("Registro realizado correctamente.");
     }
 }
