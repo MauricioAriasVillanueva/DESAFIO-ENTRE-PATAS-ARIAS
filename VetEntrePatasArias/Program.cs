@@ -1,1 +1,75 @@
-﻿Console.WriteLine("Hello, World!");
+﻿
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int opcion;
+
+        do
+        {
+            Console.Clear();
+
+            Console.WriteLine("======================================");
+            Console.WriteLine("        SISTEMA VETERINARIA");
+            Console.WriteLine("======================================");
+            Console.WriteLine("1. Registrar propietario y mascota");
+            Console.WriteLine("2. Buscar mascota por codigo");
+            Console.WriteLine("3. Modificar registro");
+            Console.WriteLine("4. Eliminar registro");
+            Console.WriteLine("5. Mostrar registros");
+            Console.WriteLine("6. Ordenar registros");
+            Console.WriteLine("7. Salir");
+            Console.WriteLine("======================================");
+            Console.Write("Seleccione una opcion: ");
+
+            opcion = int.Parse(Console.ReadLine()!);
+
+            Console.Clear();
+
+            switch (opcion)
+            {
+                case 1:
+                    Console.WriteLine("REGISTRAR PROPIETARIO Y MASCOTA");
+                    break;
+
+                case 2:
+                    Console.WriteLine("BUSCAR MASCOTA");
+                    break;
+
+                case 3:
+                    Console.WriteLine("MODIFICAR REGISTRO");
+                    break;
+
+                case 4:
+                    Console.WriteLine("ELIMINAR REGISTRO");
+                    break;
+
+                case 5:
+                    Console.WriteLine("MOSTRAR REGISTROS");
+                    break;
+
+                case 6:
+                    Console.WriteLine("ORDENAR REGISTROS");
+                    break;
+
+                case 7:
+                    Console.WriteLine("Saliendo del sistema...");
+                    break;
+
+                default:
+                    Console.WriteLine("Opcion incorrecta.");
+                    break;
+            }
+
+            if (opcion != 7)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Presione una tecla para volver al menu...");
+                Console.ReadKey();
+            }
+
+        } while (opcion != 7);
+    }
+}
