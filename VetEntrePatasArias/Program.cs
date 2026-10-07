@@ -53,12 +53,43 @@ class Program
 
                 case 4:
                     Eliminar();
+                    static void MostrarRegistros()
+                    {
+                                Console.Clear();
+
+                                Console.WriteLine("=== LISTA DE REGISTROS ===");
+
+                        if (mascotas.Count == 0)
+                            {
+                                Console.WriteLine("No existen registros.");
+                            }
+                else
+                    {
+                        for (int i = 0; i < mascotas.Count; i++)
+                            {
+                                    Console.WriteLine();
+                                    Console.WriteLine("REGISTRO " + (i + 1));
+                                    Console.WriteLine("-----------------------------");
+
+                                    Console.WriteLine("Codigo propietario: " + codigosPropietarios[i]);
+                                    Console.WriteLine("Propietario: " + propietarios[i]);
+                                    Console.WriteLine("Telefono: " + telefonos[i]);
+
+                                Console.WriteLine();
+
+                                    Console.WriteLine("Codigo mascota: " + codigosMascotas[i]);
+                                    Console.WriteLine("Mascota: " + mascotas[i]);
+                                    Console.WriteLine("Especie: " + especies[i]);
+
+                                    Console.WriteLine("-----------------------------");
+                            }
+                        }
+                    }
                     break;
 
                 case 5:
-                    Console.WriteLine("MOSTRAR REGISTROS");
-                    break;
-
+                        MostrarRegistros();
+                        break;
                 case 6:
                     Console.WriteLine("ORDENAR REGISTROS");
                     break;
