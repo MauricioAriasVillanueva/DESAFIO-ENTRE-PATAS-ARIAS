@@ -1,8 +1,28 @@
-﻿
-using System;
+﻿using System;
 
 class Program
 {
+    // Capacidad maxima del prototipo
+    const int MAX_REGISTROS = 100;
+
+    // Datos del propietario
+    static int[] codigoPropietario = new int[MAX_REGISTROS];
+    static string[] propietario = new string[MAX_REGISTROS];
+    static string[] telefono = new string[MAX_REGISTROS];
+
+    // Datos de la mascota
+    static int[] codigoMascota = new int[MAX_REGISTROS];
+    static string[] mascota = new string[MAX_REGISTROS];
+    static string[] especie = new string[MAX_REGISTROS];
+
+    // Control de registros
+    static int cantidad = 0;
+
+    // Correlativos para generar codigos posteriormente
+    static int correlativoPropietario = 0;
+    static int correlativoMascota = 0;
+
+
     static void Main()
     {
         int opcion;
