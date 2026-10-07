@@ -52,7 +52,7 @@ class Program
                     break;
 
                 case 4:
-                    Console.WriteLine("ELIMINAR REGISTRO");
+                    Eliminar();
                     break;
 
                 case 5:
@@ -209,6 +209,47 @@ class Program
 
             Console.WriteLine();
             Console.WriteLine("Registro modificado correctamente.");
+        }
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Mascota no encontrada.");
+        }
+    }
+
+
+    static void Eliminar()
+    {
+        Console.Clear();
+
+        Console.WriteLine("=== ELIMINAR REGISTRO ===");
+
+        Console.Write("Ingrese codigo de mascota: ");
+        int codigoBuscado = Convert.ToInt32(Console.ReadLine());
+
+        int posicion = -1;
+
+        for (int i = 0; i < codigosMascotas.Count; i++)
+        {
+            if (codigosMascotas[i] == codigoBuscado)
+            {
+                posicion = i;
+                break;
+            }
+        }
+
+        if (posicion != -1)
+        {
+            codigosPropietarios.RemoveAt(posicion);
+            propietarios.RemoveAt(posicion);
+            telefonos.RemoveAt(posicion);
+
+            codigosMascotas.RemoveAt(posicion);
+            mascotas.RemoveAt(posicion);
+            especies.RemoveAt(posicion);
+
+            Console.WriteLine();
+            Console.WriteLine("Registro eliminado correctamente.");
         }
         else
         {
