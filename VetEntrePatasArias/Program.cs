@@ -48,7 +48,7 @@ class Program
                     break;
 
                 case 3:
-                    Console.WriteLine("MODIFICAR REGISTRO");
+                    Modificar();
                     break;
 
                 case 4:
@@ -104,7 +104,6 @@ class Program
         Console.Write("Especie: ");
         string especie = Console.ReadLine();
 
-
         codigosPropietarios.Add(codigoPropietario);
         propietarios.Add(nombrePropietario);
         telefonos.Add(telefono);
@@ -113,12 +112,10 @@ class Program
         mascotas.Add(nombreMascota);
         especies.Add(especie);
 
-
         Console.WriteLine();
         Console.WriteLine("Registro realizado correctamente.");
         Console.WriteLine("Codigo propietario: " + codigoPropietario);
         Console.WriteLine("Codigo mascota: " + codigoMascota);
-
 
         codigoPropietario++;
         codigoMascota++;
@@ -160,6 +157,58 @@ class Program
             Console.WriteLine("Codigo mascota: " + codigosMascotas[posicion]);
             Console.WriteLine("Mascota: " + mascotas[posicion]);
             Console.WriteLine("Especie: " + especies[posicion]);
+        }
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Mascota no encontrada.");
+        }
+    }
+
+
+    static void Modificar()
+    {
+        Console.Clear();
+
+        Console.WriteLine("=== MODIFICAR REGISTRO ===");
+
+        Console.Write("Ingrese codigo de mascota: ");
+        int codigoBuscado = Convert.ToInt32(Console.ReadLine());
+
+        int posicion = -1;
+
+        for (int i = 0; i < codigosMascotas.Count; i++)
+        {
+            if (codigosMascotas[i] == codigoBuscado)
+            {
+                posicion = i;
+                break;
+            }
+        }
+
+        if (posicion != -1)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Registro encontrado.");
+            Console.WriteLine("Mascota actual: " + mascotas[posicion]);
+            Console.WriteLine("Propietario actual: " + propietarios[posicion]);
+
+            Console.WriteLine();
+
+            Console.Write("Nuevo nombre del propietario: ");
+            propietarios[posicion] = Console.ReadLine();
+
+            Console.Write("Nuevo telefono: ");
+            telefonos[posicion] = Console.ReadLine();
+
+            Console.Write("Nuevo nombre de la mascota: ");
+            mascotas[posicion] = Console.ReadLine();
+
+            Console.Write("Nueva especie: ");
+            especies[posicion] = Console.ReadLine();
+
+            Console.WriteLine();
+            Console.WriteLine("Registro modificado correctamente.");
         }
         else
         {
