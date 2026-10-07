@@ -3,16 +3,20 @@ using System.Collections.Generic;
 
 class Program
 {
+    // Listas del propietario
     static List<int> codigosPropietarios = new List<int>();
     static List<string> propietarios = new List<string>();
     static List<string> telefonos = new List<string>();
 
+    // Listas de la mascota
     static List<int> codigosMascotas = new List<int>();
     static List<string> mascotas = new List<string>();
     static List<string> especies = new List<string>();
 
+    // Codigos automaticos
     static int codigoPropietario = 2001;
     static int codigoMascota = 1001;
+
 
     static void Main()
     {
@@ -53,45 +57,14 @@ class Program
 
                 case 4:
                     Eliminar();
-                    static void MostrarRegistros()
-                    {
-                                Console.Clear();
-
-                                Console.WriteLine("=== LISTA DE REGISTROS ===");
-
-                        if (mascotas.Count == 0)
-                            {
-                                Console.WriteLine("No existen registros.");
-                            }
-                else
-                    {
-                        for (int i = 0; i < mascotas.Count; i++)
-                            {
-                                    Console.WriteLine();
-                                    Console.WriteLine("REGISTRO " + (i + 1));
-                                    Console.WriteLine("-----------------------------");
-
-                                    Console.WriteLine("Codigo propietario: " + codigosPropietarios[i]);
-                                    Console.WriteLine("Propietario: " + propietarios[i]);
-                                    Console.WriteLine("Telefono: " + telefonos[i]);
-
-                                Console.WriteLine();
-
-                                    Console.WriteLine("Codigo mascota: " + codigosMascotas[i]);
-                                    Console.WriteLine("Mascota: " + mascotas[i]);
-                                    Console.WriteLine("Especie: " + especies[i]);
-
-                                    Console.WriteLine("-----------------------------");
-                            }
-                        }
-                    }
                     break;
 
                 case 5:
-                        MostrarRegistros();
-                        break;
+                    MostrarRegistros();
+                    break;
+
                 case 6:
-                    Console.WriteLine("ORDENAR REGISTROS");
+                    Ordenar();
                     break;
 
                 case 7:
@@ -99,7 +72,7 @@ class Program
                     break;
 
                 default:
-                    Console.WriteLine("Opcion incorrecta");
+                    Console.WriteLine("Opcion incorrecta.");
                     break;
             }
 
@@ -114,6 +87,7 @@ class Program
     }
 
 
+    // REGISTRAR
     static void Registrar()
     {
         Console.Clear();
@@ -121,20 +95,22 @@ class Program
         Console.WriteLine("=== REGISTRO DE PROPIETARIO ===");
 
         Console.Write("Nombre del propietario: ");
-        string nombrePropietario = Console.ReadLine();
+        string nombrePropietario = Console.ReadLine() ?? "";
 
         Console.Write("Telefono: ");
-        string telefono = Console.ReadLine();
+        string telefono = Console.ReadLine() ?? "";
 
         Console.WriteLine();
         Console.WriteLine("=== REGISTRO DE MASCOTA ===");
 
         Console.Write("Nombre de la mascota: ");
-        string nombreMascota = Console.ReadLine();
+        string nombreMascota = Console.ReadLine() ?? "";
 
         Console.Write("Especie: ");
-        string especie = Console.ReadLine();
+        string especie = Console.ReadLine() ?? "";
 
+
+        // Insertar datos en las listas
         codigosPropietarios.Add(codigoPropietario);
         propietarios.Add(nombrePropietario);
         telefonos.Add(telefono);
@@ -143,16 +119,20 @@ class Program
         mascotas.Add(nombreMascota);
         especies.Add(especie);
 
+
         Console.WriteLine();
         Console.WriteLine("Registro realizado correctamente.");
         Console.WriteLine("Codigo propietario: " + codigoPropietario);
         Console.WriteLine("Codigo mascota: " + codigoMascota);
 
+
+        // Aumentar codigos para el siguiente registro
         codigoPropietario++;
         codigoMascota++;
     }
 
 
+    // BUSQUEDA LINEAL
     static void Buscar()
     {
         Console.Clear();
@@ -176,17 +156,19 @@ class Program
         if (posicion != -1)
         {
             Console.WriteLine();
-            Console.WriteLine("Registro encontrado");
+            Console.WriteLine("REGISTRO ENCONTRADO");
             Console.WriteLine("-----------------------------");
 
-            Console.WriteLine("Codigo propietario: " + codigosPropietarios[posicion]);
-            Console.WriteLine("Propietario: " + propietarios[posicion]);
+            Console.WriteLine("DATOS DEL PROPIETARIO");
+            Console.WriteLine("Codigo: " + codigosPropietarios[posicion]);
+            Console.WriteLine("Nombre: " + propietarios[posicion]);
             Console.WriteLine("Telefono: " + telefonos[posicion]);
 
             Console.WriteLine();
 
-            Console.WriteLine("Codigo mascota: " + codigosMascotas[posicion]);
-            Console.WriteLine("Mascota: " + mascotas[posicion]);
+            Console.WriteLine("DATOS DE LA MASCOTA");
+            Console.WriteLine("Codigo: " + codigosMascotas[posicion]);
+            Console.WriteLine("Nombre: " + mascotas[posicion]);
             Console.WriteLine("Especie: " + especies[posicion]);
         }
         else
@@ -197,6 +179,7 @@ class Program
     }
 
 
+    // MODIFICAR
     static void Modificar()
     {
         Console.Clear();
@@ -221,22 +204,22 @@ class Program
         {
             Console.WriteLine();
             Console.WriteLine("Registro encontrado.");
-            Console.WriteLine("Mascota actual: " + mascotas[posicion]);
             Console.WriteLine("Propietario actual: " + propietarios[posicion]);
+            Console.WriteLine("Mascota actual: " + mascotas[posicion]);
 
             Console.WriteLine();
 
             Console.Write("Nuevo nombre del propietario: ");
-            propietarios[posicion] = Console.ReadLine();
+            propietarios[posicion] = Console.ReadLine() ?? "";
 
             Console.Write("Nuevo telefono: ");
-            telefonos[posicion] = Console.ReadLine();
+            telefonos[posicion] = Console.ReadLine() ?? "";
 
             Console.Write("Nuevo nombre de la mascota: ");
-            mascotas[posicion] = Console.ReadLine();
+            mascotas[posicion] = Console.ReadLine() ?? "";
 
             Console.Write("Nueva especie: ");
-            especies[posicion] = Console.ReadLine();
+            especies[posicion] = Console.ReadLine() ?? "";
 
             Console.WriteLine();
             Console.WriteLine("Registro modificado correctamente.");
@@ -249,6 +232,7 @@ class Program
     }
 
 
+    // ELIMINAR
     static void Eliminar()
     {
         Console.Clear();
@@ -286,6 +270,100 @@ class Program
         {
             Console.WriteLine();
             Console.WriteLine("Mascota no encontrada.");
+        }
+    }
+
+
+    // MOSTRAR REGISTROS
+    static void MostrarRegistros()
+    {
+        Console.Clear();
+
+        Console.WriteLine("=== LISTA DE REGISTROS ===");
+
+        if (mascotas.Count == 0)
+        {
+            Console.WriteLine("No existen registros.");
+        }
+        else
+        {
+            for (int i = 0; i < mascotas.Count; i++)
+            {
+                Console.WriteLine();
+                Console.WriteLine("REGISTRO " + (i + 1));
+                Console.WriteLine("-----------------------------");
+
+                Console.WriteLine("DATOS DEL PROPIETARIO");
+                Console.WriteLine("Codigo: " + codigosPropietarios[i]);
+                Console.WriteLine("Nombre: " + propietarios[i]);
+                Console.WriteLine("Telefono: " + telefonos[i]);
+
+                Console.WriteLine();
+
+                Console.WriteLine("DATOS DE LA MASCOTA");
+                Console.WriteLine("Codigo: " + codigosMascotas[i]);
+                Console.WriteLine("Nombre: " + mascotas[i]);
+                Console.WriteLine("Especie: " + especies[i]);
+
+                Console.WriteLine("-----------------------------");
+            }
+        }
+    }
+
+
+    // ORDENAMIENTO BURBUJA
+    static void Ordenar()
+    {
+        Console.Clear();
+
+        Console.WriteLine("=== ORDENAR REGISTROS ===");
+
+        if (codigosMascotas.Count < 2)
+        {
+            Console.WriteLine("No hay suficientes registros para ordenar.");
+        }
+        else
+        {
+            for (int pasada = 0; pasada < codigosMascotas.Count - 1; pasada++)
+            {
+                for (int i = 0; i < codigosMascotas.Count - 1 - pasada; i++)
+                {
+                    if (codigosMascotas[i] > codigosMascotas[i + 1])
+                    {
+                        // Codigo mascota
+                        int tempCodigo = codigosMascotas[i];
+                        codigosMascotas[i] = codigosMascotas[i + 1];
+                        codigosMascotas[i + 1] = tempCodigo;
+
+                        // Codigo propietario
+                        tempCodigo = codigosPropietarios[i];
+                        codigosPropietarios[i] = codigosPropietarios[i + 1];
+                        codigosPropietarios[i + 1] = tempCodigo;
+
+                        // Propietario
+                        string tempTexto = propietarios[i];
+                        propietarios[i] = propietarios[i + 1];
+                        propietarios[i + 1] = tempTexto;
+
+                        // Telefono
+                        tempTexto = telefonos[i];
+                        telefonos[i] = telefonos[i + 1];
+                        telefonos[i + 1] = tempTexto;
+
+                        // Mascota
+                        tempTexto = mascotas[i];
+                        mascotas[i] = mascotas[i + 1];
+                        mascotas[i + 1] = tempTexto;
+
+                        // Especie
+                        tempTexto = especies[i];
+                        especies[i] = especies[i + 1];
+                        especies[i + 1] = tempTexto;
+                    }
+                }
+            }
+
+            Console.WriteLine("Registros ordenados correctamente por codigo de mascota.");
         }
     }
 }
