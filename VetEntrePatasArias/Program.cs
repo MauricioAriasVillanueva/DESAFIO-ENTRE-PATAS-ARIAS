@@ -1,23 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 
 class Program
 {
-    const int MAX_REGISTROS = 100;
+    static List<int> codigosPropietarios = new List<int>();
+    static List<string> propietarios = new List<string>();
+    static List<string> telefonos = new List<string>();
 
-    // Datos del propietario
-    static int[] codigoPropietario = new int[MAX_REGISTROS];
-    static string[] propietario = new string[MAX_REGISTROS];
-    static string[] telefono = new string[MAX_REGISTROS];
+    static List<int> codigosMascotas = new List<int>();
+    static List<string> mascotas = new List<string>();
+    static List<string> especies = new List<string>();
 
-    // Datos de la mascota
-    static int[] codigoMascota = new int[MAX_REGISTROS];
-    static string[] mascota = new string[MAX_REGISTROS];
-    static string[] especie = new string[MAX_REGISTROS];
-
-    // Control
-    static int cantidad = 0;
-    static int correlativoPropietario = 0;
-    static int correlativoMascota = 0;
+    static int codigoPropietario = 2001;
+    static int codigoMascota = 1001;
 
     static void Main()
     {
@@ -27,27 +22,25 @@ class Program
         {
             Console.Clear();
 
-            Console.WriteLine("======================================");
-            Console.WriteLine("        SISTEMA VETERINARIA");
-            Console.WriteLine("======================================");
+            Console.WriteLine("====================================");
+            Console.WriteLine("       SISTEMA VETERINARIA");
+            Console.WriteLine("====================================");
             Console.WriteLine("1. Registrar propietario y mascota");
-            Console.WriteLine("2. Buscar mascota por codigo");
+            Console.WriteLine("2. Buscar mascota");
             Console.WriteLine("3. Modificar registro");
             Console.WriteLine("4. Eliminar registro");
             Console.WriteLine("5. Mostrar registros");
             Console.WriteLine("6. Ordenar registros");
             Console.WriteLine("7. Salir");
-            Console.WriteLine("======================================");
+            Console.WriteLine("====================================");
             Console.Write("Seleccione una opcion: ");
 
-            opcion = int.Parse(Console.ReadLine()!);
-
-            Console.Clear();
+            opcion = Convert.ToInt32(Console.ReadLine());
 
             switch (opcion)
             {
                 case 1:
-                    RegistrarMascota();
+                    Registrar();
                     break;
 
                 case 2:
@@ -75,14 +68,14 @@ class Program
                     break;
 
                 default:
-                    Console.WriteLine("Opcion incorrecta.");
+                    Console.WriteLine("Opcion incorrecta");
                     break;
             }
 
             if (opcion != 7)
             {
                 Console.WriteLine();
-                Console.WriteLine("Presione una tecla para volver al menu...");
+                Console.WriteLine("Presione una tecla para continuar...");
                 Console.ReadKey();
             }
 
@@ -90,52 +83,44 @@ class Program
     }
 
 
-    static void RegistrarMascota()
+    static void Registrar()
     {
-        if (cantidad >= MAX_REGISTROS)
-        {
-            Console.WriteLine("No se pueden registrar mas datos.");
-            return;
-        }
+        Console.Clear();
 
-        correlativoPropietario++;
-        correlativoMascota++;
+        Console.WriteLine("=== REGISTRO DE PROPIETARIO ===");
 
-        codigoPropietario[cantidad] = 2000 + correlativoPropietario;
-        codigoMascota[cantidad] = 1000 + correlativoMascota;
+        Console.Write("Nombre del propietario: ");
+        string nombrePropietario = Console.ReadLine();
 
-        Console.WriteLine("======================================");
-        Console.WriteLine("        REGISTRO DE PROPIETARIO");
-        Console.WriteLine("======================================");
-
-        Console.Write("Ingrese nombre del propietario: ");
-        propietario[cantidad] = Console.ReadLine()!;
-
-        Console.Write("Ingrese telefono del propietario: ");
-        telefono[cantidad] = Console.ReadLine()!;
+        Console.Write("Telefono: ");
+        string telefono = Console.ReadLine();
 
         Console.WriteLine();
-        Console.WriteLine("Codigo de propietario generado: "
-            + codigoPropietario[cantidad]);
+        Console.WriteLine("=== REGISTRO DE MASCOTA ===");
 
-        Console.WriteLine();
-        Console.WriteLine("======================================");
-        Console.WriteLine("          REGISTRO DE MASCOTA");
-        Console.WriteLine("======================================");
+        Console.Write("Nombre de la mascota: ");
+        string nombreMascota = Console.ReadLine();
 
-        Console.Write("Ingrese nombre de la mascota: ");
-        mascota[cantidad] = Console.ReadLine()!;
+        Console.Write("Especie: ");
+        string especie = Console.ReadLine();
 
-        Console.Write("Ingrese especie: ");
-        especie[cantidad] = Console.ReadLine()!;
 
-        Console.WriteLine();
-        Console.WriteLine("Codigo de mascota generado: "
-            + codigoMascota[cantidad]);
+        codigosPropietarios.Add(codigoPropietario);
+        propietarios.Add(nombrePropietario);
+        telefonos.Add(telefono);
 
-        cantidad++;
+        codigosMascotas.Add(codigoMascota);
+        mascotas.Add(nombreMascota);
+        especies.Add(especie);
+
 
         Console.WriteLine();
         Console.WriteLine("Registro realizado correctamente.");
+        Console.WriteLine("Codigo propietario: " + codigoPropietario);
+        Console.WriteLine("Codigo mascota: " + codigoMascota);
+
+
+        codigoPropietario++;
+        codigoMascota++;
     }
 }
