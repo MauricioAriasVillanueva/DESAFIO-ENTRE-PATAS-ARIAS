@@ -44,7 +44,7 @@ class Program
                     break;
 
                 case 2:
-                    Console.WriteLine("BUSCAR MASCOTA");
+                    Buscar();
                     break;
 
                 case 3:
@@ -122,5 +122,49 @@ class Program
 
         codigoPropietario++;
         codigoMascota++;
+    }
+
+
+    static void Buscar()
+    {
+        Console.Clear();
+
+        Console.WriteLine("=== BUSCAR MASCOTA ===");
+
+        Console.Write("Ingrese codigo de mascota: ");
+        int codigoBuscado = Convert.ToInt32(Console.ReadLine());
+
+        int posicion = -1;
+
+        for (int i = 0; i < codigosMascotas.Count; i++)
+        {
+            if (codigosMascotas[i] == codigoBuscado)
+            {
+                posicion = i;
+                break;
+            }
+        }
+
+        if (posicion != -1)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Registro encontrado");
+            Console.WriteLine("-----------------------------");
+
+            Console.WriteLine("Codigo propietario: " + codigosPropietarios[posicion]);
+            Console.WriteLine("Propietario: " + propietarios[posicion]);
+            Console.WriteLine("Telefono: " + telefonos[posicion]);
+
+            Console.WriteLine();
+
+            Console.WriteLine("Codigo mascota: " + codigosMascotas[posicion]);
+            Console.WriteLine("Mascota: " + mascotas[posicion]);
+            Console.WriteLine("Especie: " + especies[posicion]);
+        }
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Mascota no encontrada.");
+        }
     }
 }
