@@ -12,6 +12,9 @@ static List<string> telefonos = new List<string>();
 static List<int> codigosMascotas = new List<int>();
 static List<string> mascotas = new List<string>();
 static List<string> especies = new List<string>();
+static List<string> tiposAnimales = new List<string>();
+static List<string> sexos = new List<string>();
+static List<DateTime> fechasNacimiento = new List<DateTime>();
 
     //CODIGOS AUTOMATICOS
 static int codigoPropietario = 2001;
@@ -59,6 +62,9 @@ static int codigoMascota = 1001;
                 Console.WriteLine("Código de la Mascota: " + codigosMascotas[i]);
                 Console.WriteLine("Código del Propietario: " + codigosPropietarios[i]);
                 Console.WriteLine("Especie: " + especies[i]);
+                Console.WriteLine("Tipo de animal: " + tiposAnimales[i]);
+                Console.WriteLine("Sexo: " + sexos[i]);
+                Console.WriteLine("Fecha de nacimiento: " + fechasNacimiento[i].ToString("dd/MM/yyyy"));
                 Console.WriteLine("------------------------------");
             }
         }
