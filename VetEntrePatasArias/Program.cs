@@ -12,6 +12,9 @@ static List<string> telefonos = new List<string>();
 static List<int> codigosMascotas = new List<int>();
 static List<string> mascotas = new List<string>();
 static List<string> especies = new List<string>();
+static List<string> tiposAnimales = new List<string>();
+static List<string> sexos = new List<string>();
+static List<DateTime> fechasNacimiento = new List<DateTime>();
 
     //CODIGOS AUTOMATICOS
 static int codigoPropietario = 2001;

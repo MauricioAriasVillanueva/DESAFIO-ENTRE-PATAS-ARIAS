@@ -13,6 +13,7 @@ Algoritmo SistemaVeterinaria_EP
     // Datos de propietarios y mascotas
     Definir propietarios, telefonos Como Cadena
     Definir mascotas, especies Como Cadena
+    Definir tiposAnimales, sexos, fechasNacimiento Como Cadena
 
     // Arreglos compartidos
     Dimension codigosPropietarios[101]
@@ -21,6 +22,9 @@ Algoritmo SistemaVeterinaria_EP
     Dimension telefonos[101]
     Dimension mascotas[101]
     Dimension especies[101]
+    Dimension tiposAnimales[101]
+    Dimension sexos[101]
+    Dimension fechasNacimiento[101]
 
     // Valores iniciales
     cantidad <- 0
