@@ -69,4 +69,52 @@ static int codigoMascota = 1001;
             }
         }
     }
+
+    static void Ordenar()
+    {
+        if (mascotas.Count < 2)
+        {
+            Console.WriteLine("No hay registros disponibles para ordenar.");
+            return;
+        }
+        for (int pasada = 0; pasada < mascotas.Count - 1; pasada++)
+        {
+            Console.WriteLine("Pasada: " + (pasada + 1));
+            for (int j = 0; j < mascotas.Count - 1 - pasada ; j++)
+            {
+                Console.WriteLine("Comparando posición " + j + " con " + (j + 1));
+                if (string.Compare(mascotas[j], mascotas[j + 1], StringComparison.OrdinalIgnoreCase) > 0)
+                {
+                    Console.WriteLine("Estas mascotas deben intercambiarse.");
+                    string temporal = mascotas[j];
+                    mascotas[j] = mascotas[j + 1];
+                    mascotas[j + 1] = temporal;
+                    int temporalCodigo = codigosMascotas[j];
+                    codigosMascotas[j] = codigosMascotas[j + 1];
+                    codigosMascotas[j + 1] = temporalCodigo;
+                    int temporalPropietario = codigosPropietarios[j];
+                    codigosPropietarios[j] = codigosPropietarios[j + 1];
+                    codigosPropietarios[j + 1] = temporalPropietario;
+                    string temporalNombre = propietarios[j];
+                    propietarios[j] = propietarios[j + 1];
+                    propietarios[j + 1] = temporalNombre;
+                    string temporalTelefono = telefonos[j];
+                    telefonos[j] = telefonos[j + 1];
+                    telefonos[j + 1] = temporalTelefono;
+                    string temporalEspecie = especies[j];
+                    especies[j] = especies[j + 1];
+                    especies[j + 1] = temporalEspecie;
+                    string temporalTipo = tiposAnimales[j];
+                    tiposAnimales[j] = tiposAnimales[j + 1];
+                    tiposAnimales[j + 1] = temporalTipo;
+                    string temporalSexo = sexos[j];
+                    sexos[j] = sexos[j + 1];
+                    sexos[j + 1] = temporalSexo;
+                    DateTime temporalFecha = fechasNacimiento[j];
+                    fechasNacimiento[j] = fechasNacimiento[j + 1];
+                    fechasNacimiento[j + 1] = temporalFecha;
+                }
+            }
+        }
+    }
 }
