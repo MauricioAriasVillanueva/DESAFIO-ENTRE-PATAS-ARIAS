@@ -73,9 +73,31 @@ class Program
         Console.Write("Nombre del propietario: ");
         string nombrePropietario = Console.ReadLine() ?? "";
 
-        Console.Write("Telefono del propietario: ");
-        string telefono = Console.ReadLine() ?? "";
+       string telefono;
 
+        while (true)
+       {
+         Console.Write("Telefono del propietario (9 digitos): ");
+         telefono = (Console.ReadLine() ?? "").Trim();
+
+         bool valido = telefono.Length == 9;
+
+         foreach (char caracter in telefono)
+           {
+               if (!char.IsDigit(caracter))
+               {
+                 valido = false;
+                 break;
+               }
+           }
+
+            if (valido)
+           {
+              break;
+          }
+
+           Console.WriteLine("Error: ingrese un telefono de 9 digitos.");
+        }
         // DATOS DE LA MASCOTA
         Console.Write("Nombre de la mascota: ");
         string nombreMascota = Console.ReadLine() ?? "";
