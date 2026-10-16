@@ -165,6 +165,14 @@ class Program
           "Error: ingrese una fecha valida, por ejemplo 15/03/2024.");
           return;
         }
+        
+        if (fechaNacimiento.Date > DateTime.Today)
+       {
+         Console.WriteLine(
+            "Error: la fecha de nacimiento no puede ser futura.");
+          return;
+        }
+
 
 
         // VALIDAR CAMPOS OBLIGATORIOS
