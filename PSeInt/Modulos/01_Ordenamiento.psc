@@ -1,5 +1,5 @@
 SubProceso MostrarRegistros(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad)
-Definir i Como Entero
+	Definir i Como Entero
 
 	si cantidad <= 0 Entonces
 		Escribir "No hay registros para mostrar."
@@ -18,6 +18,53 @@ Definir i Como Entero
 		FinPara
 	FinSi
 
+FinSubProceso
+
+SubProceso OrdenarRegistros(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad)
+    Definir pasada, j Como Entero
+	Definir temporal Como Cadena
+	Definir temporalCodigo Como Entero
+	Definir temporalCodigoPropietario Como Entero
+	Definir temporalPropietario Como Cadena
+	Definir temporalTelefono Como Cadena
+	Definir temporalEspecie Como Cadena
+	Definir temporalTipoAnimal Como Cadena
+	Definir temporalSexo Como Cadena
+	Definir temporalFechaNacimiento Como Cadena
+
+    Para pasada <- 1 Hasta cantidad - 1 Con Paso 1 Hacer
+		Para j <- 1 Hasta cantidad - pasada Con Paso 1 Hacer
+			Si Mayusculas(mascotas[j]) > Mayusculas(mascotas[j + 1]) Entonces
+				temporal <- mascotas[j]
+				mascotas[j] <- mascotas[j + 1]
+				mascotas[j + 1] <- temporal
+				temporalCodigo <- codigosMascotas[j]
+				codigosMascotas[j] <- codigosMascotas[j + 1]
+				codigosMascotas[j + 1] <- temporalCodigo
+				temporalCodigoPropietario <- codigosPropietarios[j]
+				codigosPropietarios[j] <- codigosPropietarios[j + 1]
+				codigosPropietarios[j + 1] <- temporalCodigoPropietario
+				temporalPropietario <- propietarios[j]
+				propietarios[j] <- propietarios[j + 1]
+				propietarios[j + 1] <- temporalPropietario
+				temporalTelefono <- telefonos[j]
+				telefonos[j] <- telefonos[j + 1]
+				telefonos[j + 1] <- temporalTelefono
+				temporalEspecie <- especies[j]
+				especies[j] <- especies[j + 1]
+				especies[j + 1] <- temporalEspecie
+				temporalTipoAnimal <- tiposAnimales[j]
+				tiposAnimales[j] <- tiposAnimales[j + 1]
+				tiposAnimales[j + 1] <- temporalTipoAnimal
+				temporalSexo <- sexos[j]
+				sexos[j] <- sexos[j + 1]
+				sexos[j + 1] <- temporalSexo
+				temporalFechaNacimiento <- fechasNacimiento[j]
+				fechasNacimiento[j] <- fechasNacimiento[j + 1]
+				fechasNacimiento[j + 1] <- temporalFechaNacimiento
+			FinSi
+		FinPara
+    FinPara
 FinSubProceso
 
 Algoritmo PruebaListado
@@ -86,6 +133,12 @@ especies[3] <- "Beagle"
 	fechasNacimiento[2] <- "10/06/2023"
 	fechasNacimiento[3] <- "20/01/2025"
 
+	Escribir "=== ANTES DE ORDENAR ==="
+	MostrarRegistros(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad)
+
+	OrdenarRegistros(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad)
+
+	Escribir "=== DESPUES DE ORDENAR ==="
 	MostrarRegistros(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad)
 
 FinAlgoritmo
