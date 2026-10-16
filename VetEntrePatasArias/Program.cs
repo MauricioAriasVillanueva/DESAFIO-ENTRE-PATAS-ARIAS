@@ -18,6 +18,7 @@ static int codigoPropietario = 2001;
 static int codigoMascota = 1001;
     static void Main()
     {
+        MostrarRegistros();
         int opcion;
 
         do
@@ -40,5 +41,27 @@ static int codigoMascota = 1001;
                 opcion = 0; // Opción inválida
             }
         } while (opcion !=7);
+    }
+
+    static void MostrarRegistros()
+    {
+        if (mascotas.Count == 0)
+        {
+            Console.WriteLine("No hay registros disponibles.");
+            return;
+        }
+        else
+        {
+            for (int  i = 0; i <mascotas.Count; i++)
+            {
+                Console.WriteLine("Mascota: " + mascotas[i]);
+                Console.WriteLine("Propietario: " + propietarios[i]);
+                Console.WriteLine("Teléfono: " + telefonos[i]);
+                Console.WriteLine("Código de la Mascota: " + codigosMascotas[i]);
+                Console.WriteLine("Código del Propietario: " + codigosPropietarios[i]);
+                Console.WriteLine("Especie: " + especies[i]);
+                Console.WriteLine("------------------------------");
+            }
+        }
     }
 }
