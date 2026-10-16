@@ -18,7 +18,6 @@ static int codigoPropietario = 2001;
 static int codigoMascota = 1001;
     static void Main()
     {
-        MostrarRegistros();
         int opcion;
 
         do
