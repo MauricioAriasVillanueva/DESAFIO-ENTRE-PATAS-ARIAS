@@ -200,19 +200,26 @@ class Program
         fechasNacimiento.Add(fechaNacimiento);
 
         // MOSTRAR CONFIRMACION
+       
         Console.WriteLine("\n======================================");
-        Console.WriteLine("   REGISTRO REALIZADO CORRECTAMENTE");
+        Console.WriteLine("       REGISTRO EXITOSO");
         Console.WriteLine("======================================");
-        Console.WriteLine($"Codigo del propietario: {codigoPropietario}");
-        Console.WriteLine($"Propietario: {nombrePropietario.Trim()}");
+
+        Console.WriteLine("\nDATOS DEL PROPIETARIO");
+        Console.WriteLine($"Codigo: {codigoPropietario}");
+        Console.WriteLine($"Nombre: {nombrePropietario.Trim()}");
         Console.WriteLine($"Telefono: {telefono.Trim()}");
-        Console.WriteLine($"Codigo de la mascota: {codigoMascota}");
-        Console.WriteLine($"Nombre de la mascota: {nombreMascota.Trim()}");
-        Console.WriteLine($"Tipo de animal: {tipoAnimal}");
+
+        Console.WriteLine("\nDATOS DE LA MASCOTA");
+        Console.WriteLine($"Codigo: {codigoMascota}");
+        Console.WriteLine($"Nombre: {nombreMascota.Trim()}");
+        Console.WriteLine($"Tipo: {tipoAnimal}");
         Console.WriteLine($"Especie o raza: {especie.Trim()}");
         Console.WriteLine($"Sexo: {sexo}");
         Console.WriteLine($"Fecha de nacimiento: {fechaNacimiento:dd/MM/yyyy}");
-        Console.WriteLine("======================================");
+
+        Console.WriteLine("\n======================================");
+
 
         // ACTUALIZAR CODIGOS PARA EL SIGUIENTE REGISTRO
         codigoPropietario++;
