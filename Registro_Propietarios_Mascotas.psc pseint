@@ -1,0 +1,73 @@
+Algoritmo Veterinaria_Entre_Patas_Arias
+		
+		Definir opcion, codigoPropietario, codigoMascota Como Entero;
+		Definir nombrePropietario, telefono Como Cadena;
+		Definir nombreMascota, tipoAnimal, especie, sexo Como Cadena;
+		Definir fechaNacimiento Como Cadena;
+		
+		codigoPropietario <- 2001;
+		codigoMascota <- 1001;
+		
+		Repetir
+			Escribir "";
+			Escribir "======================================";
+			Escribir "   VETERINARIA ENTRE PATAS - ARIAS";
+			Escribir "======================================";
+			Escribir "1. Registrar propietario y mascota";
+			Escribir "2. Buscar mascota";
+			Escribir "3. Modificar registro";
+			Escribir "4. Eliminar registro";
+			Escribir "5. Mostrar registros";
+			Escribir "6. Ordenar registros";
+			Escribir "7. Salir";
+			Escribir "Seleccione una opcion:";
+			Leer opcion;
+			
+			Si opcion = 1 Entonces
+				
+				Escribir "Nombre del propietario:";
+				Leer nombrePropietario;
+				
+				Escribir "Telefono del propietario:";
+				Leer telefono;
+				
+				Escribir "Nombre de la mascota:";
+				Leer nombreMascota;
+				
+				Escribir "Tipo de animal (Canino/Felino):";
+				Leer tipoAnimal;
+				
+				Escribir "Especie o raza:";
+				Leer especie;
+				
+				Escribir "Sexo (Macho/Hembra):";
+				Leer sexo;
+				
+				Escribir "Fecha de nacimiento (DD/MM/AAAA):";
+				Leer fechaNacimiento;
+				
+				Escribir "";
+				Escribir "======================================";
+				Escribir "          REGISTRO EXITOSO";
+				Escribir "======================================";
+				Escribir "Codigo del propietario: ", codigoPropietario;
+				Escribir "Propietario: ", nombrePropietario;
+				Escribir "Telefono: ", telefono;
+				Escribir "Codigo de la mascota: ", codigoMascota;
+				Escribir "Mascota: ", nombreMascota;
+				Escribir "Tipo de animal: ", tipoAnimal;
+				Escribir "Especie o raza: ", especie;
+				Escribir "Sexo: ", sexo;
+				Escribir "Fecha de nacimiento: ", fechaNacimiento;
+				Escribir "======================================";
+				
+				codigoPropietario <- codigoPropietario + 1;
+				codigoMascota <- codigoMascota + 1;
+				
+			FinSi
+			
+		Hasta Que opcion = 7;
+		
+		Escribir "Saliendo del sistema...";
+		
+FinAlgoritmo
