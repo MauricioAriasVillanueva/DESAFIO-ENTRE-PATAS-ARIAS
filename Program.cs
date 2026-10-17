@@ -73,31 +73,34 @@ class Program
         Console.Write("Nombre del propietario: ");
         string nombrePropietario = Console.ReadLine() ?? "";
 
-       string telefono;
+        // VALIDACION DEL TELEFONO
+        string telefono;
 
         while (true)
-       {
-         Console.Write("Telefono del propietario (9 digitos): ");
-         telefono = (Console.ReadLine() ?? "").Trim();
+        {
+            Console.Write("Telefono del propietario (9 digitos): ");
+            telefono = (Console.ReadLine() ?? "").Trim();
 
-         bool valido = telefono.Length == 9;
+            bool valido = telefono.Length == 9;
 
-         foreach (char caracter in telefono)
-           {
-               if (!char.IsDigit(caracter))
-               {
-                 valido = false;
-                 break;
-               }
-           }
+            foreach (char caracter in telefono)
+            {
+                if (!char.IsDigit(caracter))
+                {
+                    valido = false;
+                    break;
+                }
+            }
 
             if (valido)
-           {
-              break;
-          }
+            {
+                break;
+            }
 
-           Console.WriteLine("Error: ingrese un telefono de 9 digitos.");
+            Console.WriteLine(
+                "Error: ingrese un telefono de 9 digitos.");
         }
+
         // DATOS DE LA MASCOTA
         Console.Write("Nombre de la mascota: ");
         string nombreMascota = Console.ReadLine() ?? "";
@@ -151,29 +154,27 @@ class Program
         }
 
         // FECHA DE NACIMIENTO
-       
         Console.Write("Fecha de nacimiento de la mascota: ");
         string fechaIngresada = Console.ReadLine() ?? "";
 
         if (!DateTime.TryParse(
-          fechaIngresada,
-          CultureInfo.GetCultureInfo("es-PE"),
-          DateTimeStyles.None,
-          out DateTime fechaNacimiento))
-       {
-          Console.WriteLine(
-          "Error: ingrese una fecha valida, por ejemplo 15/03/2024.");
-          return;
+            fechaIngresada,
+            CultureInfo.GetCultureInfo("es-PE"),
+            DateTimeStyles.None,
+            out DateTime fechaNacimiento))
+        {
+            Console.WriteLine(
+                "Error: ingrese una fecha valida, por ejemplo 15/03/2024.");
+            return;
         }
-        
+
+        // VALIDAR QUE LA FECHA NO SEA FUTURA
         if (fechaNacimiento.Date > DateTime.Today)
-       {
-         Console.WriteLine(
-            "Error: la fecha de nacimiento no puede ser futura.");
-          return;
+        {
+            Console.WriteLine(
+                "Error: la fecha de nacimiento no puede ser futura.");
+            return;
         }
-
-
 
         // VALIDAR CAMPOS OBLIGATORIOS
         if (string.IsNullOrWhiteSpace(nombrePropietario) ||
@@ -199,8 +200,7 @@ class Program
         sexos.Add(sexo);
         fechasNacimiento.Add(fechaNacimiento);
 
-        // MOSTRAR CONFIRMACION
-       
+        // CONFIRMACION DEL REGISTRO
         Console.WriteLine("\n======================================");
         Console.WriteLine("       REGISTRO EXITOSO");
         Console.WriteLine("======================================");
@@ -216,10 +216,10 @@ class Program
         Console.WriteLine($"Tipo: {tipoAnimal}");
         Console.WriteLine($"Especie o raza: {especie.Trim()}");
         Console.WriteLine($"Sexo: {sexo}");
-        Console.WriteLine($"Fecha de nacimiento: {fechaNacimiento:dd/MM/yyyy}");
+        Console.WriteLine(
+            $"Fecha de nacimiento: {fechaNacimiento:dd/MM/yyyy}");
 
         Console.WriteLine("\n======================================");
-
 
         // ACTUALIZAR CODIGOS PARA EL SIGUIENTE REGISTRO
         codigoPropietario++;
