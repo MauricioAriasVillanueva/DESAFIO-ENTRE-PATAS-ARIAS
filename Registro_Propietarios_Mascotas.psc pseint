@@ -12,7 +12,7 @@ Algoritmo Veterinaria_Entre_Patas_Arias
 			Escribir "";
 			Escribir "======================================";
 			Escribir "   VETERINARIA ENTRE PATAS - ARIAS";
-            Escribir "  REGISTRO DE PROPIETARIOS Y MASCOTAS";
+            Escribir "   SISTEMA DE REGISTRO VETERINARIO";
 			Escribir "======================================";
 			Escribir "1. Registrar propietario y mascota";
 			Escribir "2. Buscar mascota";
@@ -48,7 +48,7 @@ Algoritmo Veterinaria_Entre_Patas_Arias
 				Leer fechaNacimiento; 
 
 				Escribir "Los datos se registraron correctamente.";
-				
+
 				Escribir "";
 				Escribir "======================================";
 				Escribir "          REGISTRO EXITOSO";
