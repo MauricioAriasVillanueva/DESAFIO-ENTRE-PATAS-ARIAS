@@ -30,7 +30,7 @@ Algoritmo Veterinaria_Entre_Patas_Arias
                 Escribir "Codigo del propietario: ", codigoPropietario;
                 Escribir "Propietario: ", nombrePropietario;
                 Escribir "Telefono: ", telefono;
-				
+
 				Escribir "---------- DATOS DE LA MASCOTA ----------";
 				Escribir "Nombre de la mascota:";
 				Leer nombreMascota;
@@ -45,7 +45,9 @@ Algoritmo Veterinaria_Entre_Patas_Arias
 				Leer sexo;
 				
 				Escribir "Fecha de nacimiento (DD/MM/AAAA):";
-				Leer fechaNacimiento;
+				Leer fechaNacimiento; 
+
+				Escribir "Los datos se registraron correctamente.";
 				
 				Escribir "";
 				Escribir "======================================";
