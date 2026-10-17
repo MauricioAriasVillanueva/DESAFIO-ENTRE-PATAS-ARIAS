@@ -26,11 +26,10 @@ Algoritmo Veterinaria_Entre_Patas_Arias
 			
 			Si opcion = 1 Entonces
 				
-				Escribir "Nombre del propietario:";
-				Leer nombrePropietario;
-				
-				Escribir "Telefono del propietario:";
-				Leer telefono;
+				Escribir "---------- DATOS DEL PROPIETARIO ----------";
+                Escribir "Codigo del propietario: ", codigoPropietario;
+                Escribir "Propietario: ", nombrePropietario;
+                Escribir "Telefono: ", telefono;
 				
 				Escribir "Nombre de la mascota:";
 				Leer nombreMascota;
