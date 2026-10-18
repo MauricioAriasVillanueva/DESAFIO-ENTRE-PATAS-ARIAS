@@ -1,76 +1,189 @@
-Algoritmo Veterinaria_Entre_Patas_Arias
+
+	Algoritmo Registro_Propietarios_Mascotas
 		
-		Definir opcion, codigoPropietario, codigoMascota Como Entero;
-		Definir nombrePropietario, telefono Como Cadena;
-		Definir nombreMascota, tipoAnimal, especie, sexo Como Cadena;
-		Definir fechaNacimiento Como Cadena;
+		Definir cantidad, i Como Entero
+		Definir codigoPropietario, codigoMascota Como Entero
+		Definir nombrePropietario, telefono Como Cadena
+		Definir nombreMascota, tipoAnimal, especie Como Cadena
+		Definir sexo, fechaNacimiento, continuar Como Cadena
+		Definir caracter Como Cadena
+		Definir dia, mes, anio, diasMes Como Entero
+		Definir diaActual, mesActual, anioActual Como Entero
+		Definir telefonoValido, fechaValida Como Logico
 		
-		codigoPropietario <- 2001;
-		codigoMascota <- 1001;
+		Dimension codigosPropietarios[100]
+		Dimension propietarios[100]
+		Dimension telefonos[100]
+		Dimension codigosMascotas[100]
+		Dimension mascotas[100]
+		Dimension tiposAnimales[100]
+		Dimension especies[100]
+		Dimension sexos[100]
+		Dimension fechasNacimiento[100]
 		
-		Repetir
-			Escribir "";
-			Escribir "======================================";
-			Escribir "   VETERINARIA ENTRE PATAS - ARIAS";
-            Escribir "   SISTEMA DE REGISTRO VETERINARIO";
-			Escribir "======================================";
-			Escribir "1. Registrar propietario y mascota";
-			Escribir "2. Buscar mascota";
-			Escribir "3. Modificar registro";
-			Escribir "4. Eliminar registro";
-			Escribir "5. Mostrar registros";
-			Escribir "6. Ordenar registros";
-			Escribir "7. Salir";
-			Escribir "Seleccione una opcion:";
-			Leer opcion;
+		cantidad <- 0
+		codigoPropietario <- 2001
+		codigoMascota <- 1001
+		
+		diaActual <- 17
+		mesActual <- 10
+		anioActual <- 2026
+		
+		continuar <- "S"
+		
+		Escribir "======================================"
+		Escribir " VETERINARIA ENTRE PATAS - ARIAS"
+		Escribir " MODULO DE REGISTRO"
+		Escribir "======================================"
+		
+		Mientras Mayusculas(continuar) = "S" Hacer
 			
-			Si opcion = 1 Entonces
+			Si cantidad < 100 Entonces
 				
-				Escribir "---------- DATOS DEL PROPIETARIO ----------";
-                Escribir "Codigo del propietario: ", codigoPropietario;
-                Escribir "Propietario: ", nombrePropietario;
-                Escribir "Telefono: ", telefono;
-
-				Escribir "---------- DATOS DE LA MASCOTA ----------";
-				Escribir "Nombre de la mascota:";
-				Leer nombreMascota;
+				Escribir ""
+				Escribir "DATOS DEL PROPIETARIO"
+				Escribir "Codigo: ", codigoPropietario
+				Escribir "Ingrese el nombre del propietario:"
+				Leer nombrePropietario
 				
-				Escribir "Tipo de animal (Canino/Felino):";
-				Leer tipoAnimal;
+				// VALIDACION DEL TELEFONO
+				Repetir
+					Escribir "Ingrese el telefono (9 digitos):"
+					Leer telefono
+					
+					telefonoValido <- Verdadero
+					
+					Si Longitud(telefono) <> 9 Entonces
+						telefonoValido <- Falso
+					SiNo
+						Si ConvertirANumero(telefono) < 100000000 O ConvertirANumero(telefono) > 999999999 Entonces
+							telefonoValido <- Falso
+						FinSi
+					FinSi
+					
+					Si telefonoValido = Falso Entonces
+						Escribir "ERROR: debe ingresar exactamente 9 digitos numericos."
+					FinSi
+					
+				Hasta Que telefonoValido = Verdadero
 				
-				Escribir "Especie o raza:";
-				Leer especie;
+				Escribir ""
+				Escribir "DATOS DE LA MASCOTA"
+				Escribir "Codigo: ", codigoMascota
+				Escribir "Ingrese el nombre de la mascota:"
+				Leer nombreMascota
+				Escribir "Tipo de animal (Canino/Felino):"
+				Leer tipoAnimal
+				Escribir "Ingrese la especie o raza:"
+				Leer especie
+				Escribir "Sexo (Macho/Hembra):"
+				Leer sexo
 				
-				Escribir "Sexo (Macho/Hembra):";
-				Leer sexo;
+				// VALIDACION DE LA FECHA DE NACIMIENTO
 				
-				Escribir "Fecha de nacimiento (DD/MM/AAAA):";
-				Leer fechaNacimiento; 
-
-				Escribir "Los datos se registraron correctamente.";
-
-				Escribir "";
-				Escribir "======================================";
-				Escribir "          REGISTRO EXITOSO";
-				Escribir "======================================";
-				Escribir "Codigo del propietario: ", codigoPropietario;
-				Escribir "Propietario: ", nombrePropietario;
-				Escribir "Telefono: ", telefono;
-				Escribir "Codigo de la mascota: ", codigoMascota;
-				Escribir "Mascota: ", nombreMascota;
-				Escribir "Tipo de animal: ", tipoAnimal;
-				Escribir "Especie o raza: ", especie;
-				Escribir "Sexo: ", sexo;
-				Escribir "Fecha de nacimiento: ", fechaNacimiento;
-				Escribir "======================================";
+				Repetir
+					Escribir "Ingrese la fecha de nacimiento (DD/MM/AAAA):"
+					Leer fechaNacimiento
+					
+					fechaValida <- Falso
+					
+					Si Longitud(fechaNacimiento) = 10 Entonces
+						
+						Si Subcadena(fechaNacimiento, 3, 3) = "/" Y Subcadena(fechaNacimiento, 6, 6) = "/" Entonces
+							
+							dia <- ConvertirANumero(Subcadena(fechaNacimiento, 1, 2))
+							mes <- ConvertirANumero(Subcadena(fechaNacimiento, 4, 5))
+							anio <- ConvertirANumero(Subcadena(fechaNacimiento, 7, 10))
+							
+							Si mes >= 1 Y mes <= 12 Y dia >= 1 Y anio >= 1 Y anio <= anioActual Entonces
+								
+								Segun mes Hacer
+									1, 3, 5, 7, 8, 10, 12:
+										diasMes <- 31
+									4, 6, 9, 11:
+										diasMes <- 30
+									2:
+										diasMes <- 28
+										Si anio MOD 400 = 0 O (anio MOD 4 = 0 Y anio MOD 100 <> 0) Entonces
+											diasMes <- 29
+										FinSi
+								FinSegun
+								
+								Si dia <= diasMes Entonces
+									fechaValida <- Verdadero
+									
+									Si anio = anioActual Entonces
+										Si mes > mesActual Entonces
+											fechaValida <- Falso
+										SiNo
+											Si mes = mesActual Y dia > diaActual Entonces
+												fechaValida <- Falso
+											FinSi
+										FinSi
+									FinSi
+								FinSi
+								
+							FinSi
+						FinSi
+					FinSi
+					
+					Si fechaValida = Falso Entonces
+						Escribir "Fecha invalida. Use DD/MM/AAAA y no ingrese fechas futuras."
+					FinSi
+					
+				Hasta Que fechaValida = Verdadero
 				
-				codigoPropietario <- codigoPropietario + 1;
-				codigoMascota <- codigoMascota + 1;
+				// GUARDAR LOS NUEVE ARREGLOS
+				cantidad <- cantidad + 1
+				
+				codigosPropietarios[cantidad] <- codigoPropietario
+				propietarios[cantidad] <- nombrePropietario
+				telefonos[cantidad] <- telefono
+				
+				codigosMascotas[cantidad] <- codigoMascota
+				mascotas[cantidad] <- nombreMascota
+				tiposAnimales[cantidad] <- tipoAnimal
+				especies[cantidad] <- especie
+				sexos[cantidad] <- sexo
+				fechasNacimiento[cantidad] <- fechaNacimiento
+				
+				// CONFIRMACION DEL REGISTRO
+				Escribir ""
+				Escribir "======================================"
+				Escribir "REGISTRO EXITOSO"
+				Escribir "======================================"
+				Escribir "Codigo del propietario: ", codigosPropietarios[cantidad]
+				Escribir "Nombre: ", propietarios[cantidad]
+				Escribir "Telefono: ", telefonos[cantidad]
+				Escribir "Codigo de la mascota: ", codigosMascotas[cantidad]
+				Escribir "Nombre de la mascota: ", mascotas[cantidad]
+				Escribir "Tipo de animal: ", tiposAnimales[cantidad]
+				Escribir "Especie o raza: ", especies[cantidad]
+				Escribir "Sexo: ", sexos[cantidad]
+				Escribir "Fecha de nacimiento: ", fechasNacimiento[cantidad]
+				Escribir "Total registrado: ", cantidad
+				Escribir "======================================"
+				
+				codigoPropietario <- codigoPropietario + 1
+				codigoMascota <- codigoMascota + 1
+				
+				Escribir ""
+				Escribir "Desea registrar otra mascota? (S/N):"
+				Leer continuar
+				
+			SiNo
+				
+				Escribir "Limite de 100 registros alcanzado."
+				continuar <- "N"
 				
 			FinSi
 			
-		Hasta Que opcion = 7;
+		FinMientras
 		
-		Escribir "Saliendo del sistema...";
+		Escribir ""
+		Escribir "======================================"
+		Escribir "FIN DEL MODULO DE REGISTRO"
+		Escribir "Total de mascotas registradas: ", cantidad
+		Escribir "======================================"
 		
 FinAlgoritmo
