@@ -1,189 +1,65 @@
-
-	Algoritmo Registro_Propietarios_Mascotas
-		
-		Definir cantidad, i Como Entero
-		Definir codigoPropietario, codigoMascota Como Entero
+SubProceso Registrar(mascotas Por Referencia, propietarios Por Referencia, telefonos Por Referencia, especies Por Referencia, codigosMascotas Por Referencia, codigosPropietarios Por Referencia, tiposAnimales Por Referencia, sexos Por Referencia, fechasNacimiento Por Referencia, cantidad Por Referencia, codigoPropietario Por Referencia, codigoMascota Por Referencia)
 		Definir nombrePropietario, telefono Como Cadena
 		Definir nombreMascota, tipoAnimal, especie Como Cadena
-		Definir sexo, fechaNacimiento, continuar Como Cadena
-		Definir caracter Como Cadena
-		Definir dia, mes, anio, diasMes Como Entero
-		Definir diaActual, mesActual, anioActual Como Entero
-		Definir telefonoValido, fechaValida Como Logico
+		Definir sexo, fechaNacimiento Como Cadena
 		
-		Dimension codigosPropietarios[100]
-		Dimension propietarios[100]
-		Dimension telefonos[100]
-		Dimension codigosMascotas[100]
-		Dimension mascotas[100]
-		Dimension tiposAnimales[100]
-		Dimension especies[100]
-		Dimension sexos[100]
-		Dimension fechasNacimiento[100]
+		Escribir "Nombre del propietario:"
+		Leer nombrePropietario
+		Escribir "Telefono:"
+		Leer telefono
+		Escribir "Nombre de la mascota:"
+		Leer nombreMascota
+		Escribir "Tipo de animal:"
+		Leer tipoAnimal
+		Escribir "Especie o raza:"
+		Leer especie
+		Escribir "Sexo:"
+		Leer sexo
+		Escribir "Fecha de nacimiento:"
+		Leer fechaNacimiento
 		
-		cantidad <- 0
-		codigoPropietario <- 2001
-		codigoMascota <- 1001
+		cantidad <- cantidad + 1
 		
-		diaActual <- 17
-		mesActual <- 10
-		anioActual <- 2026
+		codigosPropietarios[cantidad] <- codigoPropietario
+		propietarios[cantidad] <- nombrePropietario
+		telefonos[cantidad] <- telefono
+		codigosMascotas[cantidad] <- codigoMascota
+		mascotas[cantidad] <- nombreMascota
+		tiposAnimales[cantidad] <- tipoAnimal
+		especies[cantidad] <- especie
+		sexos[cantidad] <- sexo
+		fechasNacimiento[cantidad] <- fechaNacimiento
 		
-		continuar <- "S"
+		codigoPropietario <- codigoPropietario + 1
+		codigoMascota <- codigoMascota + 1
 		
-		Escribir "======================================"
-		Escribir " VETERINARIA ENTRE PATAS - ARIAS"
-		Escribir " MODULO DE REGISTRO"
-		Escribir "======================================"
-		
-		Mientras Mayusculas(continuar) = "S" Hacer
-			
-			Si cantidad < 100 Entonces
-				
-				Escribir ""
-				Escribir "DATOS DEL PROPIETARIO"
-				Escribir "Codigo: ", codigoPropietario
-				Escribir "Ingrese el nombre del propietario:"
-				Leer nombrePropietario
-				
-				// VALIDACION DEL TELEFONO
-				Repetir
-					Escribir "Ingrese el telefono (9 digitos):"
-					Leer telefono
-					
-					telefonoValido <- Verdadero
-					
-					Si Longitud(telefono) <> 9 Entonces
-						telefonoValido <- Falso
-					SiNo
-						Si ConvertirANumero(telefono) < 100000000 O ConvertirANumero(telefono) > 999999999 Entonces
-							telefonoValido <- Falso
-						FinSi
-					FinSi
-					
-					Si telefonoValido = Falso Entonces
-						Escribir "ERROR: debe ingresar exactamente 9 digitos numericos."
-					FinSi
-					
-				Hasta Que telefonoValido = Verdadero
-				
-				Escribir ""
-				Escribir "DATOS DE LA MASCOTA"
-				Escribir "Codigo: ", codigoMascota
-				Escribir "Ingrese el nombre de la mascota:"
-				Leer nombreMascota
-				Escribir "Tipo de animal (Canino/Felino):"
-				Leer tipoAnimal
-				Escribir "Ingrese la especie o raza:"
-				Leer especie
-				Escribir "Sexo (Macho/Hembra):"
-				Leer sexo
-				
-				// VALIDACION DE LA FECHA DE NACIMIENTO
-				
-				Repetir
-					Escribir "Ingrese la fecha de nacimiento (DD/MM/AAAA):"
-					Leer fechaNacimiento
-					
-					fechaValida <- Falso
-					
-					Si Longitud(fechaNacimiento) = 10 Entonces
-						
-						Si Subcadena(fechaNacimiento, 3, 3) = "/" Y Subcadena(fechaNacimiento, 6, 6) = "/" Entonces
-							
-							dia <- ConvertirANumero(Subcadena(fechaNacimiento, 1, 2))
-							mes <- ConvertirANumero(Subcadena(fechaNacimiento, 4, 5))
-							anio <- ConvertirANumero(Subcadena(fechaNacimiento, 7, 10))
-							
-							Si mes >= 1 Y mes <= 12 Y dia >= 1 Y anio >= 1 Y anio <= anioActual Entonces
-								
-								Segun mes Hacer
-									1, 3, 5, 7, 8, 10, 12:
-										diasMes <- 31
-									4, 6, 9, 11:
-										diasMes <- 30
-									2:
-										diasMes <- 28
-										Si anio MOD 400 = 0 O (anio MOD 4 = 0 Y anio MOD 100 <> 0) Entonces
-											diasMes <- 29
-										FinSi
-								FinSegun
-								
-								Si dia <= diasMes Entonces
-									fechaValida <- Verdadero
-									
-									Si anio = anioActual Entonces
-										Si mes > mesActual Entonces
-											fechaValida <- Falso
-										SiNo
-											Si mes = mesActual Y dia > diaActual Entonces
-												fechaValida <- Falso
-											FinSi
-										FinSi
-									FinSi
-								FinSi
-								
-							FinSi
-						FinSi
-					FinSi
-					
-					Si fechaValida = Falso Entonces
-						Escribir "Fecha invalida. Use DD/MM/AAAA y no ingrese fechas futuras."
-					FinSi
-					
-				Hasta Que fechaValida = Verdadero
-				
-				// GUARDAR LOS NUEVE ARREGLOS
-				cantidad <- cantidad + 1
-				
-				codigosPropietarios[cantidad] <- codigoPropietario
-				propietarios[cantidad] <- nombrePropietario
-				telefonos[cantidad] <- telefono
-				
-				codigosMascotas[cantidad] <- codigoMascota
-				mascotas[cantidad] <- nombreMascota
-				tiposAnimales[cantidad] <- tipoAnimal
-				especies[cantidad] <- especie
-				sexos[cantidad] <- sexo
-				fechasNacimiento[cantidad] <- fechaNacimiento
-				
-				// CONFIRMACION DEL REGISTRO
-				Escribir ""
-				Escribir "======================================"
-				Escribir "REGISTRO EXITOSO"
-				Escribir "======================================"
-				Escribir "Codigo del propietario: ", codigosPropietarios[cantidad]
-				Escribir "Nombre: ", propietarios[cantidad]
-				Escribir "Telefono: ", telefonos[cantidad]
-				Escribir "Codigo de la mascota: ", codigosMascotas[cantidad]
-				Escribir "Nombre de la mascota: ", mascotas[cantidad]
-				Escribir "Tipo de animal: ", tiposAnimales[cantidad]
-				Escribir "Especie o raza: ", especies[cantidad]
-				Escribir "Sexo: ", sexos[cantidad]
-				Escribir "Fecha de nacimiento: ", fechasNacimiento[cantidad]
-				Escribir "Total registrado: ", cantidad
-				Escribir "======================================"
-				
-				codigoPropietario <- codigoPropietario + 1
-				codigoMascota <- codigoMascota + 1
-				
-				Escribir ""
-				Escribir "Desea registrar otra mascota? (S/N):"
-				Leer continuar
-				
-			SiNo
-				
-				Escribir "Limite de 100 registros alcanzado."
-				continuar <- "N"
-				
-			FinSi
-			
-		FinMientras
-		
-		Escribir ""
-		Escribir "======================================"
-		Escribir "FIN DEL MODULO DE REGISTRO"
-		Escribir "Total de mascotas registradas: ", cantidad
-		Escribir "======================================"
-		
+		Escribir "Registro guardado correctamente."
+FinSubProceso
+
+Algoritmo PruebaRegistro
+    Definir mascotas, propietarios, telefonos, especies Como Cadena
+    Definir tiposAnimales, sexos, fechasNacimiento Como Cadena
+    Definir codigosMascotas, codigosPropietarios Como Entero
+    Definir cantidad, codigoPropietario, codigoMascota Como Entero
+	
+    Dimension mascotas[100]
+    Dimension propietarios[100]
+    Dimension telefonos[100]
+    Dimension especies[100]
+    Dimension codigosMascotas[100]
+    Dimension codigosPropietarios[100]
+    Dimension tiposAnimales[100]
+    Dimension sexos[100]
+    Dimension fechasNacimiento[100]
+	
+    cantidad <- 0
+    codigoPropietario <- 2001
+    codigoMascota <- 1001
+	
+    Registrar(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad, codigoPropietario, codigoMascota)
+	
+    Escribir "Cantidad registrada: ", cantidad
+    Escribir "Mascota guardada: ", mascotas[1]
 FinAlgoritmo
+
+
