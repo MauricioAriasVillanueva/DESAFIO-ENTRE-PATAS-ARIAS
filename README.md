@@ -1,57 +1,208 @@
-# 🐾 Entre Patas Arias - Consultorio Veterinario
+# 🐾 Entre Patas – Arias | Sistema de Gestión Veterinaria
 
-[![Estado del Proyecto](https://img.shields.io/badge/Estado-En_Desarrollo-blue.svg)](#)
-[![Integrantes](https://img.shields.io/badge/Equipo-4_Integrantes-green.svg)](#)
+![Estado del Proyecto](https://img.shields.io/badge/Estado-Integración_Parcial-blue.svg)
+![CSharp](https://img.shields.io/badge/Lenguaje-C%23-purple.svg)
+![PSeInt](https://img.shields.io/badge/Pseudocódigo-PSeInt-orange.svg)
+![Equipo](https://img.shields.io/badge/Equipo-4_Integrantes-green.svg)
 
-## 📌 Descripción del Proyecto
+## 📌 Descripción del proyecto
 
-El establecimiento seleccionado para el desarrollo del proyecto es una veterinaria dedicada a la atención y cuidado de animales domésticos, principalmente perros y gatos. Dentro de sus actividades operativas se encuentran la recepción de propietarios y mascotas, el registro de pacientes, la atención veterinaria, el seguimiento de antecedentes médicos y el registro detallado de las atenciones realizadas.
+Este repositorio contiene el desarrollo del **Sistema de Gestión Veterinaria Entre Patas – Arias**, correspondiente a la Evaluación Parcial del curso **Fundamentos de Programación**.
 
-Para el desarrollo de esta solución se toma como referencia el proceso histórico del establecimiento, el cual se realizaba de manera manual mediante cuadernos físicos antes de la digitalización. Esta situación permite analizar un proceso real y representativo para modelarlo y optimizarlo mediante un sistema informático estructurado.
+El sistema tiene como propósito facilitar el registro y la administración de información de propietarios y mascotas mediante una aplicación de consola desarrollada en **C#**, acompañada de su representación algorítmica en **PSeInt**.
 
-El consultorio requiere mantener información organizada de los propietarios, las mascotas y sus atenciones históricas. Cuando un paciente regresa a la veterinaria, es fundamental consultar sus registros anteriores de forma rápida y precisa para conocer sus antecedentes médicos y brindar una continuidad de atención adecuada. Por ello, el módulo de registro y consulta de información constituye el núcleo operativo principal de esta propuesta.
-
----
-
-## 🏢 Información de la Empresa
-
-| Campo | Detalle |
-| :--- | :--- |
-| **Razón Social** | VETERINARIA Entre Patas - Arias |
-| **RUC** | `10420311350` |
-| **Tipo de Organización** | Empresa privada dedicada a la prestación de servicios veterinarios |
-| **Actividad Principal** | Prestación de servicios veterinarios y atención integral de animales domésticos |
-| **Sede Principal** | Las Begonias 240, Santa Anita 15007 |
-| **Ámbito de Operación** | Local (Atención a propietarios y mascotas de la zona de cobertura) |
+La rama `ep/integracion` está destinada a reunir los módulos desarrollados por los integrantes del equipo y comprobar su funcionamiento conjunto antes de incorporarlos a la versión principal del proyecto.
 
 ---
 
-## 🎯 Objetivos del Sistema
+## 🎯 Objetivo de la integración
 
-- **Digitalización de Procesos:** Migrar la gestión física en cuadernos de notas hacia un sistema de información centralizado.
-- **Historial Clínico Accesible:** Permitir la búsqueda y consulta inmediata de antecedentes médicos de las mascotas en cada visita.
-- **Gestión Integral de Entidades:** Control eficiente de propietarios, pacientes (mascotas) y atenciones veterinarias realizandas.
-- **Optimización de Tiempos:** Reducir los tiempos de espera durante la recepción y atención médica de los pacientes.
+Unificar las funcionalidades del sistema veterinario utilizando estructuras de datos compartidas, ciclos, condicionales, funciones y procedimientos.
 
----
+La integración busca garantizar que:
 
-## 👥 Equipo de Trabajo
-
-Proyecto desarrollado colaborativamente por el equipo de 4 integrantes:
-
-1. **Mauricio Arias** - *Rol / Desarrollador*
-2. **Joaquín Sanchez** - *Rol / Desarrollador*
-3. **Piero Alvarez** - *Rol / Desarrollador*
-4. **Maximo Arriagada** - *Rol / Desarrollador*
+- Los registros de propietarios y mascotas se almacenen correctamente.
+- Los módulos trabajen con los mismos nueve campos de información.
+- El listado permita visualizar los registros existentes.
+- El ordenamiento alfabético conserve la relación entre cada mascota y su propietario.
+- Las funcionalidades puedan ejecutarse desde un menú principal.
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## ✅ Funcionalidades integradas
 
-*(Sección personalizable según el stack técnico de tu proyecto)*
+| Opción | Funcionalidad | Estado |
+|---|---|---|
+| 1 | Registrar propietario y mascota | ✅ Implementada |
+| 2 | Buscar mascota | 🚧 Pendiente |
+| 3 | Modificar registro | 🚧 Pendiente |
+| 4 | Eliminar registro | 🚧 Pendiente |
+| 5 | Mostrar registros | ✅ Implementada |
+| 6 | Ordenar registros alfabéticamente | ✅ Implementada |
+| 7 | Salir del sistema | ✅ Implementada |
 
-- **Lenguaje de Programación:** [C#]
-- **Entorno de Desarrollo (IDE):** [Visual Studio Code]
-- **Base de Datos / Almacenamiento:** [Archivos]
-- **Modelado de Procesos / Diagramado:** [Ej: Bizagi Modeler / draw.io]
-- **Control de Versiones:** Git & GitHub
+Las funcionalidades implementadas se encuentran conectadas en los programas de C# y PSeInt.
+
+---
+
+## 🧩 Módulos desarrollados
+
+### 👨‍💻 Integrante 1 — Mauricio Arias
+
+**Responsabilidad: listado y ordenamiento de registros.**
+
+Funcionalidades desarrolladas:
+
+- Implementación del recorrido de listas y arreglos.
+- Visualización de información de propietarios y mascotas.
+- Implementación del algoritmo de ordenamiento burbuja.
+- Comparación alfabética de nombres de mascotas.
+- Intercambio de los nueve campos asociados a cada registro.
+- Desarrollo de las funcionalidades correspondientes en C# y PSeInt.
+
+**Métodos y subprocesos:**
+
+- C#: `MostrarRegistros()` y `Ordenar()`.
+- PSeInt: `MostrarRegistros()` y `OrdenarRegistros()`.
+
+### 👨‍💻 Integrante 2 — Joaquín Sánchez
+
+**Responsabilidad: registro de propietarios y mascotas.**
+
+Funcionalidades desarrolladas:
+
+- Ingreso de información del propietario.
+- Ingreso de información de la mascota.
+- Validación de teléfonos de nueve dígitos.
+- Validación de tipo de animal y sexo.
+- Validación de fechas de nacimiento.
+- Generación de códigos consecutivos.
+- Almacenamiento de los nueve campos compartidos.
+- Implementación del registro en C# y PSeInt.
+
+**Métodos, funciones y subprocesos:**
+
+- C#: `Registrar()`.
+- PSeInt: `Registrar()`, `SoloDigitos()` y `FechaValida()`.
+
+### 👨‍💻 Integrantes 3 y 4 — Piero Álvarez y Máximo Arriagada
+
+**Módulos pendientes de incorporación.**
+
+Se espera integrar las funcionalidades restantes de búsqueda, modificación y eliminación de registros, una vez que se encuentren disponibles y hayan sido comprobadas.
+
+---
+
+## 📊 Estructuras de datos compartidas
+
+Para mantener la compatibilidad entre los módulos, se utilizan nueve campos:
+
+| Campo | Tipo de dato en C# |
+|---|---|
+| `codigosPropietarios` | `List<int>` |
+| `propietarios` | `List<string>` |
+| `telefonos` | `List<string>` |
+| `codigosMascotas` | `List<int>` |
+| `mascotas` | `List<string>` |
+| `tiposAnimales` | `List<string>` |
+| `especies` | `List<string>` |
+| `sexos` | `List<string>` |
+| `fechasNacimiento` | `List<DateTime>` |
+
+En PSeInt se utilizan arreglos equivalentes de tipo `Entero` y `Cadena`.
+
+Cada registro comparte una misma posición en los nueve arreglos o listas, lo que permite mantener asociados todos los datos durante el ordenamiento.
+
+---
+
+## 💻 Archivos principales
+
+| Archivo | Descripción |
+|---|---|
+| `VetEntrePatasArias/Program.cs` | Menú principal e integración de las funcionalidades en C#. |
+| `VetEntrePatasArias/VetEntrePatasArias.csproj` | Configuración del proyecto de consola .NET. |
+| `PSeInt/SistemaVeterinaria_EP.psc` | Programa integrado en PSeInt con registro, listado y ordenamiento. |
+| `README.md` | Documentación de la rama de integración. |
+
+---
+
+## 🧪 Pruebas de integración
+
+Se realizaron pruebas manuales de las funcionalidades implementadas.
+
+**Registro de propietarios y mascotas:**
+- Ingreso de datos de propietarios y mascotas.
+- Validación de teléfonos y fechas.
+- Generación de códigos consecutivos.
+- Almacenamiento de registros.
+
+**Listado de registros:**
+- Recorrido y visualización de los campos registrados.
+- Comprobación de los datos asociados a cada mascota.
+
+**Ordenamiento burbuja:**
+- Registro de mascotas con nombres desordenados.
+- Ordenamiento alfabético de los nombres.
+- Comprobación de que cada mascota mantenga la información de su propietario y los demás campos.
+
+**Resultado:** las opciones 1, 5 y 6 fueron probadas manualmente durante la integración de PSeInt y se confirmó su funcionamiento.
+
+Estas comprobaciones corresponden a los módulos implementados. No representan una validación completa de las funcionalidades todavía pendientes.
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+- **Lenguaje de programación:** C#.
+- **Pseudocódigo:** PSeInt.
+- **Entorno de desarrollo:** Visual Studio Code.
+- **Plataforma:** .NET.
+- **Control de versiones:** Git y GitHub.
+- **Paradigmas y técnicas:** programación estructurada, listas, arreglos, ciclos, condicionales, funciones y subprocesos.
+
+---
+
+## 🌿 Organización de ramas
+
+| Rama | Propósito |
+|---|---|
+| `main` | Rama principal del repositorio. |
+| `Integrante-1` | Trabajo individual de listado y ordenamiento. |
+| `Integrante-2` | Trabajo individual de registro. |
+| `ep/base-colaborativa` | Estructura inicial compartida. |
+| `ep/integracion` | Integración y pruebas de los módulos del equipo. |
+
+El desarrollo individual de cada integrante se mantiene separado para facilitar la identificación de sus contribuciones.
+
+---
+
+## 🚧 Estado actual del proyecto
+
+La rama `ep/integracion` contiene una **integración parcial funcional** del sistema veterinario.
+
+Hasta el momento se han incorporado:
+
+- Registro de propietarios y mascotas.
+- Listado de registros.
+- Ordenamiento burbuja alfabético.
+- Menú principal y salida del programa.
+
+**Próximos pasos:**
+
+- Incorporar los módulos de búsqueda, modificación y eliminación.
+- Comprobar su compatibilidad con los nueve campos compartidos.
+- Ejecutar pruebas integrales del sistema.
+- Revisar la documentación y preparar la versión correspondiente a la entrega académica.
+
+---
+
+## 👥 Equipo de desarrollo
+
+Proyecto desarrollado colaborativamente por:
+
+- **Mauricio Arias** — Integrante 1.
+- **Joaquín Sánchez** — Integrante 2.
+- **Piero Álvarez** — Integrante 3.
+- **Máximo Arriagada** — Integrante 4.
+
+**Proyecto académico — Fundamentos de Programación | Evaluación Parcial.**
