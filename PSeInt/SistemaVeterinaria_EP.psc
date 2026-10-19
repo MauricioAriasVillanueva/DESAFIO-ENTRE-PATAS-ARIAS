@@ -223,6 +223,47 @@ SubProceso OrdenarRegistros(mascotas, propietarios, telefonos, especies, codigos
     FinPara
 FinSubProceso
 
+    // INTEGRANTE 4: BUSQUEDA LINEAL DE MASCOTAS POR CODIGO
+SubProceso BuscarMascota(cantidad, codigosPropietarios, propietarios, telefonos, codigosMascotas, mascotas, especies, tiposAnimales, sexos, fechasNacimiento)
+    Definir codigoBuscado, posicion, i Como Entero
+    Definir entrada Como Cadena
+
+    Si cantidad = 0 Entonces
+        Escribir "No hay mascotas registradas."
+    SiNo
+        Escribir "Ingrese el codigo de la mascota:"
+        Leer entrada
+
+        Si NO SoloDigitos(entrada) Entonces
+            Escribir "Error: ingrese un codigo numerico valido."
+        SiNo
+            codigoBuscado <- ConvertirANumero(entrada)
+            posicion <- -1
+
+            Para i <- 1 Hasta cantidad Hacer
+                Si codigosMascotas[i] = codigoBuscado Entonces
+                    posicion <- i
+                FinSi
+            FinPara
+
+            Si posicion = -1 Entonces
+                Escribir "No se encontro una mascota con ese codigo."
+            SiNo
+                Escribir "=== DATOS DE LA MASCOTA ENCONTRADA ==="
+                Escribir "Codigo de propietario: ", codigosPropietarios[posicion]
+                Escribir "Nombre del propietario: ", propietarios[posicion]
+                Escribir "Telefono: ", telefonos[posicion]
+                Escribir "Codigo de mascota: ", codigosMascotas[posicion]
+                Escribir "Nombre de mascota: ", mascotas[posicion]
+                Escribir "Especie: ", especies[posicion]
+                Escribir "Tipo de animal: ", tiposAnimales[posicion]
+                Escribir "Sexo: ", sexos[posicion]
+                Escribir "Fecha de nacimiento: ", fechasNacimiento[posicion]
+            FinSi
+        FinSi
+    FinSi
+FinSubProceso
+
 Algoritmo SistemaVeterinaria_EP
 
     // Variables numericas
@@ -287,6 +328,9 @@ Algoritmo SistemaVeterinaria_EP
     Segun opcion Hacer
         1:
             Registrar(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad, correlativoPropietario, correlativoMascota, fechaReferencia)
+            
+        2:
+             BuscarMascota(cantidad, codigosPropietarios, propietarios, telefonos, codigosMascotas, mascotas, especies, tiposAnimales, sexos, fechasNacimiento)
         5:
             MostrarRegistros(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad)
 
