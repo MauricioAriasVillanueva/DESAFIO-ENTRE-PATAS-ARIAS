@@ -49,6 +49,10 @@ static int codigoMascota = 1001;
                 case 1:
                     Registrar();
                     break;
+    // BUSQUEDA DE MASCOTAS
+                case 2: 
+                    Buscar();
+                    break;
 
                 case 5:
                     MostrarRegistros();
@@ -303,5 +307,68 @@ static int codigoMascota = 1001;
                 }
             }
         }
+    }
+
+
+
+    // BUSQUEDA LINEAL DE MASCOTAS POR CODIGO
+    static void Buscar()
+    {
+        if (codigosMascotas.Count == 0)
+        {
+            Console.WriteLine("No hay mascotas registradas.");
+            return;
+        }
+
+        Console.Write("Ingrese el codigo de la mascota: ");
+
+        int codigoBuscado;
+        if (!int.TryParse(Console.ReadLine(), out codigoBuscado) || codigoBuscado <= 0)
+        {
+            Console.WriteLine("Codigo invalido. Ingrese un numero entero positivo.");
+            return;
+        }
+
+        int posicion = -1;
+
+        for (int i = 0; i < codigosMascotas.Count; i++)
+        {
+            if (codigosMascotas[i] == codigoBuscado)
+            {
+                posicion = i;
+                break;
+            }
+        }
+
+        if (posicion == -1)
+        {
+            Console.WriteLine("No se encontro una mascota con ese codigo.");
+            return;
+        }
+
+        // Verificar que las nueve listas tengan los datos correspondientes
+        if (posicion >= codigosPropietarios.Count ||
+            posicion >= propietarios.Count ||
+            posicion >= telefonos.Count ||
+            posicion >= mascotas.Count ||
+            posicion >= especies.Count ||
+            posicion >= tiposAnimales.Count ||
+            posicion >= sexos.Count ||
+            posicion >= fechasNacimiento.Count)
+        {
+            Console.WriteLine("Error: los datos del registro estan incompletos.");
+            return;
+        }
+
+        Console.WriteLine("=== DATOS DE LA MASCOTA ENCONTRADA ===");
+        Console.WriteLine("Codigo de propietario: " + codigosPropietarios[posicion]);
+        Console.WriteLine("Nombre del propietario: " + propietarios[posicion]);
+        Console.WriteLine("Telefono: " + telefonos[posicion]);
+        Console.WriteLine("Codigo de mascota: " + codigosMascotas[posicion]);
+        Console.WriteLine("Nombre de mascota: " + mascotas[posicion]);
+        Console.WriteLine("Especie: " + especies[posicion]);
+        Console.WriteLine("Tipo de animal: " + tiposAnimales[posicion]);
+        Console.WriteLine("Sexo: " + sexos[posicion]);
+        Console.WriteLine("Fecha de nacimiento: " + fechasNacimiento[posicion].ToString("dd/MM/yyyy"));
     }
 }
