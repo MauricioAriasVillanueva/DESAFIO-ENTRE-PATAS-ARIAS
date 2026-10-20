@@ -58,8 +58,6 @@ Funcion correcto <- FechaValida(fecha, referencia)
     FinSi
 FinFuncion
 
-// ORDEN DE PARAMETROS IGUAL AL DE MOSTRARREGISTROS Y ORDENARREGISTROS.
-// Los primeros nueve argumentos son los mismos arreglos del equipo.
 SubProceso Registrar(mascotas Por Referencia, propietarios Por Referencia, telefonos Por Referencia, especies Por Referencia, codigosMascotas Por Referencia, codigosPropietarios Por Referencia, tiposAnimales Por Referencia, sexos Por Referencia, fechasNacimiento Por Referencia, cantidad Por Referencia, codigoPropietario Por Referencia, codigoMascota Por Referencia, fechaReferencia)
     Definir nombrePropietario, telefono, nombreMascota Como Cadena
     Definir tipoAnimal, especie, sexo, fechaNacimiento Como Cadena
@@ -72,7 +70,7 @@ SubProceso Registrar(mascotas Por Referencia, propietarios Por Referencia, telef
         Escribir "Nombre del propietario:"
         Leer nombrePropietario
 
-        // Como en C#: el telefono incorrecto se vuelve a solicitar.
+        // El telefono incorrecto se vuelve a solicitar.
         Repetir
             Escribir "Telefono (9 digitos):"
             Leer telefono
@@ -116,7 +114,7 @@ SubProceso Registrar(mascotas Por Referencia, propietarios Por Referencia, telef
             FinSi
         FinSi
 
-        // Como en C#: si el dato obligatorio esta vacio, no se guarda.
+        // Si el dato obligatorio esta vacio, no se guarda.
         Si valido Entonces
             valido <- Longitud(nombrePropietario) > 0 Y Longitud(nombreMascota) > 0 Y Longitud(especie) > 0
             Si NO valido Entonces
@@ -125,7 +123,6 @@ SubProceso Registrar(mascotas Por Referencia, propietarios Por Referencia, telef
         FinSi
 
         Si valido Entonces
-            // Todos los datos del registro utilizan la MISMA posicion.
             cantidad <- cantidad + 1
             codigosPropietarios[cantidad] <- codigoPropietario
             propietarios[cantidad] <- nombrePropietario
@@ -150,6 +147,152 @@ SubProceso Registrar(mascotas Por Referencia, propietarios Por Referencia, telef
 
             codigoPropietario <- codigoPropietario + 1
             codigoMascota <- codigoMascota + 1
+        FinSi
+    FinSi
+FinSubProceso
+
+SubProceso ModificarMascota(mascotas Por Referencia, propietarios Por Referencia, telefonos Por Referencia, especies Por Referencia, codigosMascotas Por Referencia, codigosPropietarios Por Referencia, tiposAnimales Por Referencia, sexos Por Referencia, fechasNacimiento Por Referencia, cantidad, fechaReferencia)
+    Definir codigoTexto, dato Como Cadena
+    Definir codigo, posicion, i, campo Como Entero
+    Definir valido Como Logico
+
+    Si cantidad = 0 Entonces
+        Escribir "No hay mascotas registradas."
+    SiNo
+        Escribir "Codigo de mascota:"
+        Leer codigoTexto
+        Si SoloDigitos(codigoTexto) Entonces
+            codigo <- ConvertirANumero(codigoTexto)
+            posicion <- 0
+            Para i <- 1 Hasta cantidad Con Paso 1 Hacer
+                Si codigosMascotas[i] = codigo Entonces
+                    posicion <- i
+                FinSi
+            FinPara
+
+            Si posicion = 0 Entonces
+                Escribir "No se encontro la mascota."
+            SiNo
+                Escribir "Mascota encontrada: ", mascotas[posicion]
+                Escribir "1. Nombre mascota"
+                Escribir "2. Nombre propietario"
+                Escribir "3. Telefono"
+                Escribir "4. Tipo de animal"
+                Escribir "5. Especie o raza"
+                Escribir "6. Sexo"
+                Escribir "7. Fecha de nacimiento"
+                Escribir "Que dato desea modificar?:"
+                Leer campo
+
+                Si campo < 1 O campo > 7 Entonces
+                    Escribir "Opcion invalida."
+                SiNo
+                    Escribir "Ingrese el nuevo dato:"
+                    Leer dato
+                    valido <- Longitud(dato) > 0
+
+                    // Validamos solamente el campo seleccionado.
+                    Si campo = 3 Entonces
+                        Si Longitud(dato) <> 9 Entonces
+                            valido <- Falso
+                        SiNo
+                            Si NO SoloDigitos(dato) Entonces
+                                valido <- Falso
+                            FinSi
+                        FinSi
+                    FinSi
+                    Si campo = 4 Entonces
+                        dato <- Mayusculas(dato)
+                        Si dato <> "CANINO" Y dato <> "FELINO" Entonces
+                            valido <- Falso
+                        FinSi
+                    FinSi
+                    Si campo = 6 Entonces
+                        dato <- Mayusculas(dato)
+                        Si dato <> "MACHO" Y dato <> "HEMBRA" Entonces
+                            valido <- Falso
+                        FinSi
+                    FinSi
+                    Si campo = 7 Entonces
+                        Si NO FechaValida(dato, fechaReferencia) Entonces
+                            valido <- Falso
+                        FinSi
+                    FinSi
+
+                    Si valido Entonces
+                        Segun campo Hacer
+                            1:
+                                mascotas[posicion] <- dato
+                            2:
+                                propietarios[posicion] <- dato
+                            3:
+                                telefonos[posicion] <- dato
+                            4:
+                                tiposAnimales[posicion] <- dato
+                            5:
+                                especies[posicion] <- dato
+                            6:
+                                sexos[posicion] <- dato
+                            7:
+                                fechasNacimiento[posicion] <- dato
+                        FinSegun
+                        Escribir "Dato modificado correctamente."
+                    SiNo
+                        Escribir "Dato invalido. No se modifico el registro."
+                    FinSi
+                FinSi
+            FinSi
+        SiNo
+            Escribir "Ingrese un codigo numerico."
+        FinSi
+    FinSi
+FinSubProceso
+
+SubProceso EliminarMascota(mascotas Por Referencia, propietarios Por Referencia, telefonos Por Referencia, especies Por Referencia, codigosMascotas Por Referencia, codigosPropietarios Por Referencia, tiposAnimales Por Referencia, sexos Por Referencia, fechasNacimiento Por Referencia, cantidad Por Referencia)
+    Definir codigoTexto, respuesta Como Cadena
+    Definir codigo, posicion, i, j Como Entero
+
+    Si cantidad = 0 Entonces
+        Escribir "No hay mascotas registradas."
+    SiNo
+        Escribir "Codigo de mascota a eliminar:"
+        Leer codigoTexto
+        Si SoloDigitos(codigoTexto) Entonces
+            codigo <- ConvertirANumero(codigoTexto)
+            posicion <- 0
+            Para i <- 1 Hasta cantidad Con Paso 1 Hacer
+                Si codigosMascotas[i] = codigo Entonces
+                    posicion <- i
+                FinSi
+            FinPara
+
+            Si posicion = 0 Entonces
+                Escribir "No se encontro la mascota."
+            SiNo
+                Escribir "Mascota: ", mascotas[posicion]
+                Escribir "Seguro que desea eliminarla? (S/N):"
+                Leer respuesta
+                Si Mayusculas(respuesta) = "S" O Mayusculas(respuesta) = "SI" Entonces
+                    // Pasamos las nueve listas una posicion hacia la izquierda.
+                    Para j <- posicion Hasta cantidad - 1 Con Paso 1 Hacer
+                        mascotas[j] <- mascotas[j + 1]
+                        propietarios[j] <- propietarios[j + 1]
+                        telefonos[j] <- telefonos[j + 1]
+                        especies[j] <- especies[j + 1]
+                        codigosMascotas[j] <- codigosMascotas[j + 1]
+                        codigosPropietarios[j] <- codigosPropietarios[j + 1]
+                        tiposAnimales[j] <- tiposAnimales[j + 1]
+                        sexos[j] <- sexos[j + 1]
+                        fechasNacimiento[j] <- fechasNacimiento[j + 1]
+                    FinPara
+                    cantidad <- cantidad - 1
+                    Escribir "Mascota eliminada correctamente."
+                SiNo
+                    Escribir "Eliminacion cancelada."
+                FinSi
+            FinSi
+        SiNo
+            Escribir "Ingrese un codigo numerico."
         FinSi
     FinSi
 FinSubProceso
@@ -223,7 +366,6 @@ SubProceso OrdenarRegistros(mascotas, propietarios, telefonos, especies, codigos
     FinPara
 FinSubProceso
 
-    // INTEGRANTE 4: BUSQUEDA LINEAL DE MASCOTAS POR CODIGO
 SubProceso BuscarMascota(cantidad, codigosPropietarios, propietarios, telefonos, codigosMascotas, mascotas, especies, tiposAnimales, sexos, fechasNacimiento)
     Definir codigoBuscado, posicion, i Como Entero
     Definir entrada Como Cadena
@@ -328,9 +470,16 @@ Algoritmo SistemaVeterinaria_EP
     Segun opcion Hacer
         1:
             Registrar(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad, correlativoPropietario, correlativoMascota, fechaReferencia)
-            
+
         2:
-             BuscarMascota(cantidad, codigosPropietarios, propietarios, telefonos, codigosMascotas, mascotas, especies, tiposAnimales, sexos, fechasNacimiento)
+            BuscarMascota(cantidad, codigosPropietarios, propietarios, telefonos, codigosMascotas, mascotas, especies, tiposAnimales, sexos, fechasNacimiento)
+
+        3:
+            ModificarMascota(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad, fechaReferencia)
+
+        4:
+            EliminarMascota(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad)
+
         5:
             MostrarRegistros(mascotas, propietarios, telefonos, especies, codigosMascotas, codigosPropietarios, tiposAnimales, sexos, fechasNacimiento, cantidad)
 

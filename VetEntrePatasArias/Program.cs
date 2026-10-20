@@ -49,9 +49,17 @@ static int codigoMascota = 1001;
                 case 1:
                     Registrar();
                     break;
-    // BUSQUEDA DE MASCOTAS
-                case 2: 
+
+                case 2:
                     Buscar();
+                    break;
+
+                case 3:
+                    Modificar();
+                    break;
+
+                case 4:
+                    Eliminar();
                     break;
 
                 case 5:
@@ -236,6 +244,216 @@ static int codigoMascota = 1001;
         codigoMascota++;
     }
 
+        // BUSQUEDA LINEAL DE MASCOTAS POR CODIGO
+    static void Buscar()
+    {
+        if (codigosMascotas.Count == 0)
+        {
+            Console.WriteLine("No hay mascotas registradas.");
+            return;
+        }
+
+        Console.Write("Ingrese el codigo de la mascota: ");
+
+        int codigoBuscado;
+            if (!int.TryParse(Console.ReadLine(), out codigoBuscado) || codigoBuscado <= 0)
+            {
+                Console.WriteLine("Codigo invalido. Ingrese un numero entero positivo.");
+                return;
+            }
+
+        int posicion = -1;
+
+        for (int i = 0; i < codigosMascotas.Count; i++)
+        {
+            if (codigosMascotas[i] == codigoBuscado)
+            {
+                posicion = i;
+                break;
+            }
+        }
+
+        if (posicion == -1)
+        {
+            Console.WriteLine("No se encontro una mascota con ese codigo.");
+            return;
+        }
+
+        // Verificar que las nueve listas tengan los datos correspondientes
+        if (posicion >= codigosPropietarios.Count ||
+            posicion >= propietarios.Count ||
+            posicion >= telefonos.Count ||
+            posicion >= mascotas.Count ||
+            posicion >= especies.Count ||
+            posicion >= tiposAnimales.Count ||
+            posicion >= sexos.Count ||
+            posicion >= fechasNacimiento.Count)
+        {
+            Console.WriteLine("Error: los datos del registro estan incompletos.");
+            return;
+        }
+
+        Console.WriteLine("=== DATOS DE LA MASCOTA ENCONTRADA ===");
+        Console.WriteLine("Codigo de propietario: " + codigosPropietarios[posicion]);
+        Console.WriteLine("Nombre del propietario: " + propietarios[posicion]);
+        Console.WriteLine("Telefono: " + telefonos[posicion]);
+        Console.WriteLine("Codigo de mascota: " + codigosMascotas[posicion]);
+        Console.WriteLine("Nombre de mascota: " + mascotas[posicion]);
+        Console.WriteLine("Especie: " + especies[posicion]);
+        Console.WriteLine("Tipo de animal: " + tiposAnimales[posicion]);
+        Console.WriteLine("Sexo: " + sexos[posicion]);
+        Console.WriteLine("Fecha de nacimiento: " + fechasNacimiento[posicion].ToString("dd/MM/yyyy"));
+    }
+
+    static int BuscarPosicion(int codigo)
+    {
+        for (int i = 0; i < codigosMascotas.Count; i++)
+        {
+            if (codigosMascotas[i] == codigo)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+        static void Modificar()
+    {
+        if (mascotas.Count == 0)
+        {
+            Console.WriteLine("No hay mascotas registradas.");
+            return;
+        }
+
+        Console.Write("Codigo de mascota: ");
+        int codigo;
+            if (!int.TryParse(Console.ReadLine(), out codigo))
+            {
+                Console.WriteLine("Codigo invalido.");
+                return;
+            }
+
+        int posicion = BuscarPosicion(codigo);
+            if (posicion == -1)
+            {
+                Console.WriteLine("Mascota no encontrada.");
+                return;
+            }
+
+        Console.WriteLine("Mascota: " + mascotas[posicion]);
+        Console.WriteLine("1. Nombre de mascota");
+        Console.WriteLine("2. Propietario");
+        Console.WriteLine("3. Telefono");
+        Console.WriteLine("4. Tipo de animal");
+        Console.WriteLine("5. Especie o raza");
+        Console.WriteLine("6. Sexo");
+        Console.WriteLine("7. Fecha de nacimiento");
+        Console.Write("Dato a modificar: ");
+
+        int campo;
+            if (!int.TryParse(Console.ReadLine(), out campo) || campo < 1 || campo > 7)
+            {
+                Console.WriteLine("Opcion invalida.");
+                return;
+            }
+
+        Console.Write("Nuevo dato: ");
+        string dato = (Console.ReadLine() ?? "").Trim();
+            if (dato == "")
+            {
+                Console.WriteLine("No puede estar vacio.");
+                return;
+            }
+
+        bool valido = true;
+            if (campo == 3)
+            {
+                valido = dato.Length == 9;
+                    for (int i = 0; i < dato.Length; i++)
+                    {
+                        if (dato[i] < '0' || dato[i] > '9')
+                            valido = false;
+                    }
+            }
+        if (campo == 4 || campo == 6)
+            dato = dato.ToUpper();
+        if (campo == 4 && dato != "CANINO" && dato != "FELINO")
+            valido = false;
+        if (campo == 6 && dato != "MACHO" && dato != "HEMBRA")
+            valido = false;
+
+        DateTime fechaNueva = fechasNacimiento[posicion];
+        if (campo == 7)
+        {
+            if (!DateTime.TryParse(dato, CultureInfo.GetCultureInfo("es-PE"),
+                DateTimeStyles.None, out fechaNueva) || fechaNueva.Date > DateTime.Today)
+                valido = false;
+        }
+        if (!valido)
+        {
+            Console.WriteLine("Dato invalido. No se modifico el registro.");
+            return;
+        }
+
+        switch (campo)
+        {
+            case 1: mascotas[posicion] = dato; break;
+            case 2: propietarios[posicion] = dato; break;
+            case 3: telefonos[posicion] = dato; break;
+            case 4: tiposAnimales[posicion] = dato; break;
+            case 5: especies[posicion] = dato; break;
+            case 6: sexos[posicion] = dato; break;
+            case 7: fechasNacimiento[posicion] = fechaNueva; break;
+        }
+        Console.WriteLine("Dato modificado correctamente.");
+    }
+
+        static void Eliminar()
+    {
+        if (mascotas.Count == 0)
+        {
+            Console.WriteLine("No hay mascotas registradas.");
+            return;
+        }
+
+        Console.Write("Codigo de mascota a eliminar: ");
+        int codigo;
+            if (!int.TryParse(Console.ReadLine(), out codigo))
+            {
+                Console.WriteLine("Codigo invalido.");
+                return;
+            }
+
+        int posicion = BuscarPosicion(codigo);
+            if (posicion == -1)
+            {
+                Console.WriteLine("Mascota no encontrada.");
+                return;
+            }
+
+        Console.WriteLine("Mascota: " + mascotas[posicion]);
+        Console.Write("Confirmar eliminacion? (S/N): ");
+        string respuesta = (Console.ReadLine() ?? "").ToUpper();
+            if (respuesta != "S" && respuesta != "SI")
+            {
+                Console.WriteLine("Eliminacion cancelada.");
+                return;
+            }
+
+        mascotas.RemoveAt(posicion);
+        propietarios.RemoveAt(posicion);
+        telefonos.RemoveAt(posicion);
+        especies.RemoveAt(posicion);
+        codigosMascotas.RemoveAt(posicion);
+        codigosPropietarios.RemoveAt(posicion);
+        tiposAnimales.RemoveAt(posicion);
+        sexos.RemoveAt(posicion);
+        fechasNacimiento.RemoveAt(posicion);
+
+        Console.WriteLine("Mascota eliminada correctamente.");
+    }
+
     static void MostrarRegistros()
     {
         if (mascotas.Count == 0)
@@ -307,68 +525,5 @@ static int codigoMascota = 1001;
                 }
             }
         }
-    }
-
-
-
-    // BUSQUEDA LINEAL DE MASCOTAS POR CODIGO
-    static void Buscar()
-    {
-        if (codigosMascotas.Count == 0)
-        {
-            Console.WriteLine("No hay mascotas registradas.");
-            return;
-        }
-
-        Console.Write("Ingrese el codigo de la mascota: ");
-
-        int codigoBuscado;
-        if (!int.TryParse(Console.ReadLine(), out codigoBuscado) || codigoBuscado <= 0)
-        {
-            Console.WriteLine("Codigo invalido. Ingrese un numero entero positivo.");
-            return;
-        }
-
-        int posicion = -1;
-
-        for (int i = 0; i < codigosMascotas.Count; i++)
-        {
-            if (codigosMascotas[i] == codigoBuscado)
-            {
-                posicion = i;
-                break;
-            }
-        }
-
-        if (posicion == -1)
-        {
-            Console.WriteLine("No se encontro una mascota con ese codigo.");
-            return;
-        }
-
-        // Verificar que las nueve listas tengan los datos correspondientes
-        if (posicion >= codigosPropietarios.Count ||
-            posicion >= propietarios.Count ||
-            posicion >= telefonos.Count ||
-            posicion >= mascotas.Count ||
-            posicion >= especies.Count ||
-            posicion >= tiposAnimales.Count ||
-            posicion >= sexos.Count ||
-            posicion >= fechasNacimiento.Count)
-        {
-            Console.WriteLine("Error: los datos del registro estan incompletos.");
-            return;
-        }
-
-        Console.WriteLine("=== DATOS DE LA MASCOTA ENCONTRADA ===");
-        Console.WriteLine("Codigo de propietario: " + codigosPropietarios[posicion]);
-        Console.WriteLine("Nombre del propietario: " + propietarios[posicion]);
-        Console.WriteLine("Telefono: " + telefonos[posicion]);
-        Console.WriteLine("Codigo de mascota: " + codigosMascotas[posicion]);
-        Console.WriteLine("Nombre de mascota: " + mascotas[posicion]);
-        Console.WriteLine("Especie: " + especies[posicion]);
-        Console.WriteLine("Tipo de animal: " + tiposAnimales[posicion]);
-        Console.WriteLine("Sexo: " + sexos[posicion]);
-        Console.WriteLine("Fecha de nacimiento: " + fechasNacimiento[posicion].ToString("dd/MM/yyyy"));
     }
 }
