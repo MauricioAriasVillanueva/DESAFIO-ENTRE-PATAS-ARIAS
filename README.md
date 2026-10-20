@@ -1,208 +1,210 @@
-# 🐾 Entre Patas – Arias | Sistema de Gestión Veterinaria
-
-![Estado del Proyecto](https://img.shields.io/badge/Estado-Integración_Parcial-blue.svg)
-![CSharp](https://img.shields.io/badge/Lenguaje-C%23-purple.svg)
-![PSeInt](https://img.shields.io/badge/Pseudocódigo-PSeInt-orange.svg)
-![Equipo](https://img.shields.io/badge/Equipo-4_Integrantes-green.svg)
+# 🐾 Sistema de Gestión Veterinaria – Entre Patas Arias
 
 ## 📌 Descripción del proyecto
 
-Este repositorio contiene el desarrollo del **Sistema de Gestión Veterinaria Entre Patas – Arias**, correspondiente a la Evaluación Parcial del curso **Fundamentos de Programación**.
+**Entre Patas Arias** es un sistema de gestión veterinaria desarrollado como parte del curso de **Fundamentos de Programación** de la Universidad Privada del Norte (UPN).
 
-El sistema tiene como propósito facilitar el registro y la administración de información de propietarios y mascotas mediante una aplicación de consola desarrollada en **C#**, acompañada de su representación algorítmica en **PSeInt**.
+El proyecto está implementado en **C# (aplicación de consola)** y **PSeInt (pseudocódigo)**. Permite registrar, buscar, modificar, eliminar, mostrar y ordenar información de propietarios y mascotas.
 
-La rama `ep/integracion` está destinada a reunir los módulos desarrollados por los integrantes del equipo y comprobar su funcionamiento conjunto antes de incorporarlos a la versión principal del proyecto.
+La rama `ep/integracion` reúne los módulos desarrollados por los cuatro integrantes del equipo en una misma versión funcional.
 
----
+## 🎯 Objetivo
 
-## 🎯 Objetivo de la integración
+Desarrollar un sistema básico de gestión veterinaria mediante estructuras de control, arreglos, listas, funciones, subprocesos y algoritmos de búsqueda y ordenamiento, aplicando los conocimientos adquiridos en el curso.
 
-Unificar las funcionalidades del sistema veterinario utilizando estructuras de datos compartidas, ciclos, condicionales, funciones y procedimientos.
+## ⚙️ Funcionalidades implementadas
 
-La integración busca garantizar que:
-
-- Los registros de propietarios y mascotas se almacenen correctamente.
-- Los módulos trabajen con los mismos nueve campos de información.
-- El listado permita visualizar los registros existentes.
-- El ordenamiento alfabético conserve la relación entre cada mascota y su propietario.
-- Las funcionalidades puedan ejecutarse desde un menú principal.
-
----
-
-## ✅ Funcionalidades integradas
-
-| Opción | Funcionalidad | Estado |
+| Opción | Funcionalidad | Descripción |
 |---|---|---|
-| 1 | Registrar propietario y mascota | ✅ Implementada |
-| 2 | Buscar mascota | 🚧 Pendiente |
-| 3 | Modificar registro | 🚧 Pendiente |
-| 4 | Eliminar registro | 🚧 Pendiente |
-| 5 | Mostrar registros | ✅ Implementada |
-| 6 | Ordenar registros alfabéticamente | ✅ Implementada |
-| 7 | Salir del sistema | ✅ Implementada |
+| 1 | Registrar | Registra los datos del propietario y su mascota. |
+| 2 | Buscar | Busca una mascota mediante su código único. |
+| 3 | Modificar | Permite actualizar los datos de un registro existente. |
+| 4 | Eliminar | Elimina un registro previa confirmación. |
+| 5 | Mostrar registros | Presenta los datos de todas las mascotas registradas. |
+| 6 | Ordenar registros | Ordena alfabéticamente los registros por nombre de mascota. |
+| 7 | Salir | Finaliza la ejecución del programa. |
 
-Las funcionalidades implementadas se encuentran conectadas en los programas de C# y PSeInt.
+**Estado:** Los módulos están integrados en C# y PSeInt. Se realizaron pruebas funcionales durante la integración.
 
----
+## 👥 Integrantes y responsabilidades
 
-## 🧩 Módulos desarrollados
-
-### 👨‍💻 Integrante 1 — Mauricio Arias
-
-**Responsabilidad: listado y ordenamiento de registros.**
-
-Funcionalidades desarrolladas:
-
-- Implementación del recorrido de listas y arreglos.
-- Visualización de información de propietarios y mascotas.
-- Implementación del algoritmo de ordenamiento burbuja.
-- Comparación alfabética de nombres de mascotas.
-- Intercambio de los nueve campos asociados a cada registro.
-- Desarrollo de las funcionalidades correspondientes en C# y PSeInt.
-
-**Métodos y subprocesos:**
-
-- C#: `MostrarRegistros()` y `Ordenar()`.
-- PSeInt: `MostrarRegistros()` y `OrdenarRegistros()`.
-
-### 👨‍💻 Integrante 2 — Joaquín Sánchez
-
-**Responsabilidad: registro de propietarios y mascotas.**
-
-Funcionalidades desarrolladas:
-
-- Ingreso de información del propietario.
-- Ingreso de información de la mascota.
-- Validación de teléfonos de nueve dígitos.
-- Validación de tipo de animal y sexo.
-- Validación de fechas de nacimiento.
-- Generación de códigos consecutivos.
-- Almacenamiento de los nueve campos compartidos.
-- Implementación del registro en C# y PSeInt.
-
-**Métodos, funciones y subprocesos:**
-
-- C#: `Registrar()`.
-- PSeInt: `Registrar()`, `SoloDigitos()` y `FechaValida()`.
-
-### 👨‍💻 Integrantes 3 y 4 — Piero Álvarez y Máximo Arriagada
-
-**Módulos pendientes de incorporación.**
-
-Se espera integrar las funcionalidades restantes de búsqueda, modificación y eliminación de registros, una vez que se encuentren disponibles y hayan sido comprobadas.
-
----
-
-## 📊 Estructuras de datos compartidas
-
-Para mantener la compatibilidad entre los módulos, se utilizan nueve campos:
-
-| Campo | Tipo de dato en C# |
+| Integrante | Responsabilidad |
 |---|---|
-| `codigosPropietarios` | `List<int>` |
-| `propietarios` | `List<string>` |
-| `telefonos` | `List<string>` |
-| `codigosMascotas` | `List<int>` |
-| `mascotas` | `List<string>` |
-| `tiposAnimales` | `List<string>` |
-| `especies` | `List<string>` |
-| `sexos` | `List<string>` |
-| `fechasNacimiento` | `List<DateTime>` |
+| **Mauricio Arias Villanueva – Integrante 1** | Mostrar registros, ordenamiento burbuja e integración del proyecto. |
+| **Joaquín Sánchez – Integrante 2** | Registro de propietarios y mascotas, generación de códigos y validaciones. |
+| **Piero Álvarez – Integrante 3** | Modificación y eliminación de registros. |
+| **Máximo Arriagada – Integrante 4** | Búsqueda lineal de mascotas por código. |
 
-En PSeInt se utilizan arreglos equivalentes de tipo `Entero` y `Cadena`.
+Cada integrante desarrolló su módulo de acuerdo con las responsabilidades asignadas. Posteriormente, las funcionalidades se adaptaron a la estructura común de datos.
 
-Cada registro comparte una misma posición en los nueve arreglos o listas, lo que permite mantener asociados todos los datos durante el ordenamiento.
+## 🗂️ Datos del sistema
 
----
+El sistema administra nueve campos mediante listas en C# y arreglos en PSeInt.
 
-## 💻 Archivos principales
+**Propietario:**
+- Código del propietario.
+- Nombre del propietario.
+- Teléfono de contacto.
 
-| Archivo | Descripción |
+**Mascota:**
+- Código de la mascota.
+- Nombre de la mascota.
+- Tipo de animal (Canino o Felino).
+- Especie o raza.
+- Sexo (Macho o Hembra).
+- Fecha de nacimiento.
+
+Los códigos se generan automáticamente a partir de:
+
+- **Propietarios:** 2001.
+- **Mascotas:** 1001.
+
+Los códigos se incrementan con cada nuevo registro y se mantienen al modificar los datos.
+
+## 🧠 Algoritmos y estructuras utilizadas
+
+### Registro
+
+Permite ingresar y almacenar la información de propietarios y mascotas.
+
+Incluye validaciones básicas:
+- Teléfono de nueve dígitos numéricos.
+- Tipo de animal permitido.
+- Sexo permitido.
+- Fecha de nacimiento válida y no futura.
+- Verificación de campos obligatorios.
+
+### Búsqueda lineal
+
+Recorre los códigos de las mascotas hasta localizar el solicitado.
+
+Si encuentra una coincidencia, muestra la información completa del registro; de lo contrario, informa que la mascota no existe.
+
+### Modificación
+
+Localiza una mascota por su código y permite actualizar un campo seleccionado, conservando sus códigos de identificación.
+
+### Eliminación
+
+Busca el registro, solicita confirmación y elimina los datos correspondientes.
+
+En C# se utiliza `RemoveAt()`. En PSeInt se desplazan las posiciones de los nueve arreglos y se reduce la cantidad de registros.
+
+### Visualización
+
+Recorre los registros almacenados y presenta los nueve campos relacionados con cada mascota.
+
+### Ordenamiento burbuja
+
+Utiliza el algoritmo **Bubble Sort** para ordenar alfabéticamente las mascotas.
+
+Al intercambiar dos nombres, también intercambia los datos asociados en las demás listas o arreglos, evitando que la información del propietario y la mascota se desordene.
+
+## 💻 Tecnologías utilizadas
+
+| Tecnología | Aplicación |
 |---|---|
-| `VetEntrePatasArias/Program.cs` | Menú principal e integración de las funcionalidades en C#. |
-| `VetEntrePatasArias/VetEntrePatasArias.csproj` | Configuración del proyecto de consola .NET. |
-| `PSeInt/SistemaVeterinaria_EP.psc` | Programa integrado en PSeInt con registro, listado y ordenamiento. |
-| `README.md` | Documentación de la rama de integración. |
+| C# | Desarrollo del programa de consola. |
+| .NET | Compilación y ejecución del proyecto C#. |
+| PSeInt | Implementación del pseudocódigo. |
+| Visual Studio Code | Edición y desarrollo de código. |
+| Git | Control de versiones. |
+| GitHub | Repositorio y colaboración del equipo. |
 
----
+## 📁 Estructura del proyecto
 
-## 🧪 Pruebas de integración
+```text
+DESAFIO-ENTRE-PATAS-ARIAS/
+│
+├── VetEntrePatasArias/
+│   ├── Program.cs
+│   └── VetEntrePatasArias.csproj
+│
+├── PSeInt/
+│   └── SistemaVeterinaria_EP.psc
+│
+└── README.md
+```
 
-Se realizaron pruebas manuales de las funcionalidades implementadas.
+**Archivos principales:**
 
-**Registro de propietarios y mascotas:**
-- Ingreso de datos de propietarios y mascotas.
-- Validación de teléfonos y fechas.
-- Generación de códigos consecutivos.
-- Almacenamiento de registros.
+- `Program.cs`: contiene el menú y los métodos del sistema en C#.
+- `SistemaVeterinaria_EP.psc`: contiene el algoritmo principal, las funciones y los subprocesos en PSeInt.
+- `README.md`: documentación del proyecto.
 
-**Listado de registros:**
-- Recorrido y visualización de los campos registrados.
-- Comprobación de los datos asociados a cada mascota.
+## ▶️ Ejecución del programa
 
-**Ordenamiento burbuja:**
-- Registro de mascotas con nombres desordenados.
-- Ordenamiento alfabético de los nombres.
-- Comprobación de que cada mascota mantenga la información de su propietario y los demás campos.
+### C#
 
-**Resultado:** las opciones 1, 5 y 6 fueron probadas manualmente durante la integración de PSeInt y se confirmó su funcionamiento.
+**Requisito:** tener instalado el SDK de .NET compatible con el proyecto.
 
-Estas comprobaciones corresponden a los módulos implementados. No representan una validación completa de las funcionalidades todavía pendientes.
+1. Clonar o descargar el repositorio.
+2. Abrir la carpeta en Visual Studio Code.
+3. Seleccionar la rama `ep/integracion`.
+4. Abrir la terminal y ejecutar:
 
----
+```bash
+dotnet run --project VetEntrePatasArias/VetEntrePatasArias.csproj
+```
 
-## 🛠️ Tecnologías utilizadas
+5. Seleccionar una opción del menú.
 
-- **Lenguaje de programación:** C#.
-- **Pseudocódigo:** PSeInt.
-- **Entorno de desarrollo:** Visual Studio Code.
-- **Plataforma:** .NET.
-- **Control de versiones:** Git y GitHub.
-- **Paradigmas y técnicas:** programación estructurada, listas, arreglos, ciclos, condicionales, funciones y subprocesos.
+### PSeInt
 
----
+1. Abrir PSeInt.
+2. Cargar `PSeInt/SistemaVeterinaria_EP.psc`.
+3. Ejecutar el algoritmo.
+4. Ingresar la fecha de referencia solicitada en formato `DD/MM/AAAA`.
+5. Utilizar las opciones del menú.
+
+## ✅ Pruebas de funcionamiento
+
+Durante la integración se comprobaron las operaciones del sistema, incluyendo:
+
+- Registro de propietarios y mascotas.
+- Búsqueda por código.
+- Modificación de datos existentes.
+- Eliminación de registros.
+- Visualización de la información.
+- Ordenamiento de mascotas.
+- Funcionamiento del menú principal.
+
+También se verificó la incorporación de los módulos desarrollados por los cuatro integrantes.
+
+## 📌 Consideraciones y limitaciones
+
+- El programa utiliza almacenamiento temporal en memoria.
+- Al finalizar la ejecución, los registros ingresados no se conservan.
+- No utiliza bases de datos.
+- La versión de PSeInt contempla un máximo de 100 registros.
+- La aplicación funciona mediante un menú de consola, sin interfaz gráfica.
+- El ordenamiento se realiza por nombre de mascota.
+- El proyecto tiene fines académicos.
 
 ## 🌿 Organización de ramas
 
 | Rama | Propósito |
 |---|---|
-| `main` | Rama principal del repositorio. |
-| `Integrante-1` | Trabajo individual de listado y ordenamiento. |
-| `Integrante-2` | Trabajo individual de registro. |
-| `ep/base-colaborativa` | Estructura inicial compartida. |
-| `ep/integracion` | Integración y pruebas de los módulos del equipo. |
+| `Features-codes` | Prototipo inicial del sistema. |
+| `ep/base-colaborativa` | Estructura compartida para el desarrollo. |
+| `Integrante-1` | Desarrollo individual del Integrante 1. |
+| `Integrante-2` | Desarrollo individual del Integrante 2. |
+| `Integrante-3` | Desarrollo individual del Integrante 3. |
+| `Integrante-4` | Desarrollo individual del Integrante 4. |
+| `ep/integracion` | Integración de los módulos en C# y PSeInt. |
 
-El desarrollo individual de cada integrante se mantiene separado para facilitar la identificación de sus contribuciones.
+## 🎓 Conclusión
 
----
+El desarrollo de **Entre Patas Arias** permitió aplicar los fundamentos de programación mediante un proyecto colaborativo.
 
-## 🚧 Estado actual del proyecto
+La integración de los cuatro módulos dio como resultado un sistema que permite administrar registros de propietarios y mascotas, utilizando búsqueda lineal, ordenamiento burbuja, validaciones y estructuras de datos.
 
-La rama `ep/integracion` contiene una **integración parcial funcional** del sistema veterinario.
-
-Hasta el momento se han incorporado:
-
-- Registro de propietarios y mascotas.
-- Listado de registros.
-- Ordenamiento burbuja alfabético.
-- Menú principal y salida del programa.
-
-**Próximos pasos:**
-
-- Incorporar los módulos de búsqueda, modificación y eliminación.
-- Comprobar su compatibilidad con los nueve campos compartidos.
-- Ejecutar pruebas integrales del sistema.
-- Revisar la documentación y preparar la versión correspondiente a la entrega académica.
+La implementación paralela en C# y PSeInt facilita comprender la relación entre el diseño de algoritmos y su aplicación en un lenguaje de programación.
 
 ---
 
-## 👥 Equipo de desarrollo
-
-Proyecto desarrollado colaborativamente por:
-
-- **Mauricio Arias** — Integrante 1.
-- **Joaquín Sánchez** — Integrante 2.
-- **Piero Álvarez** — Integrante 3.
-- **Máximo Arriagada** — Integrante 4.
-
-**Proyecto académico — Fundamentos de Programación | Evaluación Parcial.**
+**Universidad Privada del Norte (UPN)**  
+**Curso:** Fundamentos de Programación  
+**Proyecto:** Veterinaria Entre Patas Arias  
+**Rama:** `ep/integracion`  
+**Estado:** Integración funcional de los cuatro integrantes.
