@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System;
 
 class Program
@@ -30,11 +30,12 @@ static int codigoMascota = 1001;
             Console.WriteLine("================================");
             Console.WriteLine("1. Registrar propietario y mascota");
             Console.WriteLine("2. Buscar mascota");
-            Console.WriteLine("3. Modificar registro");
-            Console.WriteLine("4. Eliminar registro");
-            Console.WriteLine("5. Mostrar registros");
-            Console.WriteLine("6. Ordenar registros");
-            Console.WriteLine("7. Salir");
+            Console.WriteLine("3. Buscar propietario");
+            Console.WriteLine("4. Modificar registro");
+            Console.WriteLine("5. Eliminar registro");
+            Console.WriteLine("6. Mostrar registros");
+            Console.WriteLine("7. Ordenar registros");
+            Console.WriteLine("8. Salir");
 
             Console.Write("Seleccione una opcion: ");
 
@@ -45,9 +46,14 @@ static int codigoMascota = 1001;
 
             if (opcion == 2)
             {
-                Buscar();
+            Buscar();
             }
-        } while (opcion !=7);
+            else if (opcion == 3)
+            {
+            BuscarPropietario();
+            }
+
+        } while (opcion !=8);
     }
 
     // INTEGRANTE 4: BUSQUEDA LINEAL DE MASCOTAS POR CODIGO
@@ -104,4 +110,53 @@ static int codigoMascota = 1001;
         Console.WriteLine("Sexo: " + sexos[posicion]);
         Console.WriteLine("Fecha de nacimiento: " + fechasNacimiento[posicion].ToString("dd/MM/yyyy"));
     }
+
+    // INTEGRANTE 4: BUSQUEDA LINEAL DE PROPIETARIOS
+    static void BuscarPropietario()
+    {
+        if (codigosPropietarios.Count == 0)
+        {
+            Console.WriteLine("No hay propietarios registrados.");
+            return;
+        }
+
+        Console.Write("Ingrese el codigo del propietario: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int codigoBuscado)
+            || codigoBuscado <= 0)
+        {
+            Console.WriteLine("Codigo invalido.");
+            return;
+        }
+
+        int posicion = -1;
+
+        for (int i = 0; i < codigosPropietarios.Count; i++)
+        {
+            if (codigosPropietarios[i] == codigoBuscado)
+            {
+                posicion = i;
+                break;
+            }
+        }
+
+        if (posicion == -1)
+        {
+            Console.WriteLine("No se encontro un propietario con ese codigo.");
+            return;
+        }
+
+        if (posicion >= propietarios.Count ||
+            posicion >= telefonos.Count)
+        {
+            Console.WriteLine("Error: datos incompletos.");
+            return;
+        }
+
+        Console.WriteLine("=== PROPIETARIO ENCONTRADO ===");
+        Console.WriteLine("Codigo: " + codigosPropietarios[posicion]);
+        Console.WriteLine("Nombre: " + propietarios[posicion]);
+        Console.WriteLine("Telefono: " + telefonos[posicion]);
+    }
+
 }
