@@ -1,47 +1,181 @@
+
 using System.Collections.Generic;
 using System;
 
 class Program
 {
     //DATOS DE PROPIETARIOS
-static List<int> codigosPropietarios = new List<int>();
-static List<string> propietarios = new List<string>();
-static List<string> telefonos = new List<string>();
+    static List<int> codigosPropietarios = new List<int>();
+    static List<string> propietarios = new List<string>();
+    static List<string> telefonos = new List<string>();
 
     //DATOS DE MASCOTAS
-static List<int> codigosMascotas = new List<int>();
-static List<string> mascotas = new List<string>();
-static List<string> especies = new List<string>();
-static List<string> tiposAnimales = new List<string>();
-static List<string> sexos = new List<string>();
-static List<DateTime> fechasNacimiento = new List<DateTime>();
+    static List<int> codigosMascotas = new List<int>();
+    static List<string> mascotas = new List<string>();
+    static List<string> especies = new List<string>();
+    static List<string> tiposAnimales = new List<string>();
+    static List<string> sexos = new List<string>();
+    static List<DateTime> fechasNacimiento = new List<DateTime>();
 
     //CODIGOS AUTOMATICOS
-static int codigoPropietario = 2001;
-static int codigoMascota = 1001;
+    static int codigoPropietario = 2001;
+    static int codigoMascota = 1001;
+
     static void Main()
     {
         int opcion;
 
         do
         {
-            Console.WriteLine("================================");
-            Console.WriteLine(" VETERINARIA ENTRE PATAS - ARIAS");
-            Console.WriteLine("================================");
-            Console.WriteLine("1. Registrar propietario y mascota");
-            Console.WriteLine("2. Buscar mascota");
-            Console.WriteLine("3. Modificar registro");
-            Console.WriteLine("4. Eliminar registro");
-            Console.WriteLine("5. Mostrar registros");
-            Console.WriteLine("6. Ordenar registros");
-            Console.WriteLine("7. Salir");
+            Console.WriteLine();
+            Console.WriteLine("========================================");
+            Console.WriteLine("      VETERINARIA ENTRE PATAS - ARIAS");
+            Console.WriteLine("========================================");
+            Console.WriteLine("1. Gestionar propietarios");
+            Console.WriteLine("2. Gestionar mascotas");
+            Console.WriteLine("3. Atenciones medicas");
+            Console.WriteLine("4. Servicios veterinarios");
+            Console.WriteLine("5. Historial de mascotas");
+            Console.WriteLine("6. Gestion de productos");
+            Console.WriteLine("7. Listados y ordenamientos");
+            Console.WriteLine("8. Administracion de registros");
+            Console.WriteLine("9. Salir");
 
             Console.Write("Seleccione una opcion: ");
 
             if (!int.TryParse(Console.ReadLine(), out opcion))
             {
-                opcion = 0; // Opción inválida
+                opcion = -1;
             }
-        } while (opcion !=7);
+
+            if (opcion == 1)
+            {
+                MostrarSubmenu("GESTIONAR PROPIETARIOS", new string[]
+                {
+                    "Registrar propietario",
+                    "Buscar propietario por codigo",
+                    "Modificar propietario",
+                    "Eliminar propietario",
+                    "Ver mascotas asociadas"
+                });
+            }
+            else if (opcion == 2)
+            {
+                MostrarSubmenu("GESTIONAR MASCOTAS", new string[]
+                {
+                    "Registrar mascota",
+                    "Buscar mascota por codigo o nombre",
+                    "Modificar mascota",
+                    "Eliminar mascota"
+                });
+            }
+            else if (opcion == 3)
+            {
+                MostrarSubmenu("ATENCIONES MEDICAS", new string[]
+                {
+                    "Registrar atencion",
+                    "Modificar atencion",
+                    "Anular atencion"
+                });
+            }
+            else if (opcion == 4)
+            {
+                MostrarSubmenu("SERVICIOS VETERINARIOS", new string[]
+                {
+                    "Registrar servicio",
+                    "Modificar servicio",
+                    "Anular servicio"
+                });
+            }
+            else if (opcion == 5)
+            {
+                MostrarSubmenu("HISTORIAL DE MASCOTAS", new string[]
+                {
+                    "Consultar historial completo por mascota"
+                });
+            }
+            else if (opcion == 6)
+            {
+                MostrarSubmenu("GESTION DE PRODUCTOS", new string[]
+                {
+                    "Registrar producto",
+                    "Buscar producto",
+                    "Modificar producto",
+                    "Eliminar producto",
+                    "Registrar movimiento de stock"
+                });
+            }
+            else if (opcion == 7)
+            {
+                MostrarSubmenu("LISTADOS Y ORDENAMIENTOS", new string[]
+                {
+                    "Listar propietarios",
+                    "Listar mascotas",
+                    "Listar atenciones medicas",
+                    "Listar servicios veterinarios",
+                    "Listar productos",
+                    "Ordenar mascotas por codigo",
+                    "Ordenar mascotas por nombre"
+                });
+            }
+            else if (opcion == 8)
+            {
+                MostrarSubmenu("ADMINISTRACION DE REGISTROS", new string[]
+                {
+                    "Guardar datos en CSV",
+                    "Crear respaldo binario",
+                    "Restaurar respaldo binario",
+                    "Consultar estado de carga"
+                });
+            }
+            else if (opcion == 9)
+            {
+                Console.WriteLine("Saliendo del programa...");
+            }
+            else
+            {
+                Console.WriteLine("Opcion no valida.");
+            }
+
+        } while (opcion != 9);
+
+        Console.WriteLine("Programa finalizado.");
+    }
+
+    //NAVEGAR POR LOS SUBMENUS
+    static void MostrarSubmenu(string titulo, string[] opciones)
+    {
+        int opcionSubmenu;
+
+        do
+        {
+            Console.WriteLine();
+            Console.WriteLine("========================================");
+            Console.WriteLine("          " + titulo);
+            Console.WriteLine("========================================");
+
+            for (int i = 0; i < opciones.Length; i++)
+            {
+                Console.WriteLine((i + 1) + ". " + opciones[i]);
+            }
+
+            Console.WriteLine("0. Volver al menu principal");
+            Console.Write("Seleccione una opcion: ");
+
+            if (!int.TryParse(Console.ReadLine(), out opcionSubmenu))
+            {
+                opcionSubmenu = -1;
+            }
+
+            if (opcionSubmenu >= 1 && opcionSubmenu <= opciones.Length)
+            {
+                Console.WriteLine("Funcionalidad pendiente de implementar.");
+            }
+            else if (opcionSubmenu != 0)
+            {
+                Console.WriteLine("Opcion no valida.");
+            }
+
+        } while (opcionSubmenu != 0);
     }
 }
