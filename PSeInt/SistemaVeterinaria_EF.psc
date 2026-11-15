@@ -154,7 +154,7 @@ Algoritmo SistemaVeterinaria_EF
 
     //NAVEGACION PRINCIPAL
     Repetir
-        MostrarMenuPrincipal()
+        MostrarMenuPrincipal
 
         Escribir "Seleccione una opcion:"
         Leer opcion
