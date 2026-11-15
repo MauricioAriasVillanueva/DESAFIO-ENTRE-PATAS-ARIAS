@@ -27,26 +27,11 @@ class Program
 
         do
         {
-            Console.WriteLine();
-            Console.WriteLine("========================================");
-            Console.WriteLine("      VETERINARIA ENTRE PATAS - ARIAS");
-            Console.WriteLine("========================================");
-            Console.WriteLine("1. Gestionar propietarios");
-            Console.WriteLine("2. Gestionar mascotas");
-            Console.WriteLine("3. Atenciones medicas");
-            Console.WriteLine("4. Servicios veterinarios");
-            Console.WriteLine("5. Historial de mascotas");
-            Console.WriteLine("6. Gestion de productos");
-            Console.WriteLine("7. Listados y ordenamientos");
-            Console.WriteLine("8. Administracion de registros");
-            Console.WriteLine("9. Salir");
+            MostrarMenuPrincipal();
 
             Console.Write("Seleccione una opcion: ");
 
-            if (!int.TryParse(Console.ReadLine(), out opcion))
-            {
-                opcion = -1;
-            }
+            opcion = LeerOpcion();
 
             if (opcion == 1)
             {
@@ -142,6 +127,35 @@ class Program
         Console.WriteLine("Programa finalizado.");
     }
 
+    static void MostrarMenuPrincipal()
+    {
+        Console.WriteLine();
+        Console.WriteLine("========================================");
+        Console.WriteLine("      VETERINARIA ENTRE PATAS - ARIAS");
+        Console.WriteLine("========================================");
+        Console.WriteLine("1. Gestionar propietarios");
+        Console.WriteLine("2. Gestionar mascotas");
+        Console.WriteLine("3. Atenciones medicas");
+        Console.WriteLine("4. Servicios veterinarios");
+        Console.WriteLine("5. Historial de mascotas");
+        Console.WriteLine("6. Gestion de productos");
+        Console.WriteLine("7. Listados y ordenamientos");
+        Console.WriteLine("8. Administracion de registros");
+        Console.WriteLine("9. Salir");
+    }
+
+    static int LeerOpcion()
+    {
+        int opcion;
+
+        if (int.TryParse(Console.ReadLine(), out opcion))
+        {
+            return opcion;
+        }
+
+        return -1;
+    }
+
     //NAVEGAR POR LOS SUBMENUS
     static void MostrarSubmenu(string titulo, string[] opciones)
     {
@@ -162,10 +176,7 @@ class Program
             Console.WriteLine("0. Volver al menu principal");
             Console.Write("Seleccione una opcion: ");
 
-            if (!int.TryParse(Console.ReadLine(), out opcionSubmenu))
-            {
-                opcionSubmenu = -1;
-            }
+            opcionSubmenu = LeerOpcion();
 
             if (opcionSubmenu >= 1 && opcionSubmenu <= opciones.Length)
             {
