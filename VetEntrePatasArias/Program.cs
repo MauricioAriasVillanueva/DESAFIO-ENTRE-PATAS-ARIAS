@@ -62,18 +62,23 @@ static bool cargaCSVExistosa = false;
             }
             else if (opcion == 7)
             {
-                if (cargaCSVExistosa)
-                {
-                    GuardarPropietariosCSV();
-                    GuardarMascotasCSV();
-                }
-                else
-                {
-                    Console.WriteLine("No se puede guardar los datos porque no se cargaron correctamente desde el CSV.");
-                }
+                GuardarDatosCSV();
             }
 
         } while (opcion !=8);
+    }
+
+    static void GuardarDatosCSV()
+    {
+        if (cargaCSVExistosa)
+        {
+        GuardarPropietariosCSV();
+        GuardarMascotasCSV();
+        }
+        else
+        {
+            Console.WriteLine("No se puede guardar los datos, ya que no se cargaron correctamente desde los archivos CSV.");
+        }
     }
 
     static void CargaDatosPrueba()

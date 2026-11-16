@@ -1,3 +1,10 @@
+SubProceso MostrarDatosCSV(codigosPropietarios, propietarios, telefonos, cantidadPropietarios, codigosMascotas, mascotas, especies, tiposAnimales, sexos, fechasNacimiento, cantidadMascotas)
+
+	//MOSTRAR DATOS EN FORMATO CSV
+	MostrarPropietariosCSV(codigosPropietarios, propietarios, telefonos, cantidadPropietarios)
+
+	MostrarMascotasCSV(codigosMascotas, codigosPropietarios, mascotas, especies, tiposAnimales, sexos, fechasNacimiento, cantidadMascotas)
+FinSubProceso
 
 SubProceso MostrarMascotasCSV(codigosMascotas, codigosPropietarios, mascotas, especies, tiposAnimales, sexos, fechasNacimiento, cantidadMascotas)
 	Definir i Como Entero
@@ -153,8 +160,7 @@ Algoritmo PruebaPersistencia
 		Escribir "Siguiente codigo de propietario: ", codigoPropietario
 
 		// Mostrar los datos en formato CSV
-		MostrarPropietariosCSV(codigosPropietarios, propietarios, telefonos, cantidadPropietarios)
-		MostrarMascotasCSV(codigosMascotas, codigosPropietarios, mascotas, especies, tiposAnimales, sexos, fechasNacimiento, cantidadMascotas)
+		MostrarDatosCSV(codigosPropietarios, propietarios, telefonos, cantidadPropietarios, codigosMascotas, mascotas, especies, tiposAnimales, sexos, fechasNacimiento, cantidadMascotas)
 	SiNo
 		Escribir "Los datos no son validos."
 	FinSi
