@@ -1,57 +1,31 @@
-# 🐾 Entre Patas Arias - Consultorio Veterinario
+# Entre Patas – Arias
 
-[![Estado del Proyecto](https://img.shields.io/badge/Estado-En_Desarrollo-blue.svg)](#)
-[![Integrantes](https://img.shields.io/badge/Equipo-4_Integrantes-green.svg)](#)
+Aplicación de consola en C# para organizar la información de una veterinaria. El desarrollo se distribuye entre varias ramas, cada una con un alcance propio.
 
-## 📌 Descripción del Proyecto
+## Estado de esta rama
 
-El establecimiento seleccionado para el desarrollo del proyecto es una veterinaria dedicada a la atención y cuidado de animales domésticos, principalmente perros y gatos. Dentro de sus actividades operativas se encuentran la recepción de propietarios y mascotas, el registro de pacientes, la atención veterinaria, el seguimiento de antecedentes médicos y el registro detallado de las atenciones realizadas.
+`main` contiene únicamente este documento: no incluye código ejecutable ni permite operar el sistema desde aquí. Los avances se consultan en las ramas de desarrollo.
 
-Para el desarrollo de esta solución se toma como referencia el proceso histórico del establecimiento, el cual se realizaba de manera manual mediante cuadernos físicos antes de la digitalización. Esta situación permite analizar un proceso real y representativo para modelarlo y optimizarlo mediante un sistema informático estructurado.
+## Ramas de desarrollo
 
-El consultorio requiere mantener información organizada de los propietarios, las mascotas y sus atenciones históricas. Cuando un paciente regresa a la veterinaria, es fundamental consultar sus registros anteriores de forma rápida y precisa para conocer sus antecedentes médicos y brindar una continuidad de atención adecuada. Por ello, el módulo de registro y consulta de información constituye el núcleo operativo principal de esta propuesta.
+| Rama | Contenido |
+| --- | --- |
+| [`ep/integracion`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/ep/integracion) | Menú integrado con gestión de propietarios y mascotas |
+| [`ep/base-colaborativa`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/ep/base-colaborativa) | Estructura de menús para el trabajo en módulos |
+| [`Integrante-1`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/Integrante-1) | Listado, ordenamiento y archivos CSV |
+| [`Integrante-2`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/Integrante-2) | Registro de propietario y mascota |
+| [`Integrante-3`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/Integrante-3) | Modificación y eliminación de registros |
+| [`Integrante-4`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/Integrante-4) | Búsqueda de mascotas y propietarios |
+| [`integrante-2-registro`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/integrante-2-registro) | Otra versión del registro de propietario y mascota |
+| [`Features-codes`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/Features-codes) | Prototipo anterior de gestión de registros |
 
----
+Los enlaces muestran el estado propio de cada rama; las funciones presentes en una no se presuponen en las demás.
 
-## 🏢 Información de la Empresa
+## Equipo
 
-| Campo | Detalle |
-| :--- | :--- |
-| **Razón Social** | VETERINARIA Entre Patas - Arias |
-| **RUC** | `10420311350` |
-| **Tipo de Organización** | Empresa privada dedicada a la prestación de servicios veterinarios |
-| **Actividad Principal** | Prestación de servicios veterinarios y atención integral de animales domésticos |
-| **Sede Principal** | Las Begonias 240, Santa Anita 15007 |
-| **Ámbito de Operación** | Local (Atención a propietarios y mascotas de la zona de cobertura) |
-
----
-
-## 🎯 Objetivos del Sistema
-
-- **Digitalización de Procesos:** Migrar la gestión física en cuadernos de notas hacia un sistema de información centralizado.
-- **Historial Clínico Accesible:** Permitir la búsqueda y consulta inmediata de antecedentes médicos de las mascotas en cada visita.
-- **Gestión Integral de Entidades:** Control eficiente de propietarios, pacientes (mascotas) y atenciones veterinarias realizandas.
-- **Optimización de Tiempos:** Reducir los tiempos de espera durante la recepción y atención médica de los pacientes.
-
----
-
-## 👥 Equipo de Trabajo
-
-Proyecto desarrollado colaborativamente por el equipo de 4 integrantes:
-
-1. **Mauricio Arias** - *Rol / Desarrollador*
-2. **Joaquín Sanchez** - *Rol / Desarrollador*
-3. **Piero Alvarez** - *Rol / Desarrollador*
-4. **Maximo Arriagada** - *Rol / Desarrollador*
-
----
-
-## 🛠️ Tecnologías Utilizadas
-
-*(Sección personalizable según el stack técnico de tu proyecto)*
-
-- **Lenguaje de Programación:** [C#]
-- **Entorno de Desarrollo (IDE):** [Visual Studio Code]
-- **Base de Datos / Almacenamiento:** [Archivos]
-- **Modelado de Procesos / Diagramado:** [Ej: Bizagi Modeler / draw.io]
-- **Control de Versiones:** Git & GitHub
+| Integrante | Responsabilidad prevista |
+| --- | --- |
+| Mauricio | Propietarios y mascotas |
+| Joaquín | Atenciones médicas y servicios veterinarios |
+| Máximo | Pet Shop e historial clínico |
+| Piero | Listados, ordenamientos y administración de registros |
