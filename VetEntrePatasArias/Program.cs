@@ -59,6 +59,7 @@ class Program
                 MostrarSubmenu("ATENCIONES MEDICAS", new string[]
                 {
                     "Registrar atencion",
+                    "Buscar atencion por codigo",
                     "Modificar atencion",
                     "Anular atencion"
                 });
@@ -68,26 +69,24 @@ class Program
                 MostrarSubmenu("SERVICIOS VETERINARIOS", new string[]
                 {
                     "Registrar servicio",
+                    "Buscar servicio por codigo",
                     "Modificar servicio",
                     "Anular servicio"
                 });
             }
             else if (opcion == 5)
             {
-                MostrarSubmenu("HISTORIAL DE MASCOTAS", new string[]
+                MostrarSubmenu("PET SHOP", new string[]
                 {
-                    "Consultar historial completo por mascota"
-                });
+                    "Gestion de productos",
+                    "Gestion de ventas"
+                }, 5);
             }
             else if (opcion == 6)
             {
-                MostrarSubmenu("GESTION DE PRODUCTOS", new string[]
+                MostrarSubmenu("HISTORIAL CLINICO DE MASCOTAS", new string[]
                 {
-                    "Registrar producto",
-                    "Buscar producto",
-                    "Modificar producto",
-                    "Eliminar producto",
-                    "Registrar movimiento de stock"
+                    "Consultar historial completo por mascota"
                 });
             }
             else if (opcion == 7)
@@ -98,7 +97,8 @@ class Program
                     "Listar mascotas",
                     "Listar atenciones medicas",
                     "Listar servicios veterinarios",
-                    "Listar productos",
+                    "Listar productos del Pet Shop",
+                    "Listar ventas del Pet Shop",
                     "Ordenar mascotas por codigo",
                     "Ordenar mascotas por nombre"
                 });
@@ -108,6 +108,7 @@ class Program
                 MostrarSubmenu("ADMINISTRACION DE REGISTROS", new string[]
                 {
                     "Guardar datos en CSV",
+                    "Cargar datos desde CSV",
                     "Crear respaldo binario",
                     "Restaurar respaldo binario",
                     "Consultar estado de carga"
@@ -137,8 +138,8 @@ class Program
         Console.WriteLine("2. Gestionar mascotas");
         Console.WriteLine("3. Atenciones medicas");
         Console.WriteLine("4. Servicios veterinarios");
-        Console.WriteLine("5. Historial de mascotas");
-        Console.WriteLine("6. Gestion de productos");
+        Console.WriteLine("5. Pet Shop");
+        Console.WriteLine("6. Historial clinico de mascotas");
         Console.WriteLine("7. Listados y ordenamientos");
         Console.WriteLine("8. Administracion de registros");
         Console.WriteLine("9. Salir");
@@ -157,7 +158,8 @@ class Program
     }
 
     //NAVEGAR POR LOS SUBMENUS
-    static void MostrarSubmenu(string titulo, string[] opciones)
+    static void MostrarSubmenu(string titulo, string[] opciones, int modulo = 0,
+                               string textoVolver = "Volver al menu principal")
     {
         int opcionSubmenu;
 
@@ -173,14 +175,36 @@ class Program
                 Console.WriteLine((i + 1) + ". " + opciones[i]);
             }
 
-            Console.WriteLine("0. Volver al menu principal");
+            Console.WriteLine("0. " + textoVolver);
             Console.Write("Seleccione una opcion: ");
 
             opcionSubmenu = LeerOpcion();
 
             if (opcionSubmenu >= 1 && opcionSubmenu <= opciones.Length)
             {
-                Console.WriteLine("Funcionalidad pendiente de implementar.");
+                if (modulo == 5 && opcionSubmenu == 1)
+                {
+                    MostrarSubmenu("GESTION DE PRODUCTOS", new string[]
+                    {
+                        "Registrar producto",
+                        "Buscar producto por codigo o nombre",
+                        "Modificar producto",
+                        "Eliminar producto",
+                        "Registrar movimiento de stock"
+                    }, 0, "Volver a Pet Shop");
+                }
+                else if (modulo == 5 && opcionSubmenu == 2)
+                {
+                    MostrarSubmenu("GESTION DE VENTAS", new string[]
+                    {
+                        "Registrar venta",
+                        "Consultar venta por codigo"
+                    }, 0, "Volver a Pet Shop");
+                }
+                else
+                {
+                    Console.WriteLine("Funcionalidad pendiente de implementar.");
+                }
             }
             else if (opcionSubmenu != 0)
             {
