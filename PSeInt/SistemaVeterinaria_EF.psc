@@ -8,11 +8,49 @@ SubProceso MostrarMenuPrincipal
     Escribir "2. Gestionar mascotas"
     Escribir "3. Atenciones medicas"
     Escribir "4. Servicios veterinarios"
-    Escribir "5. Historial de mascotas"
-    Escribir "6. Gestion de productos"
+    Escribir "5. Pet Shop"
+    Escribir "6. Historial clinico de mascotas"
     Escribir "7. Listados y ordenamientos"
     Escribir "8. Administracion de registros"
     Escribir "9. Salir"
+FinSubProceso
+
+// SUBMENUS INTERNOS: GESTION DE PRODUCTOS Y VENTAS
+SubProceso MostrarSubmenuPetShop(opcionPetShop)
+    Definir opcionInterna, cantidadOpciones Como Entero
+
+    Repetir
+        Escribir ""
+        Escribir "========================================"
+        Si opcionPetShop = 1 Entonces
+            Escribir "          GESTION DE PRODUCTOS"
+            Escribir "========================================"
+            Escribir "1. Registrar producto"
+            Escribir "2. Buscar producto por codigo o nombre"
+            Escribir "3. Modificar producto"
+            Escribir "4. Eliminar producto"
+            Escribir "5. Registrar movimiento de stock"
+            cantidadOpciones <- 5
+        SiNo
+            Escribir "          GESTION DE VENTAS"
+            Escribir "========================================"
+            Escribir "1. Registrar venta"
+            Escribir "2. Consultar venta por codigo"
+            cantidadOpciones <- 2
+        FinSi
+
+        Escribir "0. Volver a Pet Shop"
+        Escribir "Seleccione una opcion:"
+        Leer opcionInterna
+
+        Si opcionInterna >= 1 Y opcionInterna <= cantidadOpciones Entonces
+            Escribir "Funcionalidad pendiente de implementar."
+        SiNo
+            Si opcionInterna <> 0 Entonces
+                Escribir "Opcion no valida."
+            FinSi
+        FinSi
+    Hasta Que opcionInterna = 0
 FinSubProceso
 
 SubProceso MostrarSubmenu(opcionPrincipal)
@@ -47,36 +85,35 @@ SubProceso MostrarSubmenu(opcionPrincipal)
                     Escribir "          ATENCIONES MEDICAS"
                     Escribir "========================================"
                     Escribir "1. Registrar atencion"
-                    Escribir "2. Modificar atencion"
-                    Escribir "3. Anular atencion"
-                    cantidadOpciones <- 3
+                    Escribir "2. Buscar atencion por codigo"
+                    Escribir "3. Modificar atencion"
+                    Escribir "4. Anular atencion"
+                    cantidadOpciones <- 4
 
                 SiNo
                     Si opcionPrincipal = 4 Entonces
                         Escribir "          SERVICIOS VETERINARIOS"
                         Escribir "========================================"
                         Escribir "1. Registrar servicio"
-                        Escribir "2. Modificar servicio"
-                        Escribir "3. Anular servicio"
-                        cantidadOpciones <- 3
+                        Escribir "2. Buscar servicio por codigo"
+                        Escribir "3. Modificar servicio"
+                        Escribir "4. Anular servicio"
+                        cantidadOpciones <- 4
 
                     SiNo
                         Si opcionPrincipal = 5 Entonces
-                            Escribir "          HISTORIAL DE MASCOTAS"
+                            Escribir "          PET SHOP"
                             Escribir "========================================"
-                            Escribir "1. Consultar historial completo por mascota"
-                            cantidadOpciones <- 1
+                            Escribir "1. Gestion de productos"
+                            Escribir "2. Gestion de ventas"
+                            cantidadOpciones <- 2
 
                         SiNo
                             Si opcionPrincipal = 6 Entonces
-                                Escribir "          GESTION DE PRODUCTOS"
+                                Escribir "          HISTORIAL CLINICO DE MASCOTAS"
                                 Escribir "========================================"
-                                Escribir "1. Registrar producto"
-                                Escribir "2. Buscar producto"
-                                Escribir "3. Modificar producto"
-                                Escribir "4. Eliminar producto"
-                                Escribir "5. Registrar movimiento de stock"
-                                cantidadOpciones <- 5
+                                Escribir "1. Consultar historial completo por mascota"
+                                cantidadOpciones <- 1
 
                             SiNo
                                 Si opcionPrincipal = 7 Entonces
@@ -86,19 +123,21 @@ SubProceso MostrarSubmenu(opcionPrincipal)
                                     Escribir "2. Listar mascotas"
                                     Escribir "3. Listar atenciones medicas"
                                     Escribir "4. Listar servicios veterinarios"
-                                    Escribir "5. Listar productos"
-                                    Escribir "6. Ordenar mascotas por codigo"
-                                    Escribir "7. Ordenar mascotas por nombre"
-                                    cantidadOpciones <- 7
+                                    Escribir "5. Listar productos del Pet Shop"
+                                    Escribir "6. Listar ventas del Pet Shop"
+                                    Escribir "7. Ordenar mascotas por codigo"
+                                    Escribir "8. Ordenar mascotas por nombre"
+                                    cantidadOpciones <- 8
 
                                 SiNo
                                     Escribir "          ADMINISTRACION DE REGISTROS"
                                     Escribir "========================================"
                                     Escribir "1. Guardar datos en CSV"
-                                    Escribir "2. Crear respaldo binario"
-                                    Escribir "3. Restaurar respaldo binario"
-                                    Escribir "4. Consultar estado de carga"
-                                    cantidadOpciones <- 4
+                                    Escribir "2. Cargar datos desde CSV"
+                                    Escribir "3. Crear respaldo binario"
+                                    Escribir "4. Restaurar respaldo binario"
+                                    Escribir "5. Consultar estado de carga"
+                                    cantidadOpciones <- 5
                                 FinSi
                             FinSi
                         FinSi
@@ -112,7 +151,11 @@ SubProceso MostrarSubmenu(opcionPrincipal)
         Leer opcionSubmenu
 
         Si opcionSubmenu >= 1 Y opcionSubmenu <= cantidadOpciones Entonces
-            Escribir "Funcionalidad pendiente de implementar."
+            Si opcionPrincipal = 5 Entonces
+                MostrarSubmenuPetShop(opcionSubmenu)
+            SiNo
+                Escribir "Funcionalidad pendiente de implementar."
+            FinSi
         SiNo
             Si opcionSubmenu <> 0 Entonces
                 Escribir "Opcion no valida."
