@@ -61,6 +61,7 @@ partial class Program
                 MostrarSubmenu("ATENCIONES MEDICAS", new string[]
                 {
                     "Registrar atencion",
+                    "Buscar atencion por codigo",
                     "Modificar atencion",
                     "Anular atencion"
                 });
@@ -70,6 +71,7 @@ partial class Program
                 MostrarSubmenu("SERVICIOS VETERINARIOS", new string[]
                 {
                     "Registrar servicio",
+                    "Buscar servicio por codigo",
                     "Modificar servicio",
                     "Anular servicio"
                 });
