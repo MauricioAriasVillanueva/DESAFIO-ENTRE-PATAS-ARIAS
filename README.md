@@ -1,57 +1,31 @@
-# 🐾 Entre Patas Arias - Consultorio Veterinario
+# Entre Patas – Arias · Modificación y eliminación
 
-[![Estado del Proyecto](https://img.shields.io/badge/Estado-En_Desarrollo-blue.svg)](#)
-[![Integrantes](https://img.shields.io/badge/Equipo-4_Integrantes-green.svg)](#)
+Rama individual para trabajar con registros de mascotas y propietarios mediante listas paralelas.
 
-## 📌 Descripción del Proyecto
+## Funcionalidades disponibles
 
-El establecimiento seleccionado para el desarrollo del proyecto es una veterinaria dedicada a la atención y cuidado de animales domésticos, principalmente perros y gatos. Dentro de sus actividades operativas se encuentran la recepción de propietarios y mascotas, el registro de pacientes, la atención veterinaria, el seguimiento de antecedentes médicos y el registro detallado de las atenciones realizadas.
+| Opción | Alcance |
+| --- | --- |
+| Modificar | Busca por código de mascota y permite cambiar un campo del registro |
+| Eliminar | Busca por código, solicita confirmación y retira las posiciones asociadas de las listas |
+| Mostrar | Presenta los registros precargados como apoyo para probar el módulo |
 
-Para el desarrollo de esta solución se toma como referencia el proceso histórico del establecimiento, el cual se realizaba de manera manual mediante cuadernos físicos antes de la digitalización. Esta situación permite analizar un proceso real y representativo para modelarlo y optimizarlo mediante un sistema informático estructurado.
+Al arrancar se cargan datos de prueba. El menú también anuncia registrar, buscar y ordenar, pero esas opciones no están conectadas. Los cambios solo viven durante la ejecución; no hay archivos de persistencia.
 
-El consultorio requiere mantener información organizada de los propietarios, las mascotas y sus atenciones históricas. Cuando un paciente regresa a la veterinaria, es fundamental consultar sus registros anteriores de forma rápida y precisa para conocer sus antecedentes médicos y brindar una continuidad de atención adecuada. Por ello, el módulo de registro y consulta de información constituye el núcleo operativo principal de esta propuesta.
+## Archivos
 
----
+```text
+03_Modificar_Eliminar.psc
+Program.cs
+SistemaVeterinaria_EP.psc
+VetEntrePatasArias.csproj
+README.md
+```
 
-## 🏢 Información de la Empresa
+## Ejecución
 
-| Campo | Detalle |
-| :--- | :--- |
-| **Razón Social** | VETERINARIA Entre Patas - Arias |
-| **RUC** | `10420311350` |
-| **Tipo de Organización** | Empresa privada dedicada a la prestación de servicios veterinarios |
-| **Actividad Principal** | Prestación de servicios veterinarios y atención integral de animales domésticos |
-| **Sede Principal** | Las Begonias 240, Santa Anita 15007 |
-| **Ámbito de Operación** | Local (Atención a propietarios y mascotas de la zona de cobertura) |
+Requiere el SDK de .NET 10. Desde la raíz de esta rama:
 
----
-
-## 🎯 Objetivos del Sistema
-
-- **Digitalización de Procesos:** Migrar la gestión física en cuadernos de notas hacia un sistema de información centralizado.
-- **Historial Clínico Accesible:** Permitir la búsqueda y consulta inmediata de antecedentes médicos de las mascotas en cada visita.
-- **Gestión Integral de Entidades:** Control eficiente de propietarios, pacientes (mascotas) y atenciones veterinarias realizandas.
-- **Optimización de Tiempos:** Reducir los tiempos de espera durante la recepción y atención médica de los pacientes.
-
----
-
-## 👥 Equipo de Trabajo
-
-Proyecto desarrollado colaborativamente por el equipo de 4 integrantes:
-
-1. **Mauricio Arias** - *Rol / Desarrollador*
-2. **Joaquín Sanchez** - *Rol / Desarrollador*
-3. **Piero Alvarez** - *Rol / Desarrollador*
-4. **Maximo Arriagada** - *Rol / Desarrollador*
-
----
-
-## 🛠️ Tecnologías Utilizadas
-
-*(Sección personalizable según el stack técnico de tu proyecto)*
-
-- **Lenguaje de Programación:** [C#]
-- **Entorno de Desarrollo (IDE):** [Visual Studio Code]
-- **Base de Datos / Almacenamiento:** [Archivos]
-- **Modelado de Procesos / Diagramado:** [Ej: Bizagi Modeler / draw.io]
-- **Control de Versiones:** Git & GitHub
+```bash
+dotnet run --project VetEntrePatasArias.csproj
+```
