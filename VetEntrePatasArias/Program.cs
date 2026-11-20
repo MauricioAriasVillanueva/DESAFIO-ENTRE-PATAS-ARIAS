@@ -4,26 +4,27 @@ using System;
 
 partial class Program
 {
-    //DATOS DE PROPIETARIOS
-static List<int> codigosPropietarios = new List<int>();
-static List<string> propietarios = new List<string>();
-static List<string> telefonos = new List<string>();
-static List<string> dnisPropietarios = new List<string>();
-static List<string> direcciones = new List<string>();
-static List<string> correos = new List<string>();
-static List<int> codigosPropietariosMascotas = new List<int>();
+    // DATOS DE PROPIETARIOS
+    static List<int> codigosPropietarios = new List<int>();
+    static List<string> propietarios = new List<string>();
+    static List<string> telefonos = new List<string>();
+    static List<string> dnisPropietarios = new List<string>();
+    static List<string> direcciones = new List<string>();
+    static List<string> correos = new List<string>();
+    static List<int> codigosPropietariosMascotas = new List<int>();
 
-    //DATOS DE MASCOTAS
-static List<int> codigosMascotas = new List<int>();
-static List<string> mascotas = new List<string>();
-static List<string> especies = new List<string>();
-static List<string> tiposAnimales = new List<string>();
-static List<string> sexos = new List<string>();
-static List<DateTime> fechasNacimiento = new List<DateTime>();
+    // DATOS DE MASCOTAS
+    static List<int> codigosMascotas = new List<int>();
+    static List<string> mascotas = new List<string>();
+    static List<string> especies = new List<string>();
+    static List<string> tiposAnimales = new List<string>();
+    static List<string> sexos = new List<string>();
+    static List<DateTime> fechasNacimiento = new List<DateTime>();
 
-    //CODIGOS AUTOMATICOS
-static int codigoPropietario = 2001;
-static int codigoMascota = 1001;
+    // CODIGOS AUTOMATICOS
+    static int codigoPropietario = 2001;
+    static int codigoMascota = 1001;
+
     static void Main()
     {
         int opcion;
@@ -31,12 +32,10 @@ static int codigoMascota = 1001;
         do
         {
             MostrarMenuPrincipal();
-
             Console.Write("Seleccione una opcion: ");
-
             opcion = LeerOpcion();
 
-        if (opcion == 1)
+            if (opcion == 1)
             {
                 MostrarSubmenu("GESTIONAR PROPIETARIOS", new string[]
                 {
@@ -77,20 +76,17 @@ static int codigoMascota = 1001;
             }
             else if (opcion == 5)
             {
-                MostrarSubmenu("HISTORIAL DE MASCOTAS", new string[]
+                MostrarSubmenu("PET SHOP", new string[]
                 {
-                    "Consultar historial completo por mascota"
-                });
+                    "Gestion de productos",
+                    "Gestion de ventas"
+                }, 5);
             }
             else if (opcion == 6)
             {
-                MostrarSubmenu("GESTION DE PRODUCTOS", new string[]
+                MostrarSubmenu("HISTORIAL CLINICO DE MASCOTAS", new string[]
                 {
-                    "Registrar producto",
-                    "Buscar producto",
-                    "Modificar producto",
-                    "Eliminar producto",
-                    "Registrar movimiento de stock"
+                    "Consultar historial completo por mascota"
                 });
             }
             else if (opcion == 7)
@@ -101,7 +97,8 @@ static int codigoMascota = 1001;
                     "Listar mascotas",
                     "Listar atenciones medicas",
                     "Listar servicios veterinarios",
-                    "Listar productos",
+                    "Listar productos del Pet Shop",
+                    "Listar ventas del Pet Shop",
                     "Ordenar mascotas por codigo",
                     "Ordenar mascotas por nombre"
                 });
@@ -111,6 +108,7 @@ static int codigoMascota = 1001;
                 MostrarSubmenu("ADMINISTRACION DE REGISTROS", new string[]
                 {
                     "Guardar datos en CSV",
+                    "Cargar datos desde CSV",
                     "Crear respaldo binario",
                     "Restaurar respaldo binario",
                     "Consultar estado de carga"
@@ -127,10 +125,10 @@ static int codigoMascota = 1001;
 
         } while (opcion != 9);
 
-        Console.WriteLine("Progama finalizado.");
+        Console.WriteLine("Programa finalizado.");
     }
 
-       //MOSTRAR MENU
+    // MOSTRAR MENU PRINCIPAL
     static void MostrarMenuPrincipal()
     {
         Console.WriteLine();
@@ -141,14 +139,14 @@ static int codigoMascota = 1001;
         Console.WriteLine("2. Gestionar mascotas");
         Console.WriteLine("3. Atenciones medicas");
         Console.WriteLine("4. Servicios veterinarios");
-        Console.WriteLine("5. Historial de mascotas");
-        Console.WriteLine("6. Gestion de productos");
+        Console.WriteLine("5. Pet Shop");
+        Console.WriteLine("6. Historial clinico de mascotas");
         Console.WriteLine("7. Listados y ordenamientos");
         Console.WriteLine("8. Administracion de registros");
         Console.WriteLine("9. Salir");
     }
 
-    //LEER OPCION DEL MENU
+    // LEER OPCION DEL MENU
     static int LeerOpcion()
     {
         int opcion;
@@ -161,8 +159,8 @@ static int codigoMascota = 1001;
         return -1;
     }
 
-    //NAVEGAR POR LOS SUBMENUS
-    static void MostrarSubmenu(string titulo, string[] opciones, int modulo = 0)
+    // NAVEGAR POR LOS SUBMENUS
+    static void MostrarSubmenu(string titulo, string[] opciones, int modulo = 0,string textoVolver = "Volver al menu principal")
     {
         int opcionSubmenu;
 
@@ -178,14 +176,13 @@ static int codigoMascota = 1001;
                 Console.WriteLine((i + 1) + ". " + opciones[i]);
             }
 
-            Console.WriteLine("0. Volver al menu principal");
+            Console.WriteLine("0. " + textoVolver);
             Console.Write("Seleccione una opcion: ");
-
             opcionSubmenu = LeerOpcion();
 
             if (opcionSubmenu >= 1 && opcionSubmenu <= opciones.Length)
             {
-                if (modulo ==1 && opcionSubmenu == 1)
+                if (modulo == 1 && opcionSubmenu == 1)
                 {
                     RegistrarPropietario();
                 }
@@ -220,6 +217,25 @@ static int codigoMascota = 1001;
                 else if (modulo == 2 && opcionSubmenu == 4)
                 {
                     EliminarMascota();
+                }
+                else if (modulo == 5 && opcionSubmenu == 1)
+                {
+                    MostrarSubmenu("GESTION DE PRODUCTOS", new string[]
+                    {
+                        "Registrar producto",
+                        "Buscar producto por codigo o nombre",
+                        "Modificar producto",
+                        "Eliminar producto",
+                        "Registrar movimiento de stock"
+                    }, 0, "Volver a Pet Shop");
+                }
+                else if (modulo == 5 && opcionSubmenu == 2)
+                {
+                    MostrarSubmenu("GESTION DE VENTAS", new string[]
+                    {
+                        "Registrar venta",
+                        "Consultar venta por codigo"
+                    }, 0, "Volver a Pet Shop");
                 }
                 else
                 {

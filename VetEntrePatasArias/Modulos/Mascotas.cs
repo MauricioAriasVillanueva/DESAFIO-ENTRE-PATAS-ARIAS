@@ -137,7 +137,7 @@ partial class Program
         if (tipoAnimal == "")
         {
             Console.WriteLine("Error: ingrese Canino o Felino.");
-            return;
+            continue;
         }
 
             // VALIDAR ESPECIE O RAZA
@@ -147,7 +147,7 @@ partial class Program
             if (string.IsNullOrWhiteSpace(especie))
             {
                 Console.WriteLine("Error: la especie o raza es obligatoria.");
-                return;
+                continue;
             }
 
             // VALIDAR SEXO
@@ -159,7 +159,7 @@ partial class Program
             if (sexo == "")
             {
                 Console.WriteLine("Error: ingrese Macho o Hembra.");
-                return;
+                continue;
             }
 
             // VALIDAR FECHA DE NACIMIENTO
