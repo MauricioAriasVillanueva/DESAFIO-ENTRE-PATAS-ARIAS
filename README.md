@@ -25,7 +25,7 @@ En [`Mascotas.cs`](VetEntrePatasArias/Modulos/Mascotas.cs) implementé:
 
 Los datos se manejan con **listas paralelas** y métodos de búsqueda lineal. La lista `codigosPropietariosMascotas` asocia cada mascota al **código de su propietario**, lo que permite tener varias mascotas para una misma persona, o propietarios sin mascotas.
 
-El archivo [`Program.cs`](VetEntrePatasArias/Program.cs) de esta rama es una **navegación individual reducida** a las opciones 1 y 2 para poder probar mis módulos de forma independiente. El menú de los nueve módulos del proyecto completo se mantiene exclusivamente en [`ep/integracion`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/ep/integracion).
+El archivo [`Program.cs`](VetEntrePatasArias/Program.cs) conserva **el menú y la navegación de nueve opciones** de [`ep/integracion`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/ep/integracion). En mi rama personal están conectadas únicamente las operaciones de **Propietarios y Mascotas**. Los otros submenús se mantienen visibles como opciones pendientes, sin depender de los archivos de mis compañeros.
 
 ### PSeInt
 
@@ -48,7 +48,7 @@ En [`Ejercicios/EP_Listados_Persistencia/`](Ejercicios/EP_Listados_Persistencia/
 
 ```text
 VetEntrePatasArias/
-├── Program.cs                      # Navegación individual (solo opciones 1 y 2)
+├── Program.cs                      # Menú compartido; solo opciones 1 y 2 funcionales
 ├── VetEntrePatasArias.csproj
 └── Modulos/
     ├── Propietarios.cs              # Mi aporte al EF
