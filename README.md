@@ -1,64 +1,62 @@
 # Entre Patas – Arias | Integrante 1
 
-Esta rama conserva mis **ejercicios anteriores de programación** y presenta mi **aporte al examen final (EF)** dentro de la aplicación veterinaria integrada. Mi trabajo para el EF se concentra en **Propietarios y Mascotas**.
+Esta rama documenta **mis aportes individuales** al examen final (EF): **gestión de propietarios y gestión de mascotas**. También conservo, por separado, mis ejercicios anteriores de **listados, ordenamiento por burbuja y persistencia CSV**, que pueden servir como referencia para el trabajo de Piero.
 
-## Mi aporte al EF
+## Lo que desarrollé para el EF
 
-### Gestión de propietarios — [Propietarios.cs](VetEntrePatasArias/Modulos/Propietarios.cs)
+### Propietarios
 
-Implementé las operaciones para registrar propietarios, buscarlos por código, modificar su información, eliminarlos y consultar las mascotas que tienen asociadas. El registro contempla nombre, DNI, teléfono, dirección y correo, además de validaciones para evitar datos incorrectos o duplicados cuando corresponde.
+En [`Propietarios.cs`](VetEntrePatasArias/Modulos/Propietarios.cs) implementé:
+- Registrar un propietario, asignando un código automático.
+- Buscar propietarios por código.
+- Modificar los datos del propietario.
+- Eliminar un propietario únicamente si no tiene mascotas asociadas.
+- Consultar las mascotas vinculadas a un propietario.
+- Validar nombre, DNI, teléfono, dirección y correo electrónico.
 
-La eliminación verifica si el propietario todavía tiene mascotas vinculadas; si es así, impide borrar el registro para no perder la relación.
+### Mascotas
 
-### Gestión de mascotas — [Mascotas.cs](VetEntrePatasArias/Modulos/Mascotas.cs)
+En [`Mascotas.cs`](VetEntrePatasArias/Modulos/Mascotas.cs) implementé:
+- Registrar una mascota para un propietario existente.
+- Buscar una mascota por código o nombre.
+- Modificar datos, incluida la asociación con el propietario.
+- Eliminar una mascota y sus datos asociados en listas paralelas.
+- Validar tipo de animal, sexo y fecha de nacimiento.
 
-Implementé el registro de mascotas para propietarios existentes; la búsqueda por **código o nombre**; la modificación de datos y la eliminación. Se validan datos como nombre, tipo de animal, sexo y fecha de nacimiento. Las búsquedas y modificaciones trabajan con las listas ya definidas en el sistema.
+Los datos se manejan con **listas paralelas** y métodos de búsqueda lineal. La lista `codigosPropietariosMascotas` asocia cada mascota al **código de su propietario**, lo que permite tener varias mascotas para una misma persona, o propietarios sin mascotas.
 
-### Decisiones de programación que apliqué
+El archivo [`Program.cs`](VetEntrePatasArias/Program.cs) de esta rama es una **navegación individual reducida** a las opciones 1 y 2 para poder probar mis módulos de forma independiente. El menú de los nueve módulos del proyecto completo se mantiene exclusivamente en [`ep/integracion`](https://github.com/MauricioAriasVillanueva/DESAFIO-ENTRE-PATAS-ARIAS/tree/ep/integracion).
 
-- Usé **listas paralelas** para administrar los registros y mantener alineados sus datos.
-- Utilicé **códigos automáticos** como identificadores de propietarios y mascotas.
-- Relacioné cada mascota con su propietario mediante `codigosPropietariosMascotas`, usando el **código del propietario**, no una coincidencia de posiciones. Un propietario puede tener varias mascotas.
-- Organicé la lógica en métodos y mantuve la navegación en el `Program.cs` compartido.
-- Utilicé condicionales, ciclos, búsquedas lineales, `switch`, validación de entradas y confirmaciones.
+### PSeInt
 
-**Archivos de mi aporte al EF:** `VetEntrePatasArias/Modulos/Propietarios.cs` y `VetEntrePatasArias/Modulos/Mascotas.cs`.
+El archivo [`01_Propietarios_Mascotas.psc`](PSeInt/Modulos/01_Propietarios_Mascotas.psc) está reservado para representar mis algoritmos del EF en pseudocódigo. **Aún es una plantilla**, no contiene la implementación final.
 
-El archivo [`PSeInt/Modulos/01_Propietarios_Mascotas.psc`](PSeInt/Modulos/01_Propietarios_Mascotas.psc) está reservado para traducir estos algoritmos a PSeInt; **por ahora es una plantilla pendiente**, no una implementación terminada.
+## Ejercicios anteriores: listados, burbuja y CSV
 
-## Ejercicios anteriores que realicé
+En [`Ejercicios/EP_Listados_Persistencia/`](Ejercicios/EP_Listados_Persistencia/) guardé el código y los datos de prueba que desarrollé anteriormente. Estos archivos se conservaron como referencia y están separados de mi implementación actual del EF.
 
-Conservé los ejercicios que desarrollé previamente en la carpeta [`Ejercicios/EP_Listados_Persistencia/`](Ejercicios/EP_Listados_Persistencia/). Son prácticas individuales y **no forman parte del código actual integrado del EF**.
-
-| Ejercicio | Qué trabajé | Archivo |
+| Ejercicio propio | Qué desarrollé | Referencia |
 | --- | --- | --- |
-| Listado de registros | Recorrer y mostrar información de propietarios y mascotas | `PSeInt/Modulos/01_Ordenamiento.psc` y `VetEntrePatasArias/Program.cs` del respaldo |
-| Ordenamiento por burbuja | Comparar e intercambiar datos conservando las listas paralelas | Los mismos archivos de ordenamiento |
-| Persistencia CSV | Guardar y recuperar registros, verificar datos cargados y actualizar correlativos | `PSeInt/Modulos/02_Persistencia.psc` y `VetEntrePatasArias/Program.cs` del respaldo |
-| Datos de prueba | Archivos CSV de propietarios y mascotas | `VetEntrePatasArias/Datos/` del respaldo |
+| Listados | Recorrido y visualización de registros | `PSeInt/Modulos/01_Ordenamiento.psc` y `VetEntrePatasArias/Program.cs` de `Ejercicios/` |
+| Burbuja | Comparación e intercambio de datos de las listas paralelas | `PSeInt/Modulos/01_Ordenamiento.psc` y `VetEntrePatasArias/Program.cs` de `Ejercicios/` |
+| Persistencia CSV | Guardado, lectura, validación de datos y actualización de códigos | `PSeInt/Modulos/02_Persistencia.psc` y `VetEntrePatasArias/Program.cs` de `Ejercicios/` |
+| Pruebas CSV | Datos de propietarios y mascotas para el ejercicio | `VetEntrePatasArias/Datos/` de `Ejercicios/` |
 
-### Referencia para Piero
+**Referencia para Piero:** puede estudiar estos ejercicios para desarrollar los listados, el ordenamiento y la persistencia del EF, pero **no debe trasladarlos directamente**. El ejercicio anterior emparejaba propietarios y mascotas por posición, mientras que el EF relaciona cada mascota con un código de propietario. El ordenamiento definitivo deberá usar **burbuja mejorada**, por **código y por nombre**, conservando todas las posiciones asociadas. La persistencia final también deberá adaptar el CSV a la nueva estructura e incorporar respaldos binarios.
 
-Piero puede utilizar mis ejercicios de **burbuja, listado y CSV** como punto de partida para sus módulos de ordenamiento y persistencia. No debe copiarlos sin adaptarlos: el ejercicio anterior emparejaba propietarios y mascotas por posición y exigía cantidades equivalentes; el EF utiliza **códigos de propietario asociados a cada mascota** y permite múltiples mascotas por propietario.
-
-Para el EF, el ordenamiento previsto es **burbuja mejorada por código y por nombre**, manteniendo juntos todos los campos de cada mascota, incluido el código del propietario asociado. La persistencia final deberá trabajar con los datos actuales y contemplar también los respaldos binarios, que **no son parte de estos ejercicios anteriores**.
-
-## Cómo está organizada esta rama
+## Estructura de esta rama
 
 ```text
 VetEntrePatasArias/
-├── Program.cs                   # Menú compartido del EF
+├── Program.cs                      # Navegación individual (solo opciones 1 y 2)
 ├── VetEntrePatasArias.csproj
 └── Modulos/
-    ├── Propietarios.cs          # Mi módulo del EF
-    ├── Mascotas.cs              # Mi módulo del EF
-    └── ...                      # Módulos compartidos de otros integrantes
+    ├── Propietarios.cs              # Mi aporte al EF
+    └── Mascotas.cs                  # Mi aporte al EF
 
 PSeInt/
-├── SistemaVeterinaria_EP.psc
-├── SistemaVeterinaria_EF.psc
 └── Modulos/
-    └── 01_Propietarios_Mascotas.psc  # Mi PSeInt, pendiente
+    └── 01_Propietarios_Mascotas.psc # Plantilla pendiente
 
 Ejercicios/
 └── EP_Listados_Persistencia/
@@ -69,14 +67,12 @@ Ejercicios/
         └── Datos/
 ```
 
-Los demás módulos de C# y PSeInt que aparecen en la raíz se conservan como **base compartida del EF**. No los presento como desarrollos propios; sus responsables están trabajando en otras partes del sistema.
+## Ejecución
 
-## Ejecutar el EF
-
-Con el SDK de .NET 10, desde la raíz del repositorio:
+Se requiere el SDK .NET 10. Desde la raíz del repositorio:
 
 ```powershell
 dotnet run --project VetEntrePatasArias/VetEntrePatasArias.csproj
 ```
 
-La rama [`ep/integracion`](../ep/integracion) es la versión colaborativa utilizada por el equipo. Esta rama, `Integrante-1`, está organizada para mostrar mi trabajo individual y conservar mis ejercicios como referencia sin sobrescribir la integración.
+Esta rama **no sustituye al EF integrado**. Mi código de propietarios y mascotas también está incorporado en `ep/integracion`, donde todos los integrantes conectan sus módulos.
