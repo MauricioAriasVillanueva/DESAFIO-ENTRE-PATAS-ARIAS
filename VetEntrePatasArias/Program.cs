@@ -64,7 +64,7 @@ partial class Program
                     "Buscar atencion por codigo",
                     "Modificar atencion",
                     "Anular atencion"
-                });
+                }, 3);
             }
             else if (opcion == 4)
             {
@@ -74,7 +74,7 @@ partial class Program
                     "Buscar servicio por codigo",
                     "Modificar servicio",
                     "Anular servicio"
-                });
+                }, 4);
             }
             else if (opcion == 5)
             {
@@ -238,6 +238,38 @@ partial class Program
                         "Registrar venta",
                         "Consultar venta por codigo"
                     }, 0, "Volver a Pet Shop");
+                }
+                else if (modulo == 3 && opcionSubmenu == 1)
+                {
+                    RegistrarAtencion();
+                }
+                else if (modulo == 3 && opcionSubmenu == 2)
+                {
+                    BuscarAtencion();
+                }
+                else if (modulo == 3 && opcionSubmenu == 3)
+                {
+                    ModificarAtencion();
+                }
+                else if (modulo == 3 && opcionSubmenu == 4)
+                {
+                    AnularAtencion();
+                }
+                else if (modulo == 4 && opcionSubmenu == 1)
+                {
+                    RegistrarServicio();
+                }
+                else if (modulo == 4 && opcionSubmenu == 2)
+                {
+                    BuscarServicio();
+                }
+                else if (modulo == 4 && opcionSubmenu == 3)
+                {
+                    ModificarServicio();
+                }
+                else if (modulo == 4 && opcionSubmenu == 4)
+                {
+                    AnularServicio();
                 }
                 else
                 {
