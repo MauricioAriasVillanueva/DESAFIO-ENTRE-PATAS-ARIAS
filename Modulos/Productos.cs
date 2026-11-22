@@ -10,6 +10,8 @@ partial class Program
     static List<string> nombresProductos = new List<string>();
     static List<decimal> preciosProductos = new List<decimal>();
     static List<int> stocksProductos = new List<int>();
+    // CODIGOS DE PRODUCTOS ASOCIADOS A VENTAS
+static List<int> codigosProductosVentas = new List<int>();
     
     // BUSCAR POSICION DEL PRODUCTO POR CODIGO
 
@@ -198,4 +200,122 @@ partial class Program
             Console.WriteLine("Opcion invalida.");
         }
     }
+
+    // MODIFICAR PRODUCTO
+
+    static void ModificarProducto()
+    {
+        Console.WriteLine("\n========== MODIFICAR PRODUCTO ==========");
+
+        Console.Write("Ingrese el codigo del producto: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int codigo))
+        {
+            Console.WriteLine("Codigo invalido.");
+            return;
+        }
+
+        int posicion = BuscarPosicionProducto(codigo);
+
+        if (posicion == -1)
+        {
+            Console.WriteLine("Producto no encontrado.");
+            return;
+        }
+
+        MostrarDatosProducto(posicion);
+
+        Console.WriteLine("\nIngrese los nuevos datos:");
+
+        Console.Write("Nuevo nombre: ");
+        string nombre = (Console.ReadLine() ?? "").Trim();
+
+        if (nombre == "")
+        {
+            Console.WriteLine("El nombre no puede estar vacio.");
+            return;
+        }
+
+        Console.Write("Nuevo precio: ");
+
+        if (!decimal.TryParse(Console.ReadLine(), out decimal precio)
+            || precio <= 0)
+        {
+            Console.WriteLine("El precio debe ser mayor que cero.");
+            return;
+        }
+
+        Console.Write("Nuevo stock: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int stock)
+            || stock < 0)
+        {
+            Console.WriteLine("El stock no puede ser negativo.");
+            return;
+        }
+
+        Console.Write("Confirmar modificacion? (S/N): ");
+        string respuesta = (Console.ReadLine() ?? "").Trim().ToUpperInvariant();
+
+        if (respuesta != "S" && respuesta != "SI")
+        {
+            Console.WriteLine("Modificacion cancelada.");
+            return;
+        }
+
+        nombresProductos[posicion] = nombre;
+        preciosProductos[posicion] = precio;
+        stocksProductos[posicion] = stock;
+
+        Console.WriteLine("Producto modificado correctamente.");
+    }
+
+    // ELIMINAR PRODUCTO
+
+    static void EliminarProducto()
+    {
+        Console.WriteLine("\n========== ELIMINAR PRODUCTO ==========");
+
+        Console.Write("Ingrese el codigo del producto: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int codigo))
+        {
+            Console.WriteLine("Codigo invalido.");
+            return;
+        }
+
+        int posicion = BuscarPosicionProducto(codigo);
+
+        if (posicion == -1)
+        {
+            Console.WriteLine("Producto no encontrado.");
+            return;
+        }
+
+        // Verificar si el producto tiene ventas asociadas
+        if (codigosProductosVentas.Contains(codigo))
+        {
+            Console.WriteLine("No se puede eliminar: el producto tiene ventas asociadas.");
+            return;
+        }
+
+        MostrarDatosProducto(posicion);
+
+        Console.Write("Confirma la eliminacion? (S/N): ");
+        string respuesta = (Console.ReadLine() ?? "").Trim().ToUpperInvariant();
+
+        if (respuesta != "S" && respuesta != "SI")
+        {
+            Console.WriteLine("Eliminacion cancelada.");
+            return;
+        }
+
+        codigosProductos.RemoveAt(posicion);
+        nombresProductos.RemoveAt(posicion);
+        preciosProductos.RemoveAt(posicion);
+        stocksProductos.RemoveAt(posicion);
+
+        Console.WriteLine("Producto eliminado correctamente.");
+    }
+
 }
