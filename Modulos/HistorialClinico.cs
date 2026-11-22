@@ -57,7 +57,28 @@ partial class Program
         {
             Console.WriteLine("\nTotal de atenciones: " + totalAtenciones);
         }
+        // MOSTRAR SERVICIOS
+        Console.WriteLine("\n========== SERVICIOS ==========");
 
+        int totalServicios = 0;
+
+        for (int i = 0; i < codigosMascotasServicios.Count; i++)
+        {
+            if (codigosMascotasServicios[i] == codigoMascota)
+            {
+                MostrarDatosServicio(i);
+                totalServicios++;
+            }
+        }
+
+        if (totalServicios == 0)
+        {
+            Console.WriteLine("La mascota no tiene servicios registrados.");
+        }
+        else
+        {
+            Console.WriteLine("\nTotal de servicios: " + totalServicios);
+        }
         Console.WriteLine("======================================");
     }
 }
