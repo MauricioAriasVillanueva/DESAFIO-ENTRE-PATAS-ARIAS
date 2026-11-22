@@ -114,4 +114,63 @@ partial class Program
         Console.WriteLine("Codigo de venta: " + codigoVenta);
         Console.WriteLine("Stock restante: " + stocksProductos[posicion]);
     }
+
+    // CONSULTAR VENTA POR CODIGO
+
+    static void ConsultarVentaPorCodigo()
+    {
+        Console.WriteLine("\n========== CONSULTAR VENTA ==========");
+
+        if (codigosVentas.Count == 0)
+        {
+            Console.WriteLine("No existen ventas registradas.");
+            return;
+        }
+
+        Console.Write("Ingrese el codigo de la venta: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int codigo))
+        {
+            Console.WriteLine("Codigo invalido.");
+            return;
+        }
+
+        int posicion = codigosVentas.IndexOf(codigo);
+
+        if (posicion == -1)
+        {
+            Console.WriteLine("No se encontro la venta.");
+            return;
+        }
+
+        int codigoProducto = codigosProductosVendidos[posicion];
+        int posicionProducto = BuscarPosicionProducto(codigoProducto);
+
+        Console.WriteLine("\n========== DETALLE DE VENTA ==========");
+        Console.WriteLine("Codigo de venta: " + codigosVentas[posicion]);
+        Console.WriteLine("Codigo de producto: " + codigoProducto);
+
+        if (posicionProducto != -1)
+        {
+            Console.WriteLine("Producto: " + nombresProductos[posicionProducto]);
+        }
+        else
+        {
+            Console.WriteLine("Producto: Producto eliminado o no disponible");
+        }
+
+        Console.WriteLine("Cantidad vendida: " + cantidadesVendidas[posicion]);
+
+        if (cantidadesVendidas[posicion] > 0)
+        {
+            decimal precioUnitario =
+                totalesVentas[posicion] / cantidadesVendidas[posicion];
+
+            Console.WriteLine("Precio unitario: " +
+                precioUnitario.ToString("0.00"));
+        }
+
+        Console.WriteLine("Total de venta: " +
+            totalesVentas[posicion].ToString("0.00"));
+    }
 }
