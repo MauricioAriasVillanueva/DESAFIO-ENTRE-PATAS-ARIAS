@@ -417,6 +417,17 @@ partial class Program
             return;
         }
 
+        // EVITAR REFERENCIAS HUERFANAS EN ATENCIONES Y SERVICIOS.
+        // Tambien se protegen los registros anulados: siguen formando parte del historial.
+        bool tieneAtenciones = codigosMascotasAtenciones.Contains(codigo);
+        bool tieneServicios = codigosMascotasServicios.Contains(codigo);
+
+        if (tieneAtenciones || tieneServicios)
+        {
+            Console.WriteLine("No se puede eliminar la mascota porque tiene atenciones o servicios registrados.");
+            return;
+        }
+
         // MOSTRAR DATOS ANTES DE ELIMINAR
         MostrarDatosMascota(posicion);
 
