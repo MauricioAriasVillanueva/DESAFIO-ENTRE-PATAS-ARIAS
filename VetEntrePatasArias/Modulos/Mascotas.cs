@@ -428,6 +428,18 @@ partial class Program
             return;
         }
 
+        // TODO (MAXIMO - PET SHOP / INTEGRACION):
+        // Cuando Ventas.cs tenga la lista codigosMascotasVentas, activar esta validacion.
+        // Una venta LIBRE debe guardar codigo de mascota 0 y no bloquear eliminaciones.
+        // Solo impedir eliminar si existe una venta vinculada a ESTA mascota.
+        // Coordinar la activacion con el responsable de Propietarios y Mascotas.
+        //
+        // if (codigosMascotasVentas.Contains(codigo))
+        // {
+        //     Console.WriteLine("No se puede eliminar la mascota porque tiene ventas vinculadas.");
+        //     return;
+        // }
+
         // MOSTRAR DATOS ANTES DE ELIMINAR
         MostrarDatosMascota(posicion);
 
