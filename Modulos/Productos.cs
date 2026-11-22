@@ -110,4 +110,92 @@ partial class Program
         Console.WriteLine("\nProducto registrado correctamente.");
         Console.WriteLine("Codigo asignado: " + codigo);
     }
+
+    // MOSTRAR DATOS DEL PRODUCTO
+
+    static void MostrarDatosProducto(int posicion)
+    {
+        Console.WriteLine("\n========== PRODUCTO ENCONTRADO ==========");
+        Console.WriteLine("Codigo: " + codigosProductos[posicion]);
+        Console.WriteLine("Nombre: " + nombresProductos[posicion]);
+        Console.WriteLine("Precio: " + preciosProductos[posicion].ToString("0.00"));
+        Console.WriteLine("Stock: " + stocksProductos[posicion]);
+    }
+
+    // BUSCAR PRODUCTO POR CODIGO O NOMBRE
+
+    static void BuscarProducto()
+    {
+        Console.WriteLine("\n========== BUSCAR PRODUCTO ==========");
+        Console.WriteLine("1. Buscar por codigo");
+        Console.WriteLine("2. Buscar por nombre");
+        Console.WriteLine("0. Volver");
+
+        Console.Write("Seleccione una opcion: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int opcion))
+        {
+            Console.WriteLine("Opcion invalida.");
+            return;
+        }
+
+        if (opcion == 0)
+        {
+            return;
+        }
+
+        if (opcion == 1)
+        {
+            Console.Write("Ingrese el codigo del producto: ");
+
+            if (!int.TryParse(Console.ReadLine(), out int codigo))
+            {
+                Console.WriteLine("Codigo invalido.");
+                return;
+            }
+
+            int posicion = BuscarPosicionProducto(codigo);
+
+            if (posicion == -1)
+            {
+                Console.WriteLine("Producto no encontrado.");
+                return;
+            }
+
+            MostrarDatosProducto(posicion);
+        }
+        else if (opcion == 2)
+        {
+            Console.Write("Ingrese el nombre del producto: ");
+            string nombreBuscado = (Console.ReadLine() ?? "").Trim();
+
+            if (nombreBuscado == "")
+            {
+                Console.WriteLine("Debe ingresar un nombre.");
+                return;
+            }
+
+            bool encontrado = false;
+
+            for (int i = 0; i < nombresProductos.Count; i++)
+            {
+                if (nombresProductos[i].IndexOf(
+                    nombreBuscado,
+                    StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    MostrarDatosProducto(i);
+                    encontrado = true;
+                }
+            }
+
+            if (!encontrado)
+            {
+                Console.WriteLine("No se encontraron productos con ese nombre.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Opcion invalida.");
+        }
+    }
 }
