@@ -316,6 +316,87 @@ static List<int> codigosProductosVentas = new List<int>();
         stocksProductos.RemoveAt(posicion);
 
         Console.WriteLine("Producto eliminado correctamente.");
-    }
 
+    // REGISTRAR MOVIMIENTO DE STOCK
+
+    static void RegistrarMovimientoStock()
+    {
+        Console.WriteLine("\n========== MOVIMIENTO DE STOCK ==========");
+        Console.WriteLine("1. Entrada de productos");
+        Console.WriteLine("2. Salida de productos");
+        Console.WriteLine("0. Volver");
+
+        Console.Write("Seleccione una opcion: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int opcion))
+        {
+            Console.WriteLine("Opcion invalida.");
+            return;
+        }
+
+        if (opcion == 0)
+        {
+            return;
+        }
+
+        if (opcion != 1 && opcion != 2)
+        {
+            Console.WriteLine("Opcion invalida.");
+            return;
+        }
+
+        Console.Write("Ingrese el codigo del producto: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int codigo))
+        {
+            Console.WriteLine("Codigo invalido.");
+            return;
+        }
+
+        int posicion = BuscarPosicionProducto(codigo);
+
+        if (posicion == -1)
+        {
+            Console.WriteLine("Producto no encontrado.");
+            return;
+        }
+
+        MostrarDatosProducto(posicion);
+
+        Console.Write("\nIngrese la cantidad: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int cantidad)
+            || cantidad <= 0)
+        {
+            Console.WriteLine("La cantidad debe ser mayor que cero.");
+            return;
+        }
+
+        if (opcion == 1)
+        {
+            if (stocksProductos[posicion] > int.MaxValue - cantidad)
+            {
+                Console.WriteLine("La cantidad supera el limite permitido.");
+                return;
+            }
+
+            stocksProductos[posicion] += cantidad;
+
+            Console.WriteLine("Entrada de stock registrada correctamente.");
+        }
+        else
+        {
+            if (cantidad > stocksProductos[posicion])
+            {
+                Console.WriteLine("Stock insuficiente para realizar la salida.");
+                return;
+            }
+
+            stocksProductos[posicion] -= cantidad;
+
+            Console.WriteLine("Salida de stock registrada correctamente.");
+        }
+
+        Console.WriteLine("Nuevo stock: " + stocksProductos[posicion]);
+    }
 }
