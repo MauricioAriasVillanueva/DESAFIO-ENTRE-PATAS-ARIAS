@@ -33,6 +33,8 @@ Este estado describe los **archivos presentes en la rama**, no el trabajo que lo
 - Registrar para un propietario existente, buscar por código o nombre, modificar y eliminar.
 - Validar tipo, sexo y fecha de nacimiento.
 - Asociar por código de propietario, permitiendo varias mascotas para una misma persona.
+- **Protección de integridad implementada:** `EliminarMascota()` impide borrar una mascota cuando su código aparece en `codigosMascotasAtenciones` o `codigosMascotasServicios`. La regla incluye atenciones y servicios anulados, porque siguen siendo registros del historial.
+- Si no tiene atenciones ni servicios, conserva la confirmación habitual antes de eliminar.
 
 ### Atenciones médicas
 - Registrar, buscar, modificar y **anular** atenciones.
@@ -49,7 +51,31 @@ Las operaciones de los cuatro módulos anteriores están **enlazadas desde `Prog
 
 ## Áreas aún pendientes en el C# integrado
 
-Los submenús de **Pet Shop, Historial, Listados y Persistencia** figuran en la navegación, pero sus operaciones todavía no están conectadas. En la revisión actual, `Productos.cs`, `Listados.cs` y `Persistencia.cs` siguen vacíos. No se debe presentar como implementado el registro de productos/ventas, la persistencia CSV ni los respaldos binarios.
+Los submenús de **Pet Shop, Historial, Listados y Persistencia** figuran en la navegación, pero sus operaciones todavía no están conectadas. En la revisión actual, `Productos.cs`, `Listados.cs` y `Persistencia.cs` siguen vacíos, y `Ventas.cs` es una plantilla. No se debe presentar como implementado el registro de productos/ventas, la persistencia CSV ni los respaldos binarios.
+
+## Reglas de integridad entre módulos y comprobaciones pendientes
+
+**Reglas ya presentes en el C# integrado:**
+- No se permite registrar mascotas sin un propietario existente.
+- No se permite eliminar un propietario mientras tenga mascotas asociadas.
+- No se permite registrar atenciones o servicios para mascotas inexistentes.
+- No se permite eliminar físicamente una mascota cuyo código aparezca en alguna atención o servicio, **aunque esté anulado**.
+- Las relaciones entre entidades se consultan por **código**; las posiciones solo identifican elementos dentro de las listas paralelas de una misma entidad.
+
+**Ventas de Pet Shop: pendientes de implementación y conexión.** El archivo `VetEntrePatasArias/Modulos/Ventas.cs` existe actualmente como plantilla sin listas ni métodos de ventas. La decisión del equipo es que las ventas sean **libres por defecto**, con asociación opcional a propietario y/o mascota. Cuando Máximo implemente y confirme las listas `codigosPropietariosVentas` y `codigosMascotasVentas`, deben ampliarse `EliminarPropietario()` y `EliminarMascota()` para impedir borrar registros con ventas vinculadas. Las ventas libres usarán el identificador opcional `0` y **no bloquearán** eliminaciones. No añadir referencias a esas listas antes de su implementación, pues impediría compilar.
+
+**Pruebas manuales de integración recomendadas (aún no verificadas por ejecución en esta revisión):**
+
+| Prueba | Pasos | Resultado esperado |
+| --- | --- | --- |
+| Mascota sin dependencias | Registrar un propietario, una mascota y eliminarla sin registrar atenciones ni servicios | Solicita confirmación y permite eliminar |
+| Mascota con atención | Registrar mascota y atención vinculada; intentar eliminar la mascota | Rechaza la eliminación y conserva ambas entidades |
+| Mascota con servicio | Registrar mascota y servicio vinculado; intentar eliminar la mascota | Rechaza la eliminación y conserva ambas entidades |
+| Atención o servicio anulados | Anular una atención o servicio existente y volver a intentar eliminar su mascota | Sigue rechazando la eliminación, preservando el historial |
+| Propietario con mascotas | Intentar eliminar propietario que tiene una mascota registrada | Rechaza la eliminación |
+| Mascota de otro propietario | Registrar varios propietarios y mascotas y buscar una atención por código | Muestra la mascota y propietario que corresponden al código, no a la posición |
+
+Para la prueba de atención, utilizar una fecha y hora coherentes con su situación `Programada` o `Realizada`. Ejecutar `dotnet build VetEntrePatasArias/VetEntrePatasArias.csproj` y probar desde la consola; **no marcar como ejecutadas estas pruebas hasta registrar sus resultados reales**. No se ha ejecutado la compilación en esta revisión.
 
 ## Estructura del proyecto
 
