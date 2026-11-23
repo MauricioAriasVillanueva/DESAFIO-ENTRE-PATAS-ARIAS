@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using System;
 
-class Program
+partial class Program
 {
     //DATOS DE PROPIETARIOS
 static List<int> codigosPropietarios = new List<int>();
 static List<string> propietarios = new List<string>();
 static List<string> telefonos = new List<string>();
+static List<string> dnisPropietarios = new List<string>();
+static List<string> direcciones = new List<string>();
+static List<string> correos = new List<string>();
 
     //DATOS DE MASCOTAS
 static List<int> codigosMascotas = new List<int>();
@@ -15,6 +18,7 @@ static List<string> especies = new List<string>();
 static List<string> tiposAnimales = new List<string>();
 static List<string> sexos = new List<string>();
 static List<DateTime> fechasNacimiento = new List<DateTime>();
+static List<int> codigosPropietariosMascotas = new List<int>();
 
     //CODIGOS AUTOMATICOS
 static int codigoPropietario = 2001;
@@ -159,4 +163,32 @@ static int codigoMascota = 1001;
         Console.WriteLine("Telefono: " + telefonos[posicion]);
     }
 
+// BUSCAR POSICION DEL PROPIETARIO
+static int BuscarPosicionPropietario(int codigo)
+{
+    for (int i = 0; i < codigosPropietarios.Count; i++)
+    {
+        if (codigosPropietarios[i] == codigo)
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }
+
+// BUSCAR POSICION DE LA MASCOTA
+static int BuscarPosicionMascota(int codigo)
+{
+    for (int i = 0; i < codigosMascotas.Count; i++)
+    {
+        if (codigosMascotas[i] == codigo)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+}
+
