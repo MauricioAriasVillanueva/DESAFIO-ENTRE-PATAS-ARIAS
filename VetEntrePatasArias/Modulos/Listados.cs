@@ -178,17 +178,96 @@ partial class Program
     // =========================================================
     // 5 y 6. LISTADOS PENDIENTES DE MODULO PET SHOP (MAXIMO)
     // =========================================================
-    static void ListarProductos()
+   
+static void ListarProductos()
+{
+    Console.WriteLine("\n========== LISTADO DE PRODUCTOS DEL PET SHOP ==========");
+
+    if (codigosProductos.Count == 0)
     {
-        Console.WriteLine();
-        Console.WriteLine("Listado de productos del Pet Shop: aun no disponible (modulo Productos.cs en desarrollo por Maximo).");
+        Console.WriteLine("No hay productos registrados.");
+        return;
     }
 
-    static void ListarVentas()
+    if (codigosProductos.Count != nombresProductos.Count ||
+        codigosProductos.Count != preciosProductos.Count ||
+        codigosProductos.Count != stocksProductos.Count)
     {
-        Console.WriteLine();
-        Console.WriteLine("Listado de ventas del Pet Shop: aun no disponible (modulo Ventas.cs en desarrollo por Maximo).");
+        Console.WriteLine("Error: las listas de productos tienen distinta longitud.");
+        return;
     }
+
+    for (int i = 0; i < codigosProductos.Count; i++)
+    {
+        Console.WriteLine("----------------------------------------");
+        Console.WriteLine("Codigo: " + codigosProductos[i]);
+        Console.WriteLine("Nombre: " + nombresProductos[i]);
+        Console.WriteLine("Precio: " + preciosProductos[i].ToString("0.00"));
+        Console.WriteLine("Stock: " + stocksProductos[i]);
+    }
+
+    Console.WriteLine("----------------------------------------");
+    Console.WriteLine("Total de productos: " + codigosProductos.Count);
+}
+
+
+    
+static void ListarVentas()
+{
+    Console.WriteLine("\n========== LISTADO DE VENTAS DEL PET SHOP ==========");
+
+    if (codigosVentas.Count == 0)
+    {
+        Console.WriteLine("No hay ventas registradas.");
+        return;
+    }
+
+    if (codigosVentas.Count != codigosProductosVendidos.Count ||
+        codigosVentas.Count != nombresProductosVendidos.Count ||
+        codigosVentas.Count != cantidadesVendidas.Count ||
+        codigosVentas.Count != preciosUnitariosVentas.Count ||
+        codigosVentas.Count != totalesVentas.Count ||
+        codigosVentas.Count != fechasVentas.Count ||
+        codigosVentas.Count != codigosPropietariosVentas.Count ||
+        codigosVentas.Count != codigosMascotasVentas.Count)
+    {
+        Console.WriteLine("Error: las listas de ventas tienen distinta longitud.");
+        return;
+    }
+
+    for (int i = 0; i < codigosVentas.Count; i++)
+    {
+        Console.WriteLine("----------------------------------------");
+        Console.WriteLine("Codigo de venta: " + codigosVentas[i]);
+        Console.WriteLine("Codigo de producto: " + codigosProductosVendidos[i]);
+        Console.WriteLine("Producto: " + nombresProductosVendidos[i]);
+        Console.WriteLine("Cantidad: " + cantidadesVendidas[i]);
+        Console.WriteLine("Precio unitario: " +
+            preciosUnitariosVentas[i].ToString("0.00"));
+        Console.WriteLine("Total: " + totalesVentas[i].ToString("0.00"));
+        Console.WriteLine("Fecha: " + fechasVentas[i]);
+
+        if (codigosPropietariosVentas[i] == 0)
+        {
+            Console.WriteLine("Tipo: Venta libre");
+        }
+        else
+        {
+            Console.WriteLine("Codigo de propietario: " +
+                codigosPropietariosVentas[i]);
+
+            if (codigosMascotasVentas[i] != 0)
+            {
+                Console.WriteLine("Codigo de mascota: " +
+                    codigosMascotasVentas[i]);
+            }
+        }
+    }
+
+    Console.WriteLine("----------------------------------------");
+    Console.WriteLine("Total de ventas: " + codigosVentas.Count);
+}
+
 
     // =========================================================
     // 7. ORDENAR MASCOTAS POR CODIGO (BURBUJA MEJORADA)
