@@ -11,6 +11,8 @@ partial class Program
     static readonly string RutaCsvMascotas = Path.Combine(CarpetaDatos, "mascotas.csv");
     static readonly string RutaCsvAtenciones = Path.Combine(CarpetaDatos, "atenciones.csv");
     static readonly string RutaCsvServicios = Path.Combine(CarpetaDatos, "servicios.csv");
+    static readonly string RutaCsvProductos = Path.Combine(CarpetaDatos, "productos.csv");
+    static readonly string RutaCsvVentas = Path.Combine(CarpetaDatos, "ventas.csv");
     static readonly string RutaRespaldoBinario = Path.Combine(CarpetaDatos, "respaldo_vet.bin");
 
     static string ultimaOperacionPersistencia = "Ninguna operacion realizada en esta sesion.";
@@ -25,10 +27,12 @@ partial class Program
         Console.WriteLine("          GUARDAR DATOS EN CSV");
         Console.WriteLine("========================================");
 
-        if (!ValidarIntegridadListasPropietarios() ||
-            !ValidarIntegridadListasMascotas() ||
-            !ValidarIntegridadListasAtenciones() ||
-            !ValidarIntegridadListasServicios())
+    if (!ValidarIntegridadListasPropietarios() ||
+        !ValidarIntegridadListasMascotas() ||
+        !ValidarIntegridadListasAtenciones() ||
+        !ValidarIntegridadListasServicios() ||
+        !ValidarIntegridadListasProductos() ||
+        !ValidarIntegridadListasVentas())
         {
             Console.WriteLine("Error: alguna entidad tiene listas paralelas desincronizadas. No se puede guardar.");
             return;
@@ -37,7 +41,9 @@ partial class Program
         if (codigosPropietarios.Count == 0 &&
             codigosMascotas.Count == 0 &&
             codigosAtenciones.Count == 0 &&
-            codigosServicios.Count == 0)
+            codigosServicios.Count == 0 &&
+            codigosProductos.Count == 0 &&
+            codigosVentas.Count == 0)
         {
             Console.WriteLine("No hay registros en memoria para guardar.");
             return;
@@ -47,6 +53,8 @@ partial class Program
         string tmpMasc = RutaCsvMascotas + ".tmp";
         string tmpAten = RutaCsvAtenciones + ".tmp";
         string tmpServ = RutaCsvServicios + ".tmp";
+        string tmpProd = RutaCsvProductos + ".tmp";
+        string tmpVent = RutaCsvVentas + ".tmp";
 
         try
         {
@@ -129,12 +137,52 @@ partial class Program
                 }));
             }
             File.WriteAllLines(tmpServ, lineasServ, Encoding.UTF8);
+            // 5. Preparar y escribir Productos en temporal
+List<string> lineasProd = new List<string>();
+lineasProd.Add("Codigo,Nombre,Precio,Stock");
 
-            // 5. Commit atomico: solo si los 4 temporales se escribieron sin error, reemplazan los definitivos
+for (int i = 0; i < codigosProductos.Count; i++)
+{
+    lineasProd.Add(string.Join(",", new string[]
+    {
+        codigosProductos[i].ToString(CultureInfo.InvariantCulture),
+        EscaparCSV(nombresProductos[i]),
+        preciosProductos[i].ToString(CultureInfo.InvariantCulture),
+        stocksProductos[i].ToString(CultureInfo.InvariantCulture)
+    }));
+}
+
+File.WriteAllLines(tmpProd, lineasProd, Encoding.UTF8);
+
+// 6. Preparar y escribir Ventas en temporal
+List<string> lineasVent = new List<string>();
+lineasVent.Add("Codigo,CodigoProducto,NombreProducto,Cantidad,PrecioUnitario,Total,Fecha,CodigoPropietario,CodigoMascota");
+
+for (int i = 0; i < codigosVentas.Count; i++)
+{
+    lineasVent.Add(string.Join(",", new string[]
+    {
+        codigosVentas[i].ToString(CultureInfo.InvariantCulture),
+        codigosProductosVendidos[i].ToString(CultureInfo.InvariantCulture),
+        EscaparCSV(nombresProductosVendidos[i]),
+        cantidadesVendidas[i].ToString(CultureInfo.InvariantCulture),
+        preciosUnitariosVentas[i].ToString(CultureInfo.InvariantCulture),
+        totalesVentas[i].ToString(CultureInfo.InvariantCulture),
+        EscaparCSV(fechasVentas[i]),
+        codigosPropietariosVentas[i].ToString(CultureInfo.InvariantCulture),
+        codigosMascotasVentas[i].ToString(CultureInfo.InvariantCulture)
+    }));
+}
+
+File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
+
+            // 5. Commit atomico: los 6 archivos temporales se escribieron correctamente
             File.Move(tmpProp, RutaCsvPropietarios, true);
             File.Move(tmpMasc, RutaCsvMascotas, true);
             File.Move(tmpAten, RutaCsvAtenciones, true);
             File.Move(tmpServ, RutaCsvServicios, true);
+            File.Move(tmpProd, RutaCsvProductos, true);
+            File.Move(tmpVent, RutaCsvVentas, true);
 
             ultimaOperacionPersistencia = $"CSV guardado ({DateTime.Now:dd/MM/yyyy HH:mm:ss}): {codigosPropietarios.Count} prop., {codigosMascotas.Count} masc., {codigosAtenciones.Count} aten., {codigosServicios.Count} serv.";
             Console.WriteLine("Archivos CSV guardados de forma atomica en la carpeta 'Datos':");
@@ -142,11 +190,12 @@ partial class Program
             Console.WriteLine($" - mascotas.csv     : {codigosMascotas.Count} registros");
             Console.WriteLine($" - atenciones.csv   : {codigosAtenciones.Count} registros");
             Console.WriteLine($" - servicios.csv    : {codigosServicios.Count} registros");
-            Console.WriteLine("Nota: Productos y Ventas aun no se guardan (estructuras pendientes de Maximo).");
+            Console.WriteLine($" - productos.csv: {codigosProductos.Count} registros");
+            Console.WriteLine($" - ventas.csv: {codigosVentas.Count} registros");
         }
         catch (Exception ex)
         {
-            LimpiarArchivosTemporales(tmpProp, tmpMasc, tmpAten, tmpServ);
+            LimpiarArchivosTemporales(tmpProp, tmpMasc, tmpAten, tmpServ, tmpProd, tmpVent);
             Console.WriteLine($"Error al guardar los archivos CSV (no se alteraron archivos previos): {ex.Message}");
         }
     }
@@ -161,7 +210,15 @@ partial class Program
         Console.WriteLine("          CARGAR DATOS DESDE CSV");
         Console.WriteLine("========================================");
 
-        string[] archivosRequeridos = { RutaCsvPropietarios, RutaCsvMascotas, RutaCsvAtenciones, RutaCsvServicios };
+       string[] archivosRequeridos =
+    {
+        RutaCsvPropietarios,
+        RutaCsvMascotas,
+        RutaCsvAtenciones,
+        RutaCsvServicios,
+        RutaCsvProductos,
+        RutaCsvVentas
+    };
         for (int i = 0; i < archivosRequeridos.Length; i++)
         {
             if (!File.Exists(archivosRequeridos[i]))
@@ -177,18 +234,24 @@ partial class Program
             List<RegistroCSV> registrosMasc = ParsearArchivoCSV(File.ReadAllText(RutaCsvMascotas, Encoding.UTF8));
             List<RegistroCSV> registrosAten = ParsearArchivoCSV(File.ReadAllText(RutaCsvAtenciones, Encoding.UTF8));
             List<RegistroCSV> registrosServ = ParsearArchivoCSV(File.ReadAllText(RutaCsvServicios, Encoding.UTF8));
+            List<RegistroCSV> registrosProd = ParsearArchivoCSV(File.ReadAllText(RutaCsvProductos, Encoding.UTF8));
+            List<RegistroCSV> registrosVent = ParsearArchivoCSV(File.ReadAllText(RutaCsvVentas, Encoding.UTF8));
 
-            if (registrosProp == null || registrosMasc == null || registrosAten == null || registrosServ == null)
+            if (registrosProp == null || registrosMasc == null ||
+                registrosAten == null || registrosServ == null ||
+                registrosProd == null || registrosVent == null)
             {
                 Console.WriteLine("Error: Comillas sin cerrar detectadas en uno de los archivos CSV.");
                 return;
             }
 
-            if (registrosProp.Count == 0 || registrosMasc.Count == 0 || registrosAten.Count == 0 || registrosServ.Count == 0)
-            {
-                Console.WriteLine("Error: Uno o mas archivos CSV estan completamente vacios.");
-                return;
-            }
+           if (registrosProp.Count == 0 || registrosMasc.Count == 0 ||
+                registrosAten.Count == 0 || registrosServ.Count == 0 ||
+                registrosProd.Count == 0 || registrosVent.Count == 0)
+    {
+        Console.WriteLine("Error: Uno o mas archivos CSV estan completamente vacios.");
+        return;
+    }
 
             // --- VALIDACION TEMPORAL: PROPIETARIOS ---
             List<int> tempCodProp = new List<int>();
