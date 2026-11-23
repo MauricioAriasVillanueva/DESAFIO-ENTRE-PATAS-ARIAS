@@ -1,4 +1,4 @@
-# 🐾 Entre Patas – Arias | Integrante 4
+#  Entre Patas – Arias | Integrante 4
 
 Rama individual correspondiente al desarrollo de funcionalidades del sistema de gestión veterinaria **Entre Patas – Arias**.
 
@@ -6,16 +6,7 @@ Este apartado documenta las funcionalidades implementadas por el Integrante 4, r
 
 ## Funcionalidades desarrolladas
 
-### 🔎 1. Búsqueda de mascotas y propietarios
-
-| Opción | Comportamiento |
-|---|---|
-| Buscar mascota | Permite localizar una mascota por código o nombre y mostrar su información asociada. |
-| Buscar propietario | Permite buscar un propietario por código y consultar sus datos. |
-
-El módulo valida los datos ingresados, controla los códigos inexistentes y muestra mensajes cuando no se encuentran coincidencias.
-
-### 🛒 2. Módulo Pet Shop
+###  1. Módulo Pet Shop
 
 | Funcionalidad | Comportamiento |
 |---|---|
@@ -29,7 +20,7 @@ El módulo valida los datos ingresados, controla los códigos inexistentes y mue
 
 El módulo incorpora validaciones para controlar precios, cantidades, disponibilidad de stock y relaciones entre productos, ventas, propietarios y mascotas.
 
-### 🩺 3. Historial clínico
+###  2. Historial clínico
 
 | Funcionalidad | Comportamiento |
 |---|---|
@@ -94,7 +85,6 @@ Los avances correspondientes a esta rama fueron incorporados a `ep/integracion`,
 
 Áreas de responsabilidad:
 
-- Búsqueda de mascotas y propietarios.
 - Módulo Pet Shop.
 - Historial clínico.
 
