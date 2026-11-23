@@ -545,16 +545,163 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 tempEstServ.Add(estS);
             }
 
-            if (tempCodProp.Count == 0 && tempCodMasc.Count == 0 && tempCodAten.Count == 0 && tempCodServ.Count == 0)
+            
+            // --- VALIDACION TEMPORAL: PRODUCTOS ---
+            List<int> tempCodProd = new List<int>();
+            List<string> tempNomProd = new List<string>();
+            List<decimal> tempPreProd = new List<decimal>();
+            List<int> tempStockProd = new List<int>();
+            HashSet<int> setCodProd = new HashSet<int>();
+
+            if (registrosProd[0].Campos.Count != 4)
+            {
+                Console.WriteLine("Error: Cabecera invalida en productos.csv.");
+                return;
+            }
+
+            for (int i = 1; i < registrosProd.Count; i++)
+            {
+                RegistroCSV reg = registrosProd[i];
+                List<string> c = reg.Campos;
+
+                if (c.Count != 4 ||
+                    !int.TryParse(c[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int codP) ||
+                    codP < 4001 || !setCodProd.Add(codP) ||
+                    string.IsNullOrWhiteSpace(c[1]) ||
+                    !decimal.TryParse(c[2].Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out decimal precioP) ||
+                    precioP <= 0 ||
+                    !int.TryParse(c[3].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int stockP) ||
+                    stockP < 0)
+                {
+                    Console.WriteLine($"Error en productos.csv (linea {reg.LineaInicio}): registro invalido.");
+                    return;
+                }
+
+                tempCodProd.Add(codP);
+                tempNomProd.Add(c[1].Trim());
+                tempPreProd.Add(precioP);
+                tempStockProd.Add(stockP);
+            }
+
+            // --- VALIDACION TEMPORAL: VENTAS ---
+            List<int> tempCodVent = new List<int>();
+            List<int> tempCodProdVent = new List<int>();
+            List<string> tempNomProdVent = new List<string>();
+            List<int> tempCantVent = new List<int>();
+            List<decimal> tempPreUnitVent = new List<decimal>();
+            List<decimal> tempTotalVent = new List<decimal>();
+            List<string> tempFechaVent = new List<string>();
+            List<int> tempCodPropVent = new List<int>();
+            List<int> tempCodMascVent = new List<int>();
+            HashSet<int> setCodVent = new HashSet<int>();
+
+            Dictionary<int, int> propietarioPorMascota = new Dictionary<int, int>();
+
+            for (int i = 0; i < tempCodMasc.Count; i++)
+            {
+                propietarioPorMascota[tempCodMasc[i]] = tempCodPropMasc[i];
+            }
+
+            if (registrosVent[0].Campos.Count != 9)
+            {
+                Console.WriteLine("Error: Cabecera invalida en ventas.csv.");
+                return;
+            }
+
+            for (int i = 1; i < registrosVent.Count; i++)
+            {
+                RegistroCSV reg = registrosVent[i];
+                List<string> c = reg.Campos;
+
+                if (c.Count != 9 ||
+                    !int.TryParse(c[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int codV) ||
+                    codV < 5001 || !setCodVent.Add(codV) ||
+                    !int.TryParse(c[1].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int codProdV) ||
+                    !setCodProd.Contains(codProdV) ||
+                    string.IsNullOrWhiteSpace(c[2]) ||
+                    !int.TryParse(c[3].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int cantV) ||
+                    cantV <= 0 ||
+                    !decimal.TryParse(c[4].Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out decimal precioV) ||
+                    precioV <= 0 ||
+                    !decimal.TryParse(c[5].Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out decimal totalV) ||
+                    totalV < 0 ||
+                    !DateTime.TryParseExact(c[6].Trim(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaV) ||
+                    !int.TryParse(c[7].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int codPropV) ||
+                    codPropV < 0 ||
+                    !int.TryParse(c[8].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int codMascV) ||
+                    codMascV < 0)
+                {
+                    Console.WriteLine($"Error en ventas.csv (linea {reg.LineaInicio}): registro invalido.");
+                    return;
+                }
+
+                if (codPropV == 0 && codMascV != 0)
+                {
+                    Console.WriteLine("Error: una venta libre no puede tener mascota asociada.");
+                    return;
+                }
+
+                if (codPropV != 0 && !setCodProp.Contains(codPropV))
+                {
+                    Console.WriteLine("Error: propietario de la venta inexistente.");
+                    return;
+                }
+
+                if (codMascV != 0 &&
+                    (!propietarioPorMascota.ContainsKey(codMascV) ||
+                     propietarioPorMascota[codMascV] != codPropV))
+                {
+                    Console.WriteLine("Error: mascota inexistente o no pertenece al propietario.");
+                    return;
+                }
+
+                decimal totalCalculado = precioV * cantV;
+
+                if (Math.Abs(totalV - totalCalculado) > 0.01m)
+                {
+                    Console.WriteLine("Error: total de venta inconsistente.");
+                    return;
+                }
+
+                tempCodVent.Add(codV);
+                tempCodProdVent.Add(codProdV);
+                tempNomProdVent.Add(c[2].Trim());
+                tempCantVent.Add(cantV);
+                tempPreUnitVent.Add(precioV);
+                tempTotalVent.Add(totalV);
+                tempFechaVent.Add(fechaV.ToString("yyyy-MM-dd HH:mm:ss"));
+                tempCodPropVent.Add(codPropV);
+                tempCodMascVent.Add(codMascV);
+            }
+
+            if (tempCodProp.Count == 0 &&
+    tempCodMasc.Count == 0 &&
+    tempCodAten.Count == 0 &&
+    tempCodServ.Count == 0 &&
+    tempCodProd.Count == 0 &&
+    tempCodVent.Count == 0)
             {
                 Console.WriteLine("Error: Los archivos CSV no contienen registros.");
                 return;
             }
 
-            if (codigosPropietarios.Count > 0 || codigosMascotas.Count > 0 || codigosAtenciones.Count > 0 || codigosServicios.Count > 0)
+            
+            if (codigosPropietarios.Count > 0 ||
+                codigosMascotas.Count > 0 ||
+                codigosAtenciones.Count > 0 ||
+                codigosServicios.Count > 0 ||
+                codigosProductos.Count > 0 ||
+                codigosVentas.Count > 0)
             {
-                Console.Write($"Se reemplazaran los datos actuales por {tempCodProp.Count} prop., {tempCodMasc.Count} masc., {tempCodAten.Count} aten. y {tempCodServ.Count} serv. ¿Confirmar? (S/N): ");
+                Console.Write(
+                    $"Se reemplazaran los datos actuales por " +
+                    $"{tempCodProp.Count} prop., {tempCodMasc.Count} masc., " +
+                    $"{tempCodAten.Count} aten., {tempCodServ.Count} serv., " +
+                    $"{tempCodProd.Count} productos y {tempCodVent.Count} ventas. " +
+                    "¿Confirmar? (S/N): ");
+
                 string resp = (Console.ReadLine() ?? "").Trim().ToUpperInvariant();
+
                 if (resp != "S")
                 {
                     Console.WriteLine("Carga cancelada por el usuario. Los datos actuales no fueron modificados.");
@@ -566,15 +713,24 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 tempCodProp, tempNomProp, tempTelProp, tempDniProp, tempDirProp, tempCorProp,
                 tempCodMasc, tempNomMasc, tempEspMasc, tempTipMasc, tempSexMasc, tempFecMasc, tempCodPropMasc,
                 tempCodAten, tempCodMascAten, tempEspAten, tempVetAten, tempFecAten, tempHorAten, tempMotAten, tempCosAten, tempDiaAten, tempTraAten, tempEstAten, tempSitAten,
-                tempCodServ, tempCodMascServ, tempNomServ, tempResServ, tempFecServ, tempHorServ, tempCosServ, tempObsServ, tempEstServ
+              tempCodServ, tempCodMascServ, tempNomServ, tempResServ, tempFecServ, tempHorServ, tempCosServ, tempObsServ, tempEstServ,
+tempCodProd, tempNomProd, tempPreProd, tempStockProd,
+tempCodVent, tempCodProdVent, tempNomProdVent,
+tempCantVent, tempPreUnitVent, tempTotalVent,
+tempFechaVent, tempCodPropVent, tempCodMascVent
             );
 
-            ultimaOperacionPersistencia = $"CSV cargado ({DateTime.Now:dd/MM/yyyy HH:mm:ss}): {codigosPropietarios.Count} prop., {codigosMascotas.Count} masc., {codigosAtenciones.Count} aten., {codigosServicios.Count} serv.";
+            
+            ultimaOperacionPersistencia = $"CSV cargado ({DateTime.Now:dd/MM/yyyy HH:mm:ss}): {codigosPropietarios.Count} prop., {codigosMascotas.Count} masc., {codigosAtenciones.Count} aten., {codigosServicios.Count} serv., {codigosProductos.Count} productos y {codigosVentas.Count} ventas.";
+
             Console.WriteLine("Carga desde CSV completada exitosamente:");
             Console.WriteLine($" - Propietarios : {codigosPropietarios.Count} (proximo codigo: {codigoPropietario})");
             Console.WriteLine($" - Mascotas     : {codigosMascotas.Count} (proximo codigo: {codigoMascota})");
             Console.WriteLine($" - Atenciones   : {codigosAtenciones.Count}");
             Console.WriteLine($" - Servicios    : {codigosServicios.Count}");
+            Console.WriteLine($" - Productos    : {codigosProductos.Count}");
+            Console.WriteLine($" - Ventas       : {codigosVentas.Count}");
+
         }
         catch (Exception ex)
         {
@@ -1188,11 +1344,14 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
         }
     }
 
+   
     static void ReemplazarListasEnMemoria(
         List<int> tempCodProp, List<string> tempNomProp, List<string> tempTelProp, List<string> tempDniProp, List<string> tempDirProp, List<string> tempCorProp,
         List<int> tempCodMasc, List<string> tempNomMasc, List<string> tempEspMasc, List<string> tempTipMasc, List<string> tempSexMasc, List<DateTime> tempFecMasc, List<int> tempCodPropMasc,
         List<int> tempCodAten, List<int> tempCodMascAten, List<string> tempEspAten, List<string> tempVetAten, List<DateTime> tempFecAten, List<string> tempHorAten, List<string> tempMotAten, List<decimal> tempCosAten, List<string> tempDiaAten, List<string> tempTraAten, List<string> tempEstAten, List<string> tempSitAten,
-        List<int> tempCodServ, List<int> tempCodMascServ, List<string> tempNomServ, List<string> tempResServ, List<DateTime> tempFecServ, List<string> tempHorServ, List<decimal> tempCosServ, List<string> tempObsServ, List<string> tempEstServ)
+        List<int> tempCodServ, List<int> tempCodMascServ, List<string> tempNomServ, List<string> tempResServ, List<DateTime> tempFecServ, List<string> tempHorServ, List<decimal> tempCosServ, List<string> tempObsServ, List<string> tempEstServ,
+        List<int> tempCodProd, List<string> tempNomProd, List<decimal> tempPreProd, List<int> tempStockProd,
+        List<int> tempCodVent, List<int> tempCodProdVent, List<string> tempNomProdVent, List<int> tempCantVent, List<decimal> tempPreUnitVent, List<decimal> tempTotalVent, List<string> tempFechaVent, List<int> tempCodPropVent, List<int> tempCodMascVent)
     {
         codigosPropietarios.Clear(); propietarios.Clear(); telefonos.Clear(); dnisPropietarios.Clear(); direcciones.Clear(); correos.Clear();
         codigosPropietarios.AddRange(tempCodProp);
@@ -1241,8 +1400,48 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
         observacionesServicios.AddRange(tempObsServ);
         estadosServicios.AddRange(tempEstServ);
 
+        // Reemplazar productos
+        codigosProductos.Clear(); nombresProductos.Clear(); preciosProductos.Clear(); stocksProductos.Clear();
+        codigosProductos.AddRange(tempCodProd);
+        nombresProductos.AddRange(tempNomProd);
+        preciosProductos.AddRange(tempPreProd);
+        stocksProductos.AddRange(tempStockProd);
+
+        // Reemplazar ventas
+        codigosVentas.Clear();
+        codigosProductosVendidos.Clear();
+        cantidadesVendidas.Clear();
+        totalesVentas.Clear();
+        nombresProductosVendidos.Clear();
+        preciosUnitariosVentas.Clear();
+        fechasVentas.Clear();
+        codigosPropietariosVentas.Clear();
+        codigosMascotasVentas.Clear();
+
+        codigosVentas.AddRange(tempCodVent);
+        codigosProductosVendidos.AddRange(tempCodProdVent);
+        cantidadesVendidas.AddRange(tempCantVent);
+        totalesVentas.AddRange(tempTotalVent);
+        nombresProductosVendidos.AddRange(tempNomProdVent);
+        preciosUnitariosVentas.AddRange(tempPreUnitVent);
+        fechasVentas.AddRange(tempFechaVent);
+        codigosPropietariosVentas.AddRange(tempCodPropVent);
+        codigosMascotasVentas.AddRange(tempCodMascVent);
+
+        // Reconstruir referencias de productos vendidos
+        codigosProductosVentas.Clear();
+
+        for (int i = 0; i < codigosProductosVendidos.Count; i++)
+        {
+            int codigoProducto = codigosProductosVendidos[i];
+
+            if (!codigosProductosVentas.Contains(codigoProducto))
+                codigosProductosVentas.Add(codigoProducto);
+        }
+
         RecalcularSiguientesCodigos();
     }
+
 
     static void RecalcularSiguientesCodigos()
     {
