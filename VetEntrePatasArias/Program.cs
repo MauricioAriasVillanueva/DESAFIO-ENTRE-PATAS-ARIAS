@@ -89,7 +89,7 @@ partial class Program
                 MostrarSubmenu("HISTORIAL CLINICO DE MASCOTAS", new string[]
                 {
                     "Consultar historial completo por mascota"
-                });
+                }, 6);
             }
             else if (opcion == 7)
             {
@@ -229,7 +229,7 @@ partial class Program
                         "Modificar producto",
                         "Eliminar producto",
                         "Registrar movimiento de stock"
-                    }, 0, "Volver a Pet Shop");
+                    }, 51, "Volver a Pet Shop");
                 }
                 else if (modulo == 5 && opcionSubmenu == 2)
                 {
@@ -237,8 +237,45 @@ partial class Program
                     {
                         "Registrar venta",
                         "Consultar venta por codigo"
-                    }, 0, "Volver a Pet Shop");
+                    }, 52, "Volver a Pet Shop");
                 }
+                // GESTION DE PRODUCTOS
+else if (modulo == 51 && opcionSubmenu == 1)
+{
+    RegistrarProducto();
+}
+else if (modulo == 51 && opcionSubmenu == 2)
+{
+    BuscarProducto();
+}
+else if (modulo == 51 && opcionSubmenu == 3)
+{
+    ModificarProducto();
+}
+else if (modulo == 51 && opcionSubmenu == 4)
+{
+    EliminarProducto();
+}
+else if (modulo == 51 && opcionSubmenu == 5)
+{
+    RegistrarMovimientoStock();
+}
+
+// GESTION DE VENTAS
+else if (modulo == 52 && opcionSubmenu == 1)
+{
+    RegistrarVenta();
+}
+else if (modulo == 52 && opcionSubmenu == 2)
+{
+    ConsultarVentaPorCodigo();
+}
+
+// HISTORIAL CLINICO
+else if (modulo == 6 && opcionSubmenu == 1)
+{
+    HistorialClinico();
+}
                 else if (modulo == 3 && opcionSubmenu == 1)
                 {
                     RegistrarAtencion();
