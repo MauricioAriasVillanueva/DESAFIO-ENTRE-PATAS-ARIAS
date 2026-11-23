@@ -177,18 +177,6 @@ static int BuscarPosicionPropietario(int codigo)
     return -1;
 }
 
-// BUSCAR POSICION DE LA MASCOTA
-static int BuscarPosicionMascota(int codigo)
-{
-    for (int i = 0; i < codigosMascotas.Count; i++)
-    {
-        if (codigosMascotas[i] == codigo)
-        {
-            return i;
-        }
-    }
+}
 
-    return -1;
-}
-}
 
