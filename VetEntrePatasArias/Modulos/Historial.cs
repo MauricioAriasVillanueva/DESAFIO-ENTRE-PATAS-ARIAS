@@ -16,8 +16,8 @@ partial class Program
 
         Console.Write("Ingrese el codigo de la mascota: ");
 
-        if (!int.TryParse(Console.ReadLine(), out int codigo)
-            || codigo <= 0)
+        if (!int.TryParse(Console.ReadLine(), out int codigo) ||
+            codigo <= 0)
         {
             Console.WriteLine("Codigo de mascota invalido.");
             return;
@@ -51,7 +51,8 @@ partial class Program
 
         if (totalAtenciones == 0)
         {
-            Console.WriteLine("La mascota no tiene atenciones medicas registradas.");
+            Console.WriteLine(
+                "La mascota no tiene atenciones medicas registradas.");
         }
         else
         {
@@ -74,13 +75,15 @@ partial class Program
 
         if (totalServicios == 0)
         {
-            Console.WriteLine("La mascota no tiene servicios registrados.");
+            Console.WriteLine(
+                "La mascota no tiene servicios registrados.");
         }
         else
         {
             Console.WriteLine("Total de servicios: " + totalServicios);
         }
 
-        Console.WriteLine("\n========== FIN DEL HISTORIAL CLINICO ==========");
+        Console.WriteLine(
+            "\n========== FIN DEL HISTORIAL CLINICO ==========");
     }
 }
