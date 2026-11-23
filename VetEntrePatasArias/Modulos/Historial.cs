@@ -7,6 +7,11 @@ partial class Program
     {
         Console.WriteLine("\n========== HISTORIAL CLINICO ==========");
         if (codigosMascotas.Count == 0) { Console.WriteLine("No hay mascotas registradas."); return; }
+        if (!ValidarIntegridadListasMascotas())
+{
+    Console.WriteLine("Error: las listas de mascotas estan desincronizadas.");
+    return;
+}
         if (!int.TryParse(LeerPetShop("Codigo de mascota: "), out int codigo) || codigo <= 0)
         { Console.WriteLine("Codigo invalido."); return; }
         int i = BuscarPosicionMascota(codigo);
