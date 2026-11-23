@@ -410,7 +410,7 @@ partial class Program
 
         for (int i = 0; i < cantidad; i++)
         {
-            if (codigosProductos[i] <= 0 ||
+            if (codigosProductos[i] <= 4001 ||
                 string.IsNullOrWhiteSpace(nombresProductos[i]) ||
                 preciosProductos[i] <= 0 ||
                 stocksProductos[i] < 0)
@@ -440,3 +440,4 @@ partial class Program
         return true;
     }
 }
+
