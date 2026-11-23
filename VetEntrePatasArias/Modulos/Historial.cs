@@ -1,89 +1,35 @@
-
 using System;
+using System.Collections.Generic;
 
 partial class Program
 {
-    // CONSULTAR HISTORIAL CLINICO COMPLETO DE UNA MASCOTA
     static void HistorialClinico()
     {
-        Console.WriteLine("\n========== HISTORIAL CLINICO DE MASCOTA ==========");
+        Console.WriteLine("\n========== HISTORIAL CLINICO ==========");
+        if (codigosMascotas.Count == 0) { Console.WriteLine("No hay mascotas registradas."); return; }
+        if (!int.TryParse(LeerPetShop("Codigo de mascota: "), out int codigo) || codigo <= 0)
+        { Console.WriteLine("Codigo invalido."); return; }
+        int i = BuscarPosicionMascota(codigo);
+        if (i < 0) { Console.WriteLine("Mascota no encontrada."); return; }
+        MostrarDatosMascota(i);
+        if (!ValidarIntegridadListasAtenciones() || !ValidarIntegridadListasServicios())
+        { Console.WriteLine("Error: listas clinicas desincronizadas."); return; }
+        MostrarSeccionHistorial("ATENCIONES MEDICAS", codigo, codigosMascotasAtenciones, MostrarDatosAtencion);
+        MostrarSeccionHistorial("SERVICIOS VETERINARIOS", codigo, codigosMascotasServicios, MostrarDatosServicio);
+        Console.WriteLine("========== FIN DEL HISTORIAL ==========");
+    }
 
-        if (codigosMascotas.Count == 0)
+    // Un recorrido comun conserva la consulta por codigo e incluye anulados.
+    static void MostrarSeccionHistorial(string titulo, int codigo, List<int> referencias, Action<int> mostrar)
+    {
+        Console.WriteLine("\n========== " + titulo + " ==========");
+        int total = 0;
+        for (int i = 0; i < referencias.Count; i++)
         {
-            Console.WriteLine("No hay mascotas registradas.");
-            return;
+            if (referencias[i] != codigo) continue;
+            mostrar(i);
+            total++;
         }
-
-        Console.Write("Ingrese el codigo de la mascota: ");
-
-        if (!int.TryParse(Console.ReadLine(), out int codigo) ||
-            codigo <= 0)
-        {
-            Console.WriteLine("Codigo de mascota invalido.");
-            return;
-        }
-
-        int posicionMascota = BuscarPosicionMascota(codigo);
-
-        if (posicionMascota == -1)
-        {
-            Console.WriteLine("Mascota no encontrada.");
-            return;
-        }
-
-        // MOSTRAR DATOS DE LA MASCOTA
-        Console.WriteLine("\n========== DATOS DE LA MASCOTA ==========");
-        MostrarDatosMascota(posicionMascota);
-
-        // MOSTRAR ATENCIONES MEDICAS
-        Console.WriteLine("\n========== ATENCIONES MEDICAS ==========");
-
-        int totalAtenciones = 0;
-
-        for (int i = 0; i < codigosMascotasAtenciones.Count; i++)
-        {
-            if (codigosMascotasAtenciones[i] == codigo)
-            {
-                MostrarDatosAtencion(i);
-                totalAtenciones++;
-            }
-        }
-
-        if (totalAtenciones == 0)
-        {
-            Console.WriteLine(
-                "La mascota no tiene atenciones medicas registradas.");
-        }
-        else
-        {
-            Console.WriteLine("Total de atenciones: " + totalAtenciones);
-        }
-
-        // MOSTRAR SERVICIOS VETERINARIOS
-        Console.WriteLine("\n========== SERVICIOS VETERINARIOS ==========");
-
-        int totalServicios = 0;
-
-        for (int i = 0; i < codigosMascotasServicios.Count; i++)
-        {
-            if (codigosMascotasServicios[i] == codigo)
-            {
-                MostrarDatosServicio(i);
-                totalServicios++;
-            }
-        }
-
-        if (totalServicios == 0)
-        {
-            Console.WriteLine(
-                "La mascota no tiene servicios registrados.");
-        }
-        else
-        {
-            Console.WriteLine("Total de servicios: " + totalServicios);
-        }
-
-        Console.WriteLine(
-            "\n========== FIN DEL HISTORIAL CLINICO ==========");
+        Console.WriteLine(total == 0 ? "Sin registros asociados." : "Total de registros: " + total);
     }
 }

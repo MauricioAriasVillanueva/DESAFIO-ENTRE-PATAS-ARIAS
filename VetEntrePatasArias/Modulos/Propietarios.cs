@@ -342,17 +342,11 @@ partial class Program
         return;
     }
 
-        // TODO (MAXIMO - PET SHOP / INTEGRACION):
-        // Cuando Ventas.cs tenga la lista codigosPropietariosVentas, activar esta validacion.
-        // Una venta LIBRE debe guardar codigo de propietario 0 y no bloquear eliminaciones.
-        // Solo impedir eliminar si existe una venta vinculada a ESTE propietario.
-        // Coordinar la activacion con el responsable de Propietarios y Mascotas.
-        //
-        // if (codigosPropietariosVentas.Contains(codigoBuscado))
-        // {
-        //     Console.WriteLine("No se puede eliminar el propietario porque tiene ventas vinculadas.");
-        //     return;
-        // }
+        if (codigosPropietariosVentas.Contains(codigoBuscado))
+        {
+            Console.WriteLine("No se puede eliminar el propietario porque tiene ventas vinculadas.");
+            return;
+        }
 
         // MOSTRAR DATOS DEL PROPIETARIO
         Console.WriteLine("\n===== PROPIETARIO ENCONTRADO =====");

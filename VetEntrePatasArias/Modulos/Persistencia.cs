@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-
 partial class Program
 {
     static readonly string CarpetaDatos = "Datos";
@@ -14,30 +13,23 @@ partial class Program
     static readonly string RutaCsvProductos = Path.Combine(CarpetaDatos, "productos.csv");
     static readonly string RutaCsvVentas = Path.Combine(CarpetaDatos, "ventas.csv");
     static readonly string RutaRespaldoBinario = Path.Combine(CarpetaDatos, "respaldo_vet.bin");
-
     static string ultimaOperacionPersistencia = "Ninguna operacion realizada en esta sesion.";
-
-    // =========================================================
-    // 1. GUARDAR DATOS EN CSV (Escritura atomica con .tmp)
-    // =========================================================
     static void GuardarDatosCSV()
     {
         Console.WriteLine();
         Console.WriteLine("========================================");
         Console.WriteLine("          GUARDAR DATOS EN CSV");
         Console.WriteLine("========================================");
-
-    if (!ValidarIntegridadListasPropietarios() ||
-        !ValidarIntegridadListasMascotas() ||
-        !ValidarIntegridadListasAtenciones() ||
-        !ValidarIntegridadListasServicios() ||
-        !ValidarIntegridadListasProductos() ||
-        !ValidarIntegridadListasVentas())
+        if (!ValidarIntegridadListasPropietarios() ||
+            !ValidarIntegridadListasMascotas() ||
+            !ValidarIntegridadListasAtenciones() ||
+            !ValidarIntegridadListasServicios() ||
+            !ValidarIntegridadListasProductos() ||
+            !ValidarIntegridadListasVentas())
         {
             Console.WriteLine("Error: alguna entidad tiene listas paralelas desincronizadas. No se puede guardar.");
             return;
         }
-
         if (codigosPropietarios.Count == 0 &&
             codigosMascotas.Count == 0 &&
             codigosAtenciones.Count == 0 &&
@@ -48,19 +40,15 @@ partial class Program
             Console.WriteLine("No hay registros en memoria para guardar.");
             return;
         }
-
         string tmpProp = RutaCsvPropietarios + ".tmp";
         string tmpMasc = RutaCsvMascotas + ".tmp";
         string tmpAten = RutaCsvAtenciones + ".tmp";
         string tmpServ = RutaCsvServicios + ".tmp";
         string tmpProd = RutaCsvProductos + ".tmp";
         string tmpVent = RutaCsvVentas + ".tmp";
-
         try
         {
             Directory.CreateDirectory(CarpetaDatos);
-
-            // 1. Preparar y escribir Propietarios en temporal (6 columnas)
             List<string> lineasProp = new List<string>();
             lineasProp.Add("Codigo,Nombre,Telefono,DNI,Direccion,Correo");
             for (int i = 0; i < codigosPropietarios.Count; i++)
@@ -76,8 +64,6 @@ partial class Program
                 }));
             }
             File.WriteAllLines(tmpProp, lineasProp, Encoding.UTF8);
-
-            // 2. Preparar y escribir Mascotas en temporal (7 columnas)
             List<string> lineasMasc = new List<string>();
             lineasMasc.Add("Codigo,Nombre,Especie,TipoAnimal,Sexo,FechaNacimiento,CodigoPropietario");
             for (int i = 0; i < codigosMascotas.Count; i++)
@@ -94,8 +80,6 @@ partial class Program
                 }));
             }
             File.WriteAllLines(tmpMasc, lineasMasc, Encoding.UTF8);
-
-            // 3. Preparar y escribir Atenciones en temporal (12 columnas)
             List<string> lineasAten = new List<string>();
             lineasAten.Add("Codigo,CodigoMascota,Especialidad,Veterinario,Fecha,Hora,Motivo,Costo,Diagnostico,Tratamiento,Estado,Situacion");
             for (int i = 0; i < codigosAtenciones.Count; i++)
@@ -117,8 +101,6 @@ partial class Program
                 }));
             }
             File.WriteAllLines(tmpAten, lineasAten, Encoding.UTF8);
-
-            // 4. Preparar y escribir Servicios en temporal (9 columnas)
             List<string> lineasServ = new List<string>();
             lineasServ.Add("Codigo,CodigoMascota,Nombre,Responsable,Fecha,Hora,Costo,Observaciones,Estado");
             for (int i = 0; i < codigosServicios.Count; i++)
@@ -137,31 +119,25 @@ partial class Program
                 }));
             }
             File.WriteAllLines(tmpServ, lineasServ, Encoding.UTF8);
-            // 5. Preparar y escribir Productos en temporal
-List<string> lineasProd = new List<string>();
-lineasProd.Add("Codigo,Nombre,Precio,Stock");
-
-for (int i = 0; i < codigosProductos.Count; i++)
-{
-    lineasProd.Add(string.Join(",", new string[]
-    {
+            List<string> lineasProd = new List<string>();
+            lineasProd.Add("Codigo,Nombre,Precio,Stock");
+            for (int i = 0; i < codigosProductos.Count; i++)
+            {
+                lineasProd.Add(string.Join(",", new string[]
+                {
         codigosProductos[i].ToString(CultureInfo.InvariantCulture),
         EscaparCSV(nombresProductos[i]),
         preciosProductos[i].ToString(CultureInfo.InvariantCulture),
         stocksProductos[i].ToString(CultureInfo.InvariantCulture)
-    }));
-}
-
-File.WriteAllLines(tmpProd, lineasProd, Encoding.UTF8);
-
-// 6. Preparar y escribir Ventas en temporal
-List<string> lineasVent = new List<string>();
-lineasVent.Add("Codigo,CodigoProducto,NombreProducto,Cantidad,PrecioUnitario,Total,Fecha,CodigoPropietario,CodigoMascota");
-
-for (int i = 0; i < codigosVentas.Count; i++)
-{
-    lineasVent.Add(string.Join(",", new string[]
-    {
+                }));
+            }
+            File.WriteAllLines(tmpProd, lineasProd, Encoding.UTF8);
+            List<string> lineasVent = new List<string>();
+            lineasVent.Add("Codigo,CodigoProducto,NombreProducto,Cantidad,PrecioUnitario,Total,Fecha,CodigoPropietario,CodigoMascota");
+            for (int i = 0; i < codigosVentas.Count; i++)
+            {
+                lineasVent.Add(string.Join(",", new string[]
+                {
         codigosVentas[i].ToString(CultureInfo.InvariantCulture),
         codigosProductosVendidos[i].ToString(CultureInfo.InvariantCulture),
         EscaparCSV(nombresProductosVendidos[i]),
@@ -171,21 +147,17 @@ for (int i = 0; i < codigosVentas.Count; i++)
         EscaparCSV(fechasVentas[i]),
         codigosPropietariosVentas[i].ToString(CultureInfo.InvariantCulture),
         codigosMascotasVentas[i].ToString(CultureInfo.InvariantCulture)
-    }));
-}
-
-File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
-
-            // 5. Commit atomico: los 6 archivos temporales se escribieron correctamente
+                }));
+            }
+            File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
             File.Move(tmpProp, RutaCsvPropietarios, true);
             File.Move(tmpMasc, RutaCsvMascotas, true);
             File.Move(tmpAten, RutaCsvAtenciones, true);
             File.Move(tmpServ, RutaCsvServicios, true);
             File.Move(tmpProd, RutaCsvProductos, true);
             File.Move(tmpVent, RutaCsvVentas, true);
-
-            ultimaOperacionPersistencia = $"CSV guardado ({DateTime.Now:dd/MM/yyyy HH:mm:ss}): {codigosPropietarios.Count} prop., {codigosMascotas.Count} masc., {codigosAtenciones.Count} aten., {codigosServicios.Count} serv.";
-            Console.WriteLine("Archivos CSV guardados de forma atomica en la carpeta 'Datos':");
+            ultimaOperacionPersistencia = $"CSV guardado ({DateTime.Now:dd/MM/yyyy HH:mm:ss}): {codigosPropietarios.Count} prop., {codigosMascotas.Count} masc., {codigosAtenciones.Count} aten., {codigosServicios.Count} serv., {codigosProductos.Count} productos y {codigosVentas.Count} ventas.";
+            Console.WriteLine("Archivos CSV guardados en la carpeta 'Datos':");
             Console.WriteLine($" - propietarios.csv : {codigosPropietarios.Count} registros");
             Console.WriteLine($" - mascotas.csv     : {codigosMascotas.Count} registros");
             Console.WriteLine($" - atenciones.csv   : {codigosAtenciones.Count} registros");
@@ -196,22 +168,18 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
         catch (Exception ex)
         {
             LimpiarArchivosTemporales(tmpProp, tmpMasc, tmpAten, tmpServ, tmpProd, tmpVent);
-            Console.WriteLine($"Error al guardar los archivos CSV (no se alteraron archivos previos): {ex.Message}");
+            Console.WriteLine($"Error al guardar CSV (compruebe si hubo reemplazos parciales): {ex.Message}");
         }
     }
 
-    // =========================================================
-    // 2. CARGAR DATOS DESDE CSV (Parser multilinea + reglas)
-    // =========================================================
     static void CargarDatosCSV()
     {
         Console.WriteLine();
         Console.WriteLine("========================================");
         Console.WriteLine("          CARGAR DATOS DESDE CSV");
         Console.WriteLine("========================================");
-
-       string[] archivosRequeridos =
-    {
+        string[] archivosRequeridos =
+     {
         RutaCsvPropietarios,
         RutaCsvMascotas,
         RutaCsvAtenciones,
@@ -227,16 +195,14 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 return;
             }
         }
-
         try
         {
-            List<RegistroCSV> registrosProp = ParsearArchivoCSV(File.ReadAllText(RutaCsvPropietarios, Encoding.UTF8));
-            List<RegistroCSV> registrosMasc = ParsearArchivoCSV(File.ReadAllText(RutaCsvMascotas, Encoding.UTF8));
-            List<RegistroCSV> registrosAten = ParsearArchivoCSV(File.ReadAllText(RutaCsvAtenciones, Encoding.UTF8));
-            List<RegistroCSV> registrosServ = ParsearArchivoCSV(File.ReadAllText(RutaCsvServicios, Encoding.UTF8));
-            List<RegistroCSV> registrosProd = ParsearArchivoCSV(File.ReadAllText(RutaCsvProductos, Encoding.UTF8));
-            List<RegistroCSV> registrosVent = ParsearArchivoCSV(File.ReadAllText(RutaCsvVentas, Encoding.UTF8));
-
+            var registrosProp = ParsearArchivoCSV(File.ReadAllText(RutaCsvPropietarios, Encoding.UTF8));
+            var registrosMasc = ParsearArchivoCSV(File.ReadAllText(RutaCsvMascotas, Encoding.UTF8));
+            var registrosAten = ParsearArchivoCSV(File.ReadAllText(RutaCsvAtenciones, Encoding.UTF8));
+            var registrosServ = ParsearArchivoCSV(File.ReadAllText(RutaCsvServicios, Encoding.UTF8));
+            var registrosProd = ParsearArchivoCSV(File.ReadAllText(RutaCsvProductos, Encoding.UTF8));
+            var registrosVent = ParsearArchivoCSV(File.ReadAllText(RutaCsvVentas, Encoding.UTF8));
             if (registrosProp == null || registrosMasc == null ||
                 registrosAten == null || registrosServ == null ||
                 registrosProd == null || registrosVent == null)
@@ -244,16 +210,13 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 Console.WriteLine("Error: Comillas sin cerrar detectadas en uno de los archivos CSV.");
                 return;
             }
-
-           if (registrosProp.Count == 0 || registrosMasc.Count == 0 ||
-                registrosAten.Count == 0 || registrosServ.Count == 0 ||
-                registrosProd.Count == 0 || registrosVent.Count == 0)
-    {
-        Console.WriteLine("Error: Uno o mas archivos CSV estan completamente vacios.");
-        return;
-    }
-
-            // --- VALIDACION TEMPORAL: PROPIETARIOS ---
+            if (registrosProp.Count == 0 || registrosMasc.Count == 0 ||
+                 registrosAten.Count == 0 || registrosServ.Count == 0 ||
+                 registrosProd.Count == 0 || registrosVent.Count == 0)
+            {
+                Console.WriteLine("Error: Uno o mas archivos CSV estan completamente vacios.");
+                return;
+            }
             List<int> tempCodProp = new List<int>();
             List<string> tempNomProp = new List<string>();
             List<string> tempTelProp = new List<string>();
@@ -262,18 +225,15 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
             List<string> tempCorProp = new List<string>();
             HashSet<int> setCodProp = new HashSet<int>();
             HashSet<string> setDniProp = new HashSet<string>();
-
             if (registrosProp[0].Campos.Count != 6)
             {
                 Console.WriteLine("Error: Cabecera invalida en propietarios.csv.");
                 return;
             }
-
             for (int i = 1; i < registrosProp.Count; i++)
             {
                 RegistroCSV reg = registrosProp[i];
                 List<string> c = reg.Campos;
-
                 if (c.Count != 6)
                 {
                     Console.WriteLine($"Error en propietarios.csv (linea {reg.LineaInicio}): columnas invalidas.");
@@ -289,13 +249,11 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                     Console.WriteLine($"Error en propietarios.csv (linea {reg.LineaInicio}): codigo duplicado ({cod}).");
                     return;
                 }
-
                 string nom = c[1].Trim();
                 string tel = c[2].Trim();
                 string dni = c[3].Trim();
                 string dir = c[4].Trim();
                 string cor = c[5].Trim();
-
                 if (!ValidarReglasPropietario(nom, tel, dni, dir, cor, out string errorProp))
                 {
                     Console.WriteLine($"Error en propietarios.csv (linea {reg.LineaInicio}): {errorProp}");
@@ -306,7 +264,6 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                     Console.WriteLine($"Error en propietarios.csv (linea {reg.LineaInicio}): DNI duplicado ({dni}).");
                     return;
                 }
-
                 tempCodProp.Add(cod);
                 tempNomProp.Add(nom);
                 tempTelProp.Add(tel);
@@ -314,8 +271,6 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 tempDirProp.Add(dir);
                 tempCorProp.Add(cor);
             }
-
-            // --- VALIDACION TEMPORAL: MASCOTAS ---
             List<int> tempCodMasc = new List<int>();
             List<string> tempNomMasc = new List<string>();
             List<string> tempEspMasc = new List<string>();
@@ -324,18 +279,15 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
             List<DateTime> tempFecMasc = new List<DateTime>();
             List<int> tempCodPropMasc = new List<int>();
             HashSet<int> setCodMasc = new HashSet<int>();
-
             if (registrosMasc[0].Campos.Count != 7)
             {
                 Console.WriteLine("Error: Cabecera invalida en mascotas.csv.");
                 return;
             }
-
             for (int i = 1; i < registrosMasc.Count; i++)
             {
                 RegistroCSV reg = registrosMasc[i];
                 List<string> c = reg.Campos;
-
                 if (c.Count != 7)
                 {
                     Console.WriteLine($"Error en mascotas.csv (linea {reg.LineaInicio}): columnas invalidas.");
@@ -361,18 +313,15 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                     Console.WriteLine($"Error en mascotas.csv (linea {reg.LineaInicio}): propietario '{c[6]}' no existe.");
                     return;
                 }
-
                 string nomM = c[1].Trim();
                 string espM = c[2].Trim();
                 string tipM = c[3].Trim();
                 string sexM = c[4].Trim();
-
                 if (!ValidarReglasMascota(nomM, espM, tipM, sexM, fechaNac, out string errorMasc))
                 {
                     Console.WriteLine($"Error en mascotas.csv (linea {reg.LineaInicio}): {errorMasc}");
                     return;
                 }
-
                 tempCodMasc.Add(codM);
                 tempNomMasc.Add(nomM);
                 tempEspMasc.Add(espM);
@@ -381,8 +330,6 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 tempFecMasc.Add(fechaNac);
                 tempCodPropMasc.Add(codDueno);
             }
-
-            // --- VALIDACION TEMPORAL: ATENCIONES ---
             List<int> tempCodAten = new List<int>();
             List<int> tempCodMascAten = new List<int>();
             List<string> tempEspAten = new List<string>();
@@ -396,18 +343,15 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
             List<string> tempEstAten = new List<string>();
             List<string> tempSitAten = new List<string>();
             HashSet<int> setCodAten = new HashSet<int>();
-
             if (registrosAten[0].Campos.Count != 12)
             {
                 Console.WriteLine("Error: Cabecera invalida en atenciones.csv.");
                 return;
             }
-
             for (int i = 1; i < registrosAten.Count; i++)
             {
                 RegistroCSV reg = registrosAten[i];
                 List<string> c = reg.Campos;
-
                 if (c.Count != 12)
                 {
                     Console.WriteLine($"Error en atenciones.csv (linea {reg.LineaInicio}): columnas invalidas.");
@@ -438,7 +382,6 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                     Console.WriteLine($"Error en atenciones.csv (linea {reg.LineaInicio}): costo invalido '{c[7]}'.");
                     return;
                 }
-
                 string espA = c[2].Trim();
                 string vetA = c[3].Trim();
                 string horA = c[5].Trim();
@@ -447,13 +390,11 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 string traA = c[9].Trim();
                 string estA = c[10].Trim();
                 string sitA = c[11].Trim();
-
                 if (!ValidarReglasAtencion(espA, vetA, horA, motA, costoAten, estA, sitA, out string errorAten))
                 {
                     Console.WriteLine($"Error en atenciones.csv (linea {reg.LineaInicio}): {errorAten}");
                     return;
                 }
-
                 tempCodAten.Add(codA);
                 tempCodMascAten.Add(codMascRef);
                 tempEspAten.Add(espA);
@@ -467,8 +408,6 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 tempEstAten.Add(estA);
                 tempSitAten.Add(sitA);
             }
-
-            // --- VALIDACION TEMPORAL: SERVICIOS ---
             List<int> tempCodServ = new List<int>();
             List<int> tempCodMascServ = new List<int>();
             List<string> tempNomServ = new List<string>();
@@ -479,18 +418,15 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
             List<string> tempObsServ = new List<string>();
             List<string> tempEstServ = new List<string>();
             HashSet<int> setCodServ = new HashSet<int>();
-
             if (registrosServ[0].Campos.Count != 9)
             {
                 Console.WriteLine("Error: Cabecera invalida en servicios.csv.");
                 return;
             }
-
             for (int i = 1; i < registrosServ.Count; i++)
             {
                 RegistroCSV reg = registrosServ[i];
                 List<string> c = reg.Campos;
-
                 if (c.Count != 9)
                 {
                     Console.WriteLine($"Error en servicios.csv (linea {reg.LineaInicio}): columnas invalidas.");
@@ -521,19 +457,16 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                     Console.WriteLine($"Error en servicios.csv (linea {reg.LineaInicio}): costo invalido '{c[6]}'.");
                     return;
                 }
-
                 string nomS = c[2].Trim();
                 string resS = c[3].Trim();
                 string horS = c[5].Trim();
                 string obsS = c[7].Trim();
                 string estS = c[8].Trim();
-
                 if (!ValidarReglasServicio(nomS, resS, horS, costoServ, estS, out string errorServ))
                 {
                     Console.WriteLine($"Error en servicios.csv (linea {reg.LineaInicio}): {errorServ}");
                     return;
                 }
-
                 tempCodServ.Add(codS);
                 tempCodMascServ.Add(codMascRef);
                 tempNomServ.Add(nomS);
@@ -544,26 +477,20 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 tempObsServ.Add(obsS);
                 tempEstServ.Add(estS);
             }
-
-            
-            // --- VALIDACION TEMPORAL: PRODUCTOS ---
             List<int> tempCodProd = new List<int>();
             List<string> tempNomProd = new List<string>();
             List<decimal> tempPreProd = new List<decimal>();
             List<int> tempStockProd = new List<int>();
             HashSet<int> setCodProd = new HashSet<int>();
-
             if (registrosProd[0].Campos.Count != 4)
             {
                 Console.WriteLine("Error: Cabecera invalida en productos.csv.");
                 return;
             }
-
             for (int i = 1; i < registrosProd.Count; i++)
             {
                 RegistroCSV reg = registrosProd[i];
                 List<string> c = reg.Campos;
-
                 if (c.Count != 4 ||
                     !int.TryParse(c[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int codP) ||
                     codP < 4001 || !setCodProd.Add(codP) ||
@@ -576,14 +503,11 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                     Console.WriteLine($"Error en productos.csv (linea {reg.LineaInicio}): registro invalido.");
                     return;
                 }
-
                 tempCodProd.Add(codP);
                 tempNomProd.Add(c[1].Trim());
                 tempPreProd.Add(precioP);
                 tempStockProd.Add(stockP);
             }
-
-            // --- VALIDACION TEMPORAL: VENTAS ---
             List<int> tempCodVent = new List<int>();
             List<int> tempCodProdVent = new List<int>();
             List<string> tempNomProdVent = new List<string>();
@@ -594,25 +518,20 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
             List<int> tempCodPropVent = new List<int>();
             List<int> tempCodMascVent = new List<int>();
             HashSet<int> setCodVent = new HashSet<int>();
-
             Dictionary<int, int> propietarioPorMascota = new Dictionary<int, int>();
-
             for (int i = 0; i < tempCodMasc.Count; i++)
             {
                 propietarioPorMascota[tempCodMasc[i]] = tempCodPropMasc[i];
             }
-
             if (registrosVent[0].Campos.Count != 9)
             {
                 Console.WriteLine("Error: Cabecera invalida en ventas.csv.");
                 return;
             }
-
             for (int i = 1; i < registrosVent.Count; i++)
             {
                 RegistroCSV reg = registrosVent[i];
                 List<string> c = reg.Campos;
-
                 if (c.Count != 9 ||
                     !int.TryParse(c[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int codV) ||
                     codV < 5001 || !setCodVent.Add(codV) ||
@@ -624,7 +543,7 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                     !decimal.TryParse(c[4].Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out decimal precioV) ||
                     precioV <= 0 ||
                     !decimal.TryParse(c[5].Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out decimal totalV) ||
-                    totalV < 0 ||
+                    totalV <= 0 ||
                     !DateTime.TryParseExact(c[6].Trim(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaV) ||
                     !int.TryParse(c[7].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int codPropV) ||
                     codPropV < 0 ||
@@ -634,19 +553,16 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                     Console.WriteLine($"Error en ventas.csv (linea {reg.LineaInicio}): registro invalido.");
                     return;
                 }
-
                 if (codPropV == 0 && codMascV != 0)
                 {
                     Console.WriteLine("Error: una venta libre no puede tener mascota asociada.");
                     return;
                 }
-
                 if (codPropV != 0 && !setCodProp.Contains(codPropV))
                 {
                     Console.WriteLine("Error: propietario de la venta inexistente.");
                     return;
                 }
-
                 if (codMascV != 0 &&
                     (!propietarioPorMascota.ContainsKey(codMascV) ||
                      propietarioPorMascota[codMascV] != codPropV))
@@ -654,15 +570,12 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                     Console.WriteLine("Error: mascota inexistente o no pertenece al propietario.");
                     return;
                 }
-
                 decimal totalCalculado = precioV * cantV;
-
                 if (Math.Abs(totalV - totalCalculado) > 0.01m)
                 {
                     Console.WriteLine("Error: total de venta inconsistente.");
                     return;
                 }
-
                 tempCodVent.Add(codV);
                 tempCodProdVent.Add(codProdV);
                 tempNomProdVent.Add(c[2].Trim());
@@ -673,7 +586,6 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 tempCodPropVent.Add(codPropV);
                 tempCodMascVent.Add(codMascV);
             }
-
             if (tempCodProp.Count == 0 &&
     tempCodMasc.Count == 0 &&
     tempCodAten.Count == 0 &&
@@ -684,8 +596,6 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                 Console.WriteLine("Error: Los archivos CSV no contienen registros.");
                 return;
             }
-
-            
             if (codigosPropietarios.Count > 0 ||
                 codigosMascotas.Count > 0 ||
                 codigosAtenciones.Count > 0 ||
@@ -699,16 +609,13 @@ File.WriteAllLines(tmpVent, lineasVent, Encoding.UTF8);
                     $"{tempCodAten.Count} aten., {tempCodServ.Count} serv., " +
                     $"{tempCodProd.Count} productos y {tempCodVent.Count} ventas. " +
                     "¿Confirmar? (S/N): ");
-
                 string resp = (Console.ReadLine() ?? "").Trim().ToUpperInvariant();
-
                 if (resp != "S")
                 {
                     Console.WriteLine("Carga cancelada por el usuario. Los datos actuales no fueron modificados.");
                     return;
                 }
             }
-
             ReemplazarListasEnMemoria(
                 tempCodProp, tempNomProp, tempTelProp, tempDniProp, tempDirProp, tempCorProp,
                 tempCodMasc, tempNomMasc, tempEspMasc, tempTipMasc, tempSexMasc, tempFecMasc, tempCodPropMasc,
@@ -719,10 +626,7 @@ tempCodVent, tempCodProdVent, tempNomProdVent,
 tempCantVent, tempPreUnitVent, tempTotalVent,
 tempFechaVent, tempCodPropVent, tempCodMascVent
             );
-
-            
             ultimaOperacionPersistencia = $"CSV cargado ({DateTime.Now:dd/MM/yyyy HH:mm:ss}): {codigosPropietarios.Count} prop., {codigosMascotas.Count} masc., {codigosAtenciones.Count} aten., {codigosServicios.Count} serv., {codigosProductos.Count} productos y {codigosVentas.Count} ventas.";
-
             Console.WriteLine("Carga desde CSV completada exitosamente:");
             Console.WriteLine($" - Propietarios : {codigosPropietarios.Count} (proximo codigo: {codigoPropietario})");
             Console.WriteLine($" - Mascotas     : {codigosMascotas.Count} (proximo codigo: {codigoMascota})");
@@ -730,7 +634,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             Console.WriteLine($" - Servicios    : {codigosServicios.Count}");
             Console.WriteLine($" - Productos    : {codigosProductos.Count}");
             Console.WriteLine($" - Ventas       : {codigosVentas.Count}");
-
         }
         catch (Exception ex)
         {
@@ -738,47 +641,41 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         }
     }
 
-    // =========================================================
-    // 3. CREAR RESPALDO BINARIO (Escritura atomica con .tmp)
-    // =========================================================
     static void CrearRespaldoBinario()
     {
         Console.WriteLine();
         Console.WriteLine("========================================");
         Console.WriteLine("        CREAR RESPALDO BINARIO");
         Console.WriteLine("========================================");
-
         if (!ValidarIntegridadListasPropietarios() ||
             !ValidarIntegridadListasMascotas() ||
             !ValidarIntegridadListasAtenciones() ||
-            !ValidarIntegridadListasServicios())
+            !ValidarIntegridadListasServicios() ||
+            !ValidarIntegridadListasProductos() ||
+            !ValidarIntegridadListasVentas())
         {
             Console.WriteLine("Error: alguna entidad tiene listas paralelas desincronizadas.");
             return;
         }
-
         if (codigosPropietarios.Count == 0 &&
             codigosMascotas.Count == 0 &&
             codigosAtenciones.Count == 0 &&
-            codigosServicios.Count == 0)
+            codigosServicios.Count == 0 &&
+            codigosProductos.Count == 0 &&
+            codigosVentas.Count == 0)
         {
             Console.WriteLine("No hay registros en memoria para respaldar.");
             return;
         }
-
         string tmpBin = RutaRespaldoBinario + ".tmp";
-
         try
         {
             Directory.CreateDirectory(CarpetaDatos);
-
             using (FileStream fs = new FileStream(tmpBin, FileMode.Create, FileAccess.Write))
             using (BinaryWriter writer = new BinaryWriter(fs, Encoding.UTF8))
             {
                 writer.Write("VET_EP_ARIAS_BIN");
-                writer.Write(2);
-
-                // Bloque 1: Propietarios
+                writer.Write(3);
                 writer.Write(codigosPropietarios.Count);
                 for (int i = 0; i < codigosPropietarios.Count; i++)
                 {
@@ -789,8 +686,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     writer.Write(direcciones[i] ?? "");
                     writer.Write(correos[i] ?? "");
                 }
-
-                // Bloque 2: Mascotas
                 writer.Write(codigosMascotas.Count);
                 for (int i = 0; i < codigosMascotas.Count; i++)
                 {
@@ -802,8 +697,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     writer.Write(fechasNacimiento[i].ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
                     writer.Write(codigosPropietariosMascotas[i]);
                 }
-
-                // Bloque 3: Atenciones
                 writer.Write(codigosAtenciones.Count);
                 for (int i = 0; i < codigosAtenciones.Count; i++)
                 {
@@ -820,8 +713,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     writer.Write(estadosAtenciones[i] ?? "");
                     writer.Write(situacionesAtenciones[i] ?? "");
                 }
-
-                // Bloque 4: Servicios
                 writer.Write(codigosServicios.Count);
                 for (int i = 0; i < codigosServicios.Count; i++)
                 {
@@ -835,14 +726,32 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     writer.Write(observacionesServicios[i] ?? "");
                     writer.Write(estadosServicios[i] ?? "");
                 }
+                writer.Write(codigosProductos.Count);
+                for (int i = 0; i < codigosProductos.Count; i++)
+                {
+                    writer.Write(codigosProductos[i]);
+                    writer.Write(nombresProductos[i]);
+                    writer.Write(preciosProductos[i]);
+                    writer.Write(stocksProductos[i]);
+                }
+                writer.Write(codigosVentas.Count);
+                for (int i = 0; i < codigosVentas.Count; i++)
+                {
+                    writer.Write(codigosVentas[i]);
+                    writer.Write(codigosProductosVendidos[i]);
+                    writer.Write(nombresProductosVendidos[i]);
+                    writer.Write(cantidadesVendidas[i]);
+                    writer.Write(preciosUnitariosVentas[i]);
+                    writer.Write(totalesVentas[i]);
+                    writer.Write(fechasVentas[i]);
+                    writer.Write(codigosPropietariosVentas[i]);
+                    writer.Write(codigosMascotasVentas[i]);
+                }
             }
-
             File.Move(tmpBin, RutaRespaldoBinario, true);
-
-            ultimaOperacionPersistencia = $"Respaldo binario creado ({DateTime.Now:dd/MM/yyyy HH:mm:ss}): {codigosPropietarios.Count} prop., {codigosMascotas.Count} masc., {codigosAtenciones.Count} aten., {codigosServicios.Count} serv.";
+            ultimaOperacionPersistencia = $"Respaldo binario v3 creado ({DateTime.Now:dd/MM/yyyy HH:mm:ss}): {codigosPropietarios.Count} prop., {codigosMascotas.Count} masc., {codigosAtenciones.Count} aten., {codigosServicios.Count} serv., {codigosProductos.Count} productos y {codigosVentas.Count} ventas.";
             Console.WriteLine($"Respaldo binario creado exitosamente en: {Path.GetFullPath(RutaRespaldoBinario)}");
-            Console.WriteLine("Registros incluidos (v2): Propietarios, Mascotas, Atenciones y Servicios.");
-            Console.WriteLine("Pendientes: Productos y Ventas (esperando estructuras de Maximo).");
+            Console.WriteLine("Registros incluidos (v3): Propietarios, Mascotas, Atenciones, Servicios, Productos y Ventas, incluido el stock.");
         }
         catch (Exception ex)
         {
@@ -851,22 +760,17 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         }
     }
 
-    // =========================================================
-    // 4. RESTAURAR RESPALDO BINARIO (BinaryReader + reglas)
-    // =========================================================
     static void RestaurarRespaldoBinario()
     {
         Console.WriteLine();
         Console.WriteLine("========================================");
         Console.WriteLine("      RESTAURAR RESPALDO BINARIO");
         Console.WriteLine("========================================");
-
         if (!File.Exists(RutaRespaldoBinario))
         {
             Console.WriteLine($"Error: No existe el archivo de respaldo '{RutaRespaldoBinario}'.");
             return;
         }
-
         try
         {
             List<int> tempCodProp = new List<int>();
@@ -877,7 +781,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             List<string> tempCorProp = new List<string>();
             HashSet<int> setCodProp = new HashSet<int>();
             HashSet<string> setDniProp = new HashSet<string>();
-
             List<int> tempCodMasc = new List<int>();
             List<string> tempNomMasc = new List<string>();
             List<string> tempEspMasc = new List<string>();
@@ -886,7 +789,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             List<DateTime> tempFecMasc = new List<DateTime>();
             List<int> tempCodPropMasc = new List<int>();
             HashSet<int> setCodMasc = new HashSet<int>();
-
             List<int> tempCodAten = new List<int>();
             List<int> tempCodMascAten = new List<int>();
             List<string> tempEspAten = new List<string>();
@@ -900,7 +802,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             List<string> tempEstAten = new List<string>();
             List<string> tempSitAten = new List<string>();
             HashSet<int> setCodAten = new HashSet<int>();
-
             List<int> tempCodServ = new List<int>();
             List<int> tempCodMascServ = new List<int>();
             List<string> tempNomServ = new List<string>();
@@ -911,7 +812,22 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             List<string> tempObsServ = new List<string>();
             List<string> tempEstServ = new List<string>();
             HashSet<int> setCodServ = new HashSet<int>();
-
+            List<int> tempCodProd = new();
+            List<string> tempNomProd = new();
+            List<decimal> tempPreProd = new();
+            List<int> tempStockProd = new();
+            HashSet<int> setCodProd = new();
+            List<int> tempCodVent = new();
+            List<int> tempCodProdVent = new();
+            List<string> tempNomProdVent = new();
+            List<int> tempCantVent = new();
+            List<decimal> tempPreUnitVent = new();
+            List<decimal> tempTotalVent = new();
+            List<string> tempFechaVent = new();
+            List<int> tempCodPropVent = new();
+            List<int> tempCodMascVent = new();
+            HashSet<int> setCodVent = new();
+            int version;
             using (FileStream fs = new FileStream(RutaRespaldoBinario, FileMode.Open, FileAccess.Read))
             using (BinaryReader reader = new BinaryReader(fs, Encoding.UTF8))
             {
@@ -920,17 +836,13 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     Console.WriteLine("Error: El archivo binario esta vacio.");
                     return;
                 }
-
                 string firma = reader.ReadString();
-                int version = reader.ReadInt32();
-
-                if (firma != "VET_EP_ARIAS_BIN" || version != 2)
+                version = reader.ReadInt32();
+                if (firma != "VET_EP_ARIAS_BIN" || (version != 2 && version != 3))
                 {
-                    Console.WriteLine("Error: Firma o version del archivo binario no compatible (se esperaba v2).");
+                    Console.WriteLine("Error: Firma o version del archivo binario no compatible (se esperaba v2 o v3).");
                     return;
                 }
-
-                // Leer Propietarios
                 int totalProp = reader.ReadInt32();
                 if (totalProp < 0)
                 {
@@ -945,7 +857,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     string dni = reader.ReadString().Trim();
                     string dir = reader.ReadString().Trim();
                     string cor = reader.ReadString().Trim();
-
                     if (cod < 2001 || !setCodProp.Add(cod))
                     {
                         Console.WriteLine($"Error: Codigo de propietario invalido o duplicado ({cod}).");
@@ -956,7 +867,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                         Console.WriteLine($"Error en propietario {cod} del respaldo: {errorProp}");
                         return;
                     }
-
                     tempCodProp.Add(cod);
                     tempNomProp.Add(nom);
                     tempTelProp.Add(tel);
@@ -964,8 +874,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     tempDirProp.Add(dir);
                     tempCorProp.Add(cor);
                 }
-
-                // Leer Mascotas
                 int totalMasc = reader.ReadInt32();
                 if (totalMasc < 0)
                 {
@@ -981,7 +889,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     string sex = reader.ReadString().Trim();
                     string fecStr = reader.ReadString().Trim();
                     int codDueno = reader.ReadInt32();
-
                     if (codM < 1001 || !setCodMasc.Add(codM))
                     {
                         Console.WriteLine($"Error: Codigo de mascota invalido o duplicado ({codM}).");
@@ -1002,7 +909,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                         Console.WriteLine($"Error en mascota {codM} del respaldo: {errorMasc}");
                         return;
                     }
-
                     tempCodMasc.Add(codM);
                     tempNomMasc.Add(nomM);
                     tempEspMasc.Add(esp);
@@ -1011,8 +917,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     tempFecMasc.Add(fechaNac);
                     tempCodPropMasc.Add(codDueno);
                 }
-
-                // Leer Atenciones
                 int totalAten = reader.ReadInt32();
                 if (totalAten < 0)
                 {
@@ -1033,7 +937,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     string traA = reader.ReadString().Trim();
                     string estA = reader.ReadString().Trim();
                     string sitA = reader.ReadString().Trim();
-
                     if (codA <= 0 || !setCodAten.Add(codA))
                     {
                         Console.WriteLine($"Error: Codigo de atencion invalido o duplicado ({codA}).");
@@ -1054,7 +957,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                         Console.WriteLine($"Error en atencion {codA} del respaldo: {errorAten}");
                         return;
                     }
-
                     tempCodAten.Add(codA);
                     tempCodMascAten.Add(codMascRef);
                     tempEspAten.Add(espA);
@@ -1068,8 +970,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     tempEstAten.Add(estA);
                     tempSitAten.Add(sitA);
                 }
-
-                // Leer Servicios
                 int totalServ = reader.ReadInt32();
                 if (totalServ < 0)
                 {
@@ -1087,7 +987,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     decimal cosS = reader.ReadDecimal();
                     string obsS = reader.ReadString().Trim();
                     string estS = reader.ReadString().Trim();
-
                     if (codS <= 0 || !setCodServ.Add(codS))
                     {
                         Console.WriteLine($"Error: Codigo de servicio invalido o duplicado ({codS}).");
@@ -1108,7 +1007,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                         Console.WriteLine($"Error en servicio {codS} del respaldo: {errorServ}");
                         return;
                     }
-
                     tempCodServ.Add(codS);
                     tempCodMascServ.Add(codMascRef);
                     tempNomServ.Add(nomS);
@@ -1119,17 +1017,73 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     tempObsServ.Add(obsS);
                     tempEstServ.Add(estS);
                 }
-
+                if (version == 3)
+                {
+                    int totalProd = reader.ReadInt32();
+                    if (totalProd < 0) throw new InvalidDataException("Cantidad de productos corrupta.");
+                    for (int i = 0; i < totalProd; i++)
+                    {
+                        int codigo = reader.ReadInt32();
+                        string nombre = reader.ReadString().Trim();
+                        decimal precio = reader.ReadDecimal();
+                        int stock = reader.ReadInt32();
+                        if (codigo < 4001 || !setCodProd.Add(codigo) ||
+                            string.IsNullOrWhiteSpace(nombre) || precio <= 0 || stock < 0)
+                            throw new InvalidDataException("Producto invalido en el respaldo.");
+                        tempCodProd.Add(codigo);
+                        tempNomProd.Add(nombre);
+                        tempPreProd.Add(precio);
+                        tempStockProd.Add(stock);
+                    }
+                    int totalVent = reader.ReadInt32();
+                    if (totalVent < 0) throw new InvalidDataException("Cantidad de ventas corrupta.");
+                    for (int i = 0; i < totalVent; i++)
+                    {
+                        int codigo = reader.ReadInt32();
+                        int producto = reader.ReadInt32();
+                        string nombre = reader.ReadString().Trim();
+                        int cantidad = reader.ReadInt32();
+                        decimal precio = reader.ReadDecimal();
+                        decimal total = reader.ReadDecimal();
+                        string fecha = reader.ReadString().Trim();
+                        int propietario = reader.ReadInt32();
+                        int mascota = reader.ReadInt32();
+                        if (codigo < 5001 || !setCodVent.Add(codigo) || !setCodProd.Contains(producto) ||
+                            string.IsNullOrWhiteSpace(nombre) || cantidad <= 0 || precio <= 0 || total <= 0 ||
+                            Math.Abs(total - precio * cantidad) > 0.01m ||
+                            !DateTime.TryParseExact(fecha, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out _) ||
+                            propietario < 0 || mascota < 0 || (propietario == 0 && mascota != 0) ||
+                            (propietario != 0 && !setCodProp.Contains(propietario)))
+                            throw new InvalidDataException("Venta invalida en el respaldo.");
+                        int indiceMascota = tempCodMasc.IndexOf(mascota);
+                        if (mascota != 0 && (indiceMascota < 0 || tempCodPropMasc[indiceMascota] != propietario))
+                            throw new InvalidDataException("La mascota de la venta no pertenece al propietario.");
+                        tempCodVent.Add(codigo);
+                        tempCodProdVent.Add(producto);
+                        tempNomProdVent.Add(nombre);
+                        tempCantVent.Add(cantidad);
+                        tempPreUnitVent.Add(precio);
+                        tempTotalVent.Add(total);
+                        tempFechaVent.Add(fecha);
+                        tempCodPropVent.Add(propietario);
+                        tempCodMascVent.Add(mascota);
+                    }
+                }
                 if (fs.Position != fs.Length)
                 {
                     Console.WriteLine("Error: El archivo binario contiene bytes residuales o esta corrupto.");
                     return;
                 }
             }
-
-            if (codigosPropietarios.Count > 0 || codigosMascotas.Count > 0 || codigosAtenciones.Count > 0 || codigosServicios.Count > 0)
+            if (version == 2 && (codigosProductos.Count > 0 || codigosVentas.Count > 0))
             {
-                Console.Write($"Se reemplazaran los datos en memoria por {tempCodProp.Count} prop., {tempCodMasc.Count} masc., {tempCodAten.Count} aten. y {tempCodServ.Count} serv. del respaldo. ¿Confirmar? (S/N): ");
+                Console.WriteLine("Restauracion cancelada: el binario v2 no incluye Pet Shop. Utilice un respaldo v3 o CSV para recuperar el conjunto completo.");
+                return;
+            }
+            if (codigosPropietarios.Count > 0 || codigosMascotas.Count > 0 || codigosAtenciones.Count > 0 ||
+                codigosServicios.Count > 0 || codigosProductos.Count > 0 || codigosVentas.Count > 0)
+            {
+                Console.Write($"Se reemplazaran los datos en memoria por {tempCodProp.Count} prop., {tempCodMasc.Count} masc., {tempCodAten.Count} aten., {tempCodServ.Count} serv., {tempCodProd.Count} productos y {tempCodVent.Count} ventas del respaldo v{version}. ¿Confirmar? (S/N): ");
                 string resp = (Console.ReadLine() ?? "").Trim().ToUpperInvariant();
                 if (resp != "S")
                 {
@@ -1137,20 +1091,23 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                     return;
                 }
             }
-
             ReemplazarListasEnMemoria(
                 tempCodProp, tempNomProp, tempTelProp, tempDniProp, tempDirProp, tempCorProp,
                 tempCodMasc, tempNomMasc, tempEspMasc, tempTipMasc, tempSexMasc, tempFecMasc, tempCodPropMasc,
                 tempCodAten, tempCodMascAten, tempEspAten, tempVetAten, tempFecAten, tempHorAten, tempMotAten, tempCosAten, tempDiaAten, tempTraAten, tempEstAten, tempSitAten,
-                tempCodServ, tempCodMascServ, tempNomServ, tempResServ, tempFecServ, tempHorServ, tempCosServ, tempObsServ, tempEstServ
+                tempCodServ, tempCodMascServ, tempNomServ, tempResServ, tempFecServ, tempHorServ, tempCosServ, tempObsServ, tempEstServ,
+                tempCodProd, tempNomProd, tempPreProd, tempStockProd,
+                tempCodVent, tempCodProdVent, tempNomProdVent, tempCantVent,
+                tempPreUnitVent, tempTotalVent, tempFechaVent, tempCodPropVent, tempCodMascVent
             );
-
-            ultimaOperacionPersistencia = $"Respaldo binario restaurado ({DateTime.Now:dd/MM/yyyy HH:mm:ss}): {codigosPropietarios.Count} prop., {codigosMascotas.Count} masc., {codigosAtenciones.Count} aten., {codigosServicios.Count} serv.";
+            ultimaOperacionPersistencia = $"Respaldo binario v{version} restaurado ({DateTime.Now:dd/MM/yyyy HH:mm:ss}): {codigosPropietarios.Count} prop., {codigosMascotas.Count} masc., {codigosAtenciones.Count} aten., {codigosServicios.Count} serv., {codigosProductos.Count} productos y {codigosVentas.Count} ventas.";
             Console.WriteLine("Respaldo binario restaurado correctamente:");
             Console.WriteLine($" - Propietarios : {codigosPropietarios.Count} (proximo codigo: {codigoPropietario})");
             Console.WriteLine($" - Mascotas     : {codigosMascotas.Count} (proximo codigo: {codigoMascota})");
             Console.WriteLine($" - Atenciones   : {codigosAtenciones.Count}");
             Console.WriteLine($" - Servicios    : {codigosServicios.Count}");
+            Console.WriteLine($" - Productos    : {codigosProductos.Count}");
+            Console.WriteLine($" - Ventas       : {codigosVentas.Count}");
         }
         catch (EndOfStreamException)
         {
@@ -1162,9 +1119,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         }
     }
 
-    // =========================================================
-    // 5. CONSULTAR ESTADO DE CARGA
-    // =========================================================
     static void ConsultarEstadoCarga()
     {
         Console.WriteLine();
@@ -1175,21 +1129,22 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         Console.WriteLine($"Mascotas en memoria     : {codigosMascotas.Count} (proximo codigo: {codigoMascota}) | Integridad: {(ValidarIntegridadListasMascotas() ? "OK" : "ERROR")}");
         Console.WriteLine($"Atenciones en memoria   : {codigosAtenciones.Count} | Integridad: {(ValidarIntegridadListasAtenciones() ? "OK" : "ERROR")}");
         Console.WriteLine($"Servicios en memoria    : {codigosServicios.Count} | Integridad: {(ValidarIntegridadListasServicios() ? "OK" : "ERROR")}");
+        Console.WriteLine($"Productos en memoria    : {codigosProductos.Count} | Integridad: {(ValidarIntegridadListasProductos() ? "OK" : "ERROR")}");
+        Console.WriteLine($"Ventas en memoria       : {codigosVentas.Count} | Integridad: {(ValidarIntegridadListasVentas() ? "OK" : "ERROR")}");
         Console.WriteLine("----------------------------------------");
         Console.WriteLine($"CSV Propietarios        : {(File.Exists(RutaCsvPropietarios) ? $"Disponible ({File.GetLastWriteTime(RutaCsvPropietarios):dd/MM/yyyy HH:mm:ss})" : "No generado")}");
         Console.WriteLine($"CSV Mascotas            : {(File.Exists(RutaCsvMascotas) ? $"Disponible ({File.GetLastWriteTime(RutaCsvMascotas):dd/MM/yyyy HH:mm:ss})" : "No generado")}");
         Console.WriteLine($"CSV Atenciones          : {(File.Exists(RutaCsvAtenciones) ? $"Disponible ({File.GetLastWriteTime(RutaCsvAtenciones):dd/MM/yyyy HH:mm:ss})" : "No generado")}");
         Console.WriteLine($"CSV Servicios           : {(File.Exists(RutaCsvServicios) ? $"Disponible ({File.GetLastWriteTime(RutaCsvServicios):dd/MM/yyyy HH:mm:ss})" : "No generado")}");
-        Console.WriteLine($"Respaldo Binario (v2)   : {(File.Exists(RutaRespaldoBinario) ? $"Disponible ({File.GetLastWriteTime(RutaRespaldoBinario):dd/MM/yyyy HH:mm:ss})" : "No generado")}");
+        Console.WriteLine($"CSV Productos           : {(File.Exists(RutaCsvProductos) ? $"Disponible ({File.GetLastWriteTime(RutaCsvProductos):dd/MM/yyyy HH:mm:ss})" : "No generado")}");
+        Console.WriteLine($"CSV Ventas              : {(File.Exists(RutaCsvVentas) ? $"Disponible ({File.GetLastWriteTime(RutaCsvVentas):dd/MM/yyyy HH:mm:ss})" : "No generado")}");
+        Console.WriteLine($"Respaldo Binario        : {(File.Exists(RutaRespaldoBinario) ? $"Disponible ({File.GetLastWriteTime(RutaRespaldoBinario):dd/MM/yyyy HH:mm:ss})" : "No generado")}");
         Console.WriteLine("----------------------------------------");
         Console.WriteLine($"Ultima operacion        : {ultimaOperacionPersistencia}");
-        Console.WriteLine("Entidades integradas    : Propietarios, Mascotas, Atenciones, Servicios.");
-        Console.WriteLine("Entidades pendientes    : Productos y Ventas (esperando estructuras de Maximo).");
+        Console.WriteLine("CSV integrado: Propietarios, Mascotas, Atenciones, Servicios, Productos y Ventas.");
+        Console.WriteLine("Binario v3: las seis entidades y el stock. Se admite restaurar v2 si no hay Pet Shop en memoria.");
     }
 
-    // =========================================================
-    // VALIDACIONES DE REGLAS DE NEGOCIO POR ENTIDAD
-    // =========================================================
     static bool ValidarReglasPropietario(string nombre, string telefono, string dni, string direccion, string correo, out string error)
     {
         if (string.IsNullOrWhiteSpace(nombre))
@@ -1218,7 +1173,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             error = $"correo invalido '{correo}'.";
             return false;
         }
-
         error = "";
         return true;
     }
@@ -1251,7 +1205,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             error = $"fecha de nacimiento fuera de rango ({fechaNacimiento:yyyy-MM-dd}).";
             return false;
         }
-
         error = "";
         return true;
     }
@@ -1284,7 +1237,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             error = "situacion vacia.";
             return false;
         }
-
         error = "";
         return true;
     }
@@ -1312,7 +1264,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             error = $"estado invalido '{estado}'.";
             return false;
         }
-
         error = "";
         return true;
     }
@@ -1326,9 +1277,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         return true;
     }
 
-    // =========================================================
-    // AUXILIARES DE REEMPLAZO ATOMICO, CODIGOS Y CSV MULTILINEA
-    // =========================================================
     static void LimpiarArchivosTemporales(params string[] rutas)
     {
         for (int i = 0; i < rutas.Length; i++)
@@ -1339,12 +1287,10 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             }
             catch
             {
-                // Ignorar error secundario al limpiar temporales
             }
         }
     }
 
-   
     static void ReemplazarListasEnMemoria(
         List<int> tempCodProp, List<string> tempNomProp, List<string> tempTelProp, List<string> tempDniProp, List<string> tempDirProp, List<string> tempCorProp,
         List<int> tempCodMasc, List<string> tempNomMasc, List<string> tempEspMasc, List<string> tempTipMasc, List<string> tempSexMasc, List<DateTime> tempFecMasc, List<int> tempCodPropMasc,
@@ -1360,7 +1306,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         dnisPropietarios.AddRange(tempDniProp);
         direcciones.AddRange(tempDirProp);
         correos.AddRange(tempCorProp);
-
         codigosMascotas.Clear(); mascotas.Clear(); especies.Clear(); tiposAnimales.Clear(); sexos.Clear(); fechasNacimiento.Clear(); codigosPropietariosMascotas.Clear();
         codigosMascotas.AddRange(tempCodMasc);
         mascotas.AddRange(tempNomMasc);
@@ -1369,11 +1314,9 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         sexos.AddRange(tempSexMasc);
         fechasNacimiento.AddRange(tempFecMasc);
         codigosPropietariosMascotas.AddRange(tempCodPropMasc);
-
         codigosAtenciones.Clear(); codigosMascotasAtenciones.Clear(); especialidadesAtenciones.Clear(); veterinariosAtenciones.Clear();
         fechasAtenciones.Clear(); horasAtenciones.Clear(); motivosAtenciones.Clear(); costosAtenciones.Clear();
         diagnosticosAtenciones.Clear(); tratamientosAtenciones.Clear(); estadosAtenciones.Clear(); situacionesAtenciones.Clear();
-
         codigosAtenciones.AddRange(tempCodAten);
         codigosMascotasAtenciones.AddRange(tempCodMascAten);
         especialidadesAtenciones.AddRange(tempEspAten);
@@ -1386,10 +1329,8 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         tratamientosAtenciones.AddRange(tempTraAten);
         estadosAtenciones.AddRange(tempEstAten);
         situacionesAtenciones.AddRange(tempSitAten);
-
         codigosServicios.Clear(); codigosMascotasServicios.Clear(); nombresServicios.Clear(); responsablesServicios.Clear();
         fechasServicios.Clear(); horasServicios.Clear(); costosServicios.Clear(); observacionesServicios.Clear(); estadosServicios.Clear();
-
         codigosServicios.AddRange(tempCodServ);
         codigosMascotasServicios.AddRange(tempCodMascServ);
         nombresServicios.AddRange(tempNomServ);
@@ -1399,15 +1340,11 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         costosServicios.AddRange(tempCosServ);
         observacionesServicios.AddRange(tempObsServ);
         estadosServicios.AddRange(tempEstServ);
-
-        // Reemplazar productos
         codigosProductos.Clear(); nombresProductos.Clear(); preciosProductos.Clear(); stocksProductos.Clear();
         codigosProductos.AddRange(tempCodProd);
         nombresProductos.AddRange(tempNomProd);
         preciosProductos.AddRange(tempPreProd);
         stocksProductos.AddRange(tempStockProd);
-
-        // Reemplazar ventas
         codigosVentas.Clear();
         codigosProductosVendidos.Clear();
         cantidadesVendidas.Clear();
@@ -1417,7 +1354,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         fechasVentas.Clear();
         codigosPropietariosVentas.Clear();
         codigosMascotasVentas.Clear();
-
         codigosVentas.AddRange(tempCodVent);
         codigosProductosVendidos.AddRange(tempCodProdVent);
         cantidadesVendidas.AddRange(tempCantVent);
@@ -1427,21 +1363,15 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
         fechasVentas.AddRange(tempFechaVent);
         codigosPropietariosVentas.AddRange(tempCodPropVent);
         codigosMascotasVentas.AddRange(tempCodMascVent);
-
-        // Reconstruir referencias de productos vendidos
         codigosProductosVentas.Clear();
-
         for (int i = 0; i < codigosProductosVendidos.Count; i++)
         {
             int codigoProducto = codigosProductosVendidos[i];
-
             if (!codigosProductosVentas.Contains(codigoProducto))
                 codigosProductosVentas.Add(codigoProducto);
         }
-
         RecalcularSiguientesCodigos();
     }
-
 
     static void RecalcularSiguientesCodigos()
     {
@@ -1451,7 +1381,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
             if (codigosPropietarios[i] > maxProp) maxProp = codigosPropietarios[i];
         }
         codigoPropietario = maxProp + 1;
-
         int maxMasc = 1000;
         for (int i = 0; i < codigosMascotas.Count; i++)
         {
@@ -1463,41 +1392,34 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
     static string EscaparCSV(string valor)
     {
         if (string.IsNullOrEmpty(valor)) return "";
-
         if (valor.Contains(",") || valor.Contains("\"") || valor.Contains("\n") || valor.Contains("\r"))
         {
             return "\"" + valor.Replace("\"", "\"\"") + "\"";
         }
-
         return valor;
     }
-
     class RegistroCSV
     {
         public int LineaInicio;
         public List<string> Campos = new List<string>();
     }
 
-    static List<RegistroCSV> ParsearArchivoCSV(string contenido)
+    static List<RegistroCSV>? ParsearArchivoCSV(string contenido)
     {
-        List<RegistroCSV> registros = new List<RegistroCSV>();
+        var registros = new List<RegistroCSV>();
         if (string.IsNullOrEmpty(contenido)) return registros;
-
         if (contenido[0] == '\uFEFF')
         {
             contenido = contenido.Substring(1);
         }
-
         List<string> camposActuales = new List<string>();
         StringBuilder campoActual = new StringBuilder();
         bool enComillas = false;
         int lineaActual = 1;
         int lineaInicioRegistro = 1;
-
         for (int i = 0; i < contenido.Length; i++)
         {
             char c = contenido[i];
-
             if (enComillas)
             {
                 if (c == '"')
@@ -1545,10 +1467,8 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                 else if (c == '\r' || c == '\n')
                 {
                     if (c == '\r' && i + 1 < contenido.Length && contenido[i + 1] == '\n') i++;
-
                     camposActuales.Add(campoActual.ToString());
                     campoActual.Clear();
-
                     if (!EsRegistroCSVVacio(camposActuales))
                     {
                         registros.Add(new RegistroCSV
@@ -1557,7 +1477,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                             Campos = camposActuales
                         });
                     }
-
                     camposActuales = new List<string>();
                     lineaActual++;
                     lineaInicioRegistro = lineaActual;
@@ -1568,9 +1487,7 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                 }
             }
         }
-
         if (enComillas) return null;
-
         if (campoActual.Length > 0 || camposActuales.Count > 0)
         {
             camposActuales.Add(campoActual.ToString());
@@ -1583,7 +1500,6 @@ tempFechaVent, tempCodPropVent, tempCodMascVent
                 });
             }
         }
-
         return registros;
     }
 

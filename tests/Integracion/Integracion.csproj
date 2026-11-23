@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <StartupObject>PruebasIntegracion</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../VetEntrePatasArias/Program.cs" Link="Sistema/Program.cs" />
+    <Compile Include="../../VetEntrePatasArias/Modulos/*.cs" Link="Sistema/Modulos/%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

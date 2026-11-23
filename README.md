@@ -1,120 +1,107 @@
 # Entre Patas – Arias | Integración del EF
 
-Proyecto grupal de **Fundamentos de Programación**: sistema de gestión veterinaria desarrollado en **C# (aplicación de consola)** y documentado en **PSeInt por módulos independientes**.
+Sistema de gestión veterinaria de consola en C# para Fundamentos de Programación.
+La rama `ep/integracion` reúne los módulos del equipo mediante `partial class Program`
+y listas paralelas compartidas. Las relaciones usan códigos, no posiciones de otras listas.
 
-## Criterio de organización
+## Responsabilidades y estado
 
-- **C#:** los integrantes aportan sus archivos `.cs` y las operaciones se conectan desde `VetEntrePatasArias/Program.cs`, usando datos compartidos.
-- **PSeInt:** cada integrante mantiene su propio archivo `.psc` ejecutable de forma independiente, para facilitar la evaluación, las pruebas y la exposición individual. **No se fusionarán todos los PSeInt en un único archivo gigante.**
-- [`PSeInt/SistemaVeterinaria_EF.psc`](PSeInt/SistemaVeterinaria_EF.psc) conserva un **esquema de navegación y submenús**, pero **no ejecuta las operaciones de los módulos individuales** ni los importa automáticamente.
-
-La integración funcional del sistema grupal corresponde al **C#**. Los archivos PSeInt reflejan, por separado, el desarrollo algorítmico de cada responsable.
-
-## Distribución del trabajo y estado verificado en esta rama
-
-| Integrante | Responsabilidad | C# en `ep/integracion` | PSeInt en `ep/integracion` |
-| --- | --- | --- | --- |
-| 1 — Mauricio | Propietarios y Mascotas | Implementado y conectado en el menú | **Completo**, `01_Propietarios_Mascotas.psc` (831 líneas) |
-| 2 — Joaquín | Atenciones Médicas y Servicios | Implementado y conectado en el menú | **Pendiente de subir**: `02_Atenciones_Servicios.psc` es todavía una plantilla |
-| 3 — Máximo | Pet Shop e Historial | Pendiente en los archivos de esta rama | **Plantilla**: `03_PetShop_Historial.psc` |
-| 4 — Piero | Listados y Persistencia | Pendiente en los archivos de esta rama | **Plantilla**: `04_Listados_Persistencia.psc` |
-
-Este estado describe los **archivos presentes en la rama**, no el trabajo que los compañeros puedan tener guardado localmente.
-
-## Funcionalidades C# implementadas
-
-### Propietarios
-- Registrar, buscar por código, modificar y eliminar con confirmación.
-- Consultar mascotas asociadas.
-- Validaciones de DNI, teléfono, correo y relación con mascotas.
-- Restricción: no eliminar un propietario que tenga mascotas asociadas.
-
-### Mascotas
-- Registrar para un propietario existente, buscar por código o nombre, modificar y eliminar.
-- Validar tipo, sexo y fecha de nacimiento.
-- Asociar por código de propietario, permitiendo varias mascotas para una misma persona.
-- **Protección de integridad implementada:** `EliminarMascota()` impide borrar una mascota cuando su código aparece en `codigosMascotasAtenciones` o `codigosMascotasServicios`. La regla incluye atenciones y servicios anulados, porque siguen siendo registros del historial.
-- Si no tiene atenciones ni servicios, conserva la confirmación habitual antes de eliminar.
-
-### Atenciones médicas
-- Registrar, buscar, modificar y **anular** atenciones.
-- Asociación con mascotas registradas.
-- Fecha, hora, costo, especialidad, veterinario y motivo.
-- Situación programada/realizada, diagnóstico y tratamiento según corresponda.
-
-### Servicios veterinarios
-- Registrar, buscar, modificar y **anular** servicios.
-- Asociación con mascotas registradas.
-- Responsable, fecha, hora, costo, observaciones y estado.
-
-Las operaciones de los cuatro módulos anteriores están **enlazadas desde `Program.cs`**. Esto no constituye por sí solo una verificación de compilación o pruebas automatizadas.
-
-## Áreas aún pendientes en el C# integrado
-
-Los submenús de **Pet Shop, Historial, Listados y Persistencia** figuran en la navegación, pero sus operaciones todavía no están conectadas. En la revisión actual, `Productos.cs`, `Listados.cs` y `Persistencia.cs` siguen vacíos, y `Ventas.cs` es una plantilla. No se debe presentar como implementado el registro de productos/ventas, la persistencia CSV ni los respaldos binarios.
-
-## Reglas de integridad entre módulos y comprobaciones pendientes
-
-**Reglas ya presentes en el C# integrado:**
-- No se permite registrar mascotas sin un propietario existente.
-- No se permite eliminar un propietario mientras tenga mascotas asociadas.
-- No se permite registrar atenciones o servicios para mascotas inexistentes.
-- No se permite eliminar físicamente una mascota cuyo código aparezca en alguna atención o servicio, **aunque esté anulado**.
-- Las relaciones entre entidades se consultan por **código**; las posiciones solo identifican elementos dentro de las listas paralelas de una misma entidad.
-
-**Ventas de Pet Shop: pendientes de implementación y conexión.** El archivo `VetEntrePatasArias/Modulos/Ventas.cs` existe actualmente como plantilla sin listas ni métodos de ventas. La decisión del equipo es que las ventas sean **libres por defecto**, con asociación opcional a propietario y/o mascota. Cuando Máximo implemente y confirme las listas `codigosPropietariosVentas` y `codigosMascotasVentas`, deben ampliarse `EliminarPropietario()` y `EliminarMascota()` para impedir borrar registros con ventas vinculadas. Las ventas libres usarán el identificador opcional `0` y **no bloquearán** eliminaciones. No añadir referencias a esas listas antes de su implementación, pues impediría compilar.
-
-**Pruebas manuales de integración recomendadas (aún no verificadas por ejecución en esta revisión):**
-
-| Prueba | Pasos | Resultado esperado |
+| Integrante | Archivos C# integrados | PSeInt individual |
 | --- | --- | --- |
-| Mascota sin dependencias | Registrar un propietario, una mascota y eliminarla sin registrar atenciones ni servicios | Solicita confirmación y permite eliminar |
-| Mascota con atención | Registrar mascota y atención vinculada; intentar eliminar la mascota | Rechaza la eliminación y conserva ambas entidades |
-| Mascota con servicio | Registrar mascota y servicio vinculado; intentar eliminar la mascota | Rechaza la eliminación y conserva ambas entidades |
-| Atención o servicio anulados | Anular una atención o servicio existente y volver a intentar eliminar su mascota | Sigue rechazando la eliminación, preservando el historial |
-| Propietario con mascotas | Intentar eliminar propietario que tiene una mascota registrada | Rechaza la eliminación |
-| Mascota de otro propietario | Registrar varios propietarios y mascotas y buscar una atención por código | Muestra la mascota y propietario que corresponden al código, no a la posición |
+| Mauricio | `Propietarios.cs`, `Mascotas.cs` | `01_Propietarios_Mascotas.psc`, desarrollado |
+| Joaquín | `Atenciones.cs`, `Servicios.cs` | `02_Atenciones_Servicios.psc`, desarrollado |
+| Máximo | `Productos.cs`, `Ventas.cs`, `Historial.cs` | `03_PetShop_Historial.psc`, plantilla pendiente |
+| Piero | `Listados.cs`, `Persistencia.cs` | `04_Listados_Persistencia.psc`, código presente; requiere corregir sus dos declaraciones de algoritmo y verificar ejecución |
 
-Para la prueba de atención, utilizar una fecha y hora coherentes con su situación `Programada` o `Realizada`. Ejecutar `dotnet build VetEntrePatasArias/VetEntrePatasArias.csproj` y probar desde la consola; **no marcar como ejecutadas estas pruebas hasta registrar sus resultados reales**. No se ha ejecutado la compilación en esta revisión.
+Los nueve módulos C# están conectados desde `VetEntrePatasArias/Program.cs`.
+Los `.psc` son demostraciones independientes: no se importan ni comparten datos
+automáticamente. `PSeInt/SistemaVeterinaria_EF.psc` conserva el esquema de navegación.
 
-## Estructura del proyecto
+## Ejecutar el sistema
 
-```text
-README.md
-VetEntrePatasArias/
-├── Program.cs
-├── VetEntrePatasArias.csproj
-└── Modulos/
-    ├── Propietarios.cs
-    ├── Mascotas.cs
-    ├── Atenciones.cs
-    ├── Servicios.cs
-    ├── Productos.cs
-    ├── Listados.cs
-    └── Persistencia.cs
-PSeInt/
-├── SistemaVeterinaria_EF.psc
-└── Modulos/
-    ├── 01_Propietarios_Mascotas.psc
-    ├── 02_Atenciones_Servicios.psc
-    ├── 03_PetShop_Historial.psc
-    └── 04_Listados_Persistencia.psc
-```
-
-## Cómo ejecutar
-
-**Aplicación C#:** requiere .NET SDK 10. Desde la raíz del repositorio:
+Requiere **.NET SDK 10**. Desde la raíz del repositorio:
 
 ```powershell
-dotnet run --project VetEntrePatasArias/VetEntrePatasArias.csproj
+dotnet build .\VetEntrePatasArias\VetEntrePatasArias.csproj
+dotnet run --project .\VetEntrePatasArias\VetEntrePatasArias.csproj
 ```
 
-**PSeInt:** abrir por separado el archivo de cada integrante dentro de `PSeInt/Modulos/` y ejecutarlo desde PSeInt (F9). Actualmente el módulo 01 está desarrollado; los módulos 02, 03 y 04 aún figuran como plantillas en esta rama.
+Si esta carpeta es un clon de Git, actualizar primero con:
 
-> Los archivos `.psc` son demostraciones individuales: **no comparten datos automáticamente entre procesos**. Las relaciones con propietarios y mascotas deben prepararse como datos de prueba dentro de cada módulo cuando se ejecuta por separado.
+```powershell
+git switch ep/integracion
+git pull --ff-only origin ep/integracion
+```
 
-## Estado del examen final
+Reemplazar los archivos originales al actualizar módulos. Guardar los respaldos
+fuera de `VetEntrePatasArias`: cualquier copia `.cs` dentro del proyecto también
+se compila y puede producir los errores de duplicación CS0102/CS0111.
 
-El avance confirmado es: **Propietarios/Mascotas y Atenciones/Servicios implementados en C#**, y **PSeInt individual de Propietarios/Mascotas subido**. Faltan los demás módulos individuales de PSeInt y las funcionalidades de C# aún sin implementar, además de la revisión final del conjunto.
+## Funcionalidades integradas
 
-Cada integrante mantiene su propia rama; las incorporaciones a `ep/integracion` deben limitarse a los archivos de su responsabilidad, sin hacer merges generales que arrastren ejercicios antiguos u otros cambios de las ramas personales.
+- **Propietarios y mascotas:** registro, búsqueda, modificación y eliminación;
+  varias mascotas por propietario; validaciones de DNI, teléfono, correo y nacimiento.
+- **Atenciones:** registro, búsqueda, modificación y anulación; situación programada
+  o realizada, fecha y hora coherentes; diagnóstico y tratamiento para realizadas.
+- **Servicios:** registro, búsqueda, modificación y anulación, asociados a mascotas.
+- **Productos:** registro desde el código 4001, búsqueda por código o nombre,
+  modificación, eliminación y entradas/salidas de stock. Precio con punto decimal.
+- **Ventas:** códigos desde 5001, control de stock, confirmación y consulta.
+  Venta libre con propietario/mascota `0`, o asociación opcional a un propietario
+  existente y a una mascota que le pertenezca. Conserva precio y nombre de la venta.
+- **Historial:** atenciones y servicios por código de mascota, incluidos los anulados.
+- **Listados:** las seis entidades; ordenamiento burbuja por código o nombre de mascota,
+  intercambiando todos sus datos paralelos juntos.
+- **Persistencia:** guardar/cargar CSV, crear/restaurar respaldo binario y consultar
+  el estado de las seis entidades.
+
+Se impide borrar productos con ventas, propietarios con mascotas o ventas y mascotas
+con atenciones, servicios o ventas. Una venta libre no bloquea registros ajenos.
+Cancelar una venta conserva el stock y las listas. Se rechazan cantidades insuficientes
+y desbordamientos en el importe o las entradas de stock.
+
+## Guardado y recuperación
+
+La carpeta `Datos` se crea en el directorio desde el cual se ejecuta el programa.
+Mantener ese mismo directorio al guardar y cargar. La carga es manual desde el menú 8;
+no existe guardado automático al salir.
+
+| Formato | Contenido | Recuperación |
+| --- | --- | --- |
+| CSV | Los seis archivos: `propietarios.csv`, `mascotas.csv`, `atenciones.csv`, `servicios.csv`, `productos.csv`, `ventas.csv` | Requiere el conjunto completo; valida registros y relaciones antes de reemplazar memoria |
+| Binario v3 | Las seis entidades y stock en `respaldo_vet.bin` | Valida el respaldo completo; reconstruye productos vendidos y siguientes códigos |
+| Binario v2 antiguo | Propietarios, mascotas, atenciones y servicios | Compatible solo si no hay productos ni ventas en memoria, para evitar perder Pet Shop |
+
+La restauración solicita confirmación si hay datos en memoria. Los archivos truncados,
+con bytes residuales o referencias inválidas se rechazan conservando la memoria.
+Los binarios v3 requieren esta versión del sistema: las versiones anteriores solo leen v2.
+
+Limitaciones actuales: no se guarda un conjunto totalmente vacío; los seis CSV se
+reemplazan secuencialmente, por lo que una interrupción durante ese reemplazo puede
+dejar archivos de distintas versiones. Para recuperar el conjunto en un solo archivo,
+usar el respaldo binario. No se incluye recuperación frente a cualquier fallo de disco.
+
+## Verificación de esta integración
+
+Compilación realizada con .NET SDK 10.0.100: **0 errores y 0 advertencias**.
+Pruebas reproducibles, sin paquetes adicionales y con datos ficticios en un directorio temporal:
+
+```powershell
+dotnet run --project .\tests\Integracion\Integracion.csproj
+```
+
+36 comprobaciones: primer producto, precio con cultura es-ES, validaciones y cancelaciones,
+stock, ventas libres/asociadas, mascota de otro propietario, eliminación protegida,
+registro clínico, ordenamiento y correspondencia entre listas, historial con anulados,
+seis listados, CSV con comas/comillas, recuperación completa binaria, rechazo de corrupción,
+confirmación y compatibilidad con respaldos v2. No representan cobertura de todas las entradas posibles.
+
+## Estructura
+
+- `VetEntrePatasArias/Program.cs`: menú y listas de propietarios/mascotas.
+- `VetEntrePatasArias/Modulos/`: nueve módulos C# del equipo.
+- `PSeInt/Modulos/`: pseudocódigos individuales.
+- `tests/Integracion/`: comprobaciones automáticas del C# integrado.
+
+Las incorporaciones a `ep/integracion` deben revisar los archivos correspondientes,
+evitando merges generales que arrastren ejercicios o versiones antiguas.
