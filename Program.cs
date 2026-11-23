@@ -92,30 +92,40 @@ static int codigoMascota = 1001;
             Console.WriteLine("No se encontro una mascota con ese codigo.");
             return;
         }
-
-        // Las nueve listas deben conservar el mismo orden y cantidad de registros.
-        if (posicion >= codigosPropietarios.Count || posicion >= propietarios.Count ||
-            posicion >= telefonos.Count || posicion >= mascotas.Count ||
-            posicion >= especies.Count || posicion >= tiposAnimales.Count ||
-            posicion >= sexos.Count || posicion >= fechasNacimiento.Count)
-        {
-            Console.WriteLine("Error: los datos del registro estan incompletos.");
-            return;
-        }
-
-        Console.WriteLine("=== DATOS DE LA MASCOTA ENCONTRADA ===");
-        Console.WriteLine("Codigo de propietario: " + codigosPropietarios[posicion]);
-        Console.WriteLine("Nombre del propietario: " + propietarios[posicion]);
-        Console.WriteLine("Telefono: " + telefonos[posicion]);
-        Console.WriteLine("Codigo de mascota: " + codigosMascotas[posicion]);
-        Console.WriteLine("Nombre de mascota: " + mascotas[posicion]);
-        Console.WriteLine("Especie: " + especies[posicion]);
-        Console.WriteLine("Tipo de animal: " + tiposAnimales[posicion]);
-        Console.WriteLine("Sexo: " + sexos[posicion]);
-        Console.WriteLine("Fecha de nacimiento: " + fechasNacimiento[posicion].ToString("dd/MM/yyyy"));
-    }
-
+// VERIFICAR INTEGRIDAD DE LOS DATOS DE LA MASCOTA
+if (posicion >= codigosPropietariosMascotas.Count ||
+    posicion >= mascotas.Count ||
+    posicion >= especies.Count ||
+    posicion >= tiposAnimales.Count ||
+    posicion >= sexos.Count ||
+    posicion >= fechasNacimiento.Count)
+{
+    Console.WriteLine("Error: los datos de la mascota estan incompletos.");
+    return;
 }
 
+// OBTENER EL PROPIETARIO ASOCIADO A LA MASCOTA
+int codigoPropietario = codigosPropietariosMascotas[posicion];
+int posicionPropietario = BuscarPosicionPropietario(codigoPropietario);
 
+if (posicionPropietario == -1)
+{
+    Console.WriteLine("Error: no se encontro el propietario asociado.");
+    return;
+}
+
+// MOSTRAR DATOS DEL PROPIETARIO
+Console.WriteLine("\n===== DATOS DEL PROPIETARIO =====");
+MostrarDatosPropietario(posicionPropietario);
+
+// MOSTRAR DATOS DE LA MASCOTA
+Console.WriteLine("\n===== DATOS DE LA MASCOTA =====");
+Console.WriteLine("Codigo de mascota: " + codigosMascotas[posicion]);
+Console.WriteLine("Nombre: " + mascotas[posicion]);
+Console.WriteLine("Especie: " + especies[posicion]);
+Console.WriteLine("Tipo de animal: " + tiposAnimales[posicion]);
+Console.WriteLine("Sexo: " + sexos[posicion]);
+Console.WriteLine("Fecha de nacimiento: " + fechasNacimiento[posicion].ToString("dd/MM/yyyy"));
+
+    }
 
