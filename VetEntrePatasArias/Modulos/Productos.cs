@@ -395,4 +395,48 @@ partial class Program
 
         Console.WriteLine("Nuevo stock: " + stocksProductos[posicion]);
     }
+
+    // VALIDAR INTEGRIDAD DE LAS LISTAS DE PRODUCTOS
+    static bool ValidarIntegridadListasProductos()
+    {
+        int cantidad = codigosProductos.Count;
+
+        if (nombresProductos.Count != cantidad ||
+            preciosProductos.Count != cantidad ||
+            stocksProductos.Count != cantidad)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < cantidad; i++)
+        {
+            if (codigosProductos[i] <= 0 ||
+                string.IsNullOrWhiteSpace(nombresProductos[i]) ||
+                preciosProductos[i] <= 0 ||
+                stocksProductos[i] < 0)
+            {
+                return false;
+            }
+
+            for (int j = i + 1; j < cantidad; j++)
+            {
+                if (codigosProductos[i] == codigosProductos[j])
+                    return false;
+            }
+        }
+
+        for (int i = 0; i < codigosProductosVentas.Count; i++)
+        {
+            if (!codigosProductos.Contains(codigosProductosVentas[i]))
+                return false;
+
+            for (int j = i + 1; j < codigosProductosVentas.Count; j++)
+            {
+                if (codigosProductosVentas[i] == codigosProductosVentas[j])
+                    return false;
+            }
+        }
+
+        return true;
+    }
 }
