@@ -103,7 +103,7 @@ partial class Program
                     "Listar ventas del Pet Shop",
                     "Ordenar mascotas por codigo",
                     "Ordenar mascotas por nombre"
-                });
+                },7);
             }
             else if (opcion == 8)
             {
@@ -114,7 +114,7 @@ partial class Program
                     "Crear respaldo binario",
                     "Restaurar respaldo binario",
                     "Consultar estado de carga"
-                });
+                },8);
             }
             else if (opcion == 9)
             {
@@ -270,6 +270,62 @@ partial class Program
                 else if (modulo == 4 && opcionSubmenu == 4)
                 {
                     AnularServicio();
+                }
+                else if (modulo == 4 && opcionSubmenu == 4)
+                {
+                    AnularServicio();
+                }
+                else if (modulo == 7 && opcionSubmenu == 1)
+                {
+                    ListarPropietarios();
+                }
+                else if (modulo == 7 && opcionSubmenu == 2)
+                {
+                    ListarMascotas();
+                }
+                else if (modulo == 7 && opcionSubmenu == 3)
+                {
+                    ListarAtenciones();
+                }
+                else if (modulo == 7 && opcionSubmenu == 4)
+                {
+                    ListarServicios();
+                }
+                else if (modulo == 7 && opcionSubmenu == 5)
+                {
+                    ListarProductos();
+                }
+                else if (modulo == 7 && opcionSubmenu == 6)
+                {
+                    ListarVentas();
+                }
+                else if (modulo == 7 && opcionSubmenu == 7)
+                {
+                    OrdenarMascotasPorCodigo();
+                }
+                else if (modulo == 7 && opcionSubmenu == 8)
+                {
+                    OrdenarMascotasPorNombre();
+                }
+                else if (modulo == 8 && opcionSubmenu == 1)
+                {
+                    GuardarDatosCSV();
+                }
+                else if (modulo == 8 && opcionSubmenu == 2)
+                {
+                    CargarDatosCSV();
+                }
+                else if (modulo == 8 && opcionSubmenu == 3)
+                {
+                    CrearRespaldoBinario();
+                }
+                else if (modulo == 8 && opcionSubmenu == 4)
+                {
+                    RestaurarRespaldoBinario();
+                }
+                else if (modulo == 8 && opcionSubmenu == 5)
+                {
+                    ConsultarEstadoCarga();
                 }
                 else
                 {
