@@ -308,10 +308,7 @@ else if (modulo == 6 && opcionSubmenu == 1)
                 {
                     AnularServicio();
                 }
-                else if (modulo == 4 && opcionSubmenu == 4)
-                {
-                    AnularServicio();
-                }
+               
                 else if (modulo == 7 && opcionSubmenu == 1)
                 {
                     ListarPropietarios();
