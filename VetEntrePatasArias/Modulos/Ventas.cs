@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 partial class Program
 {
@@ -53,25 +54,53 @@ partial class Program
 
         for (int i = 0; i < cantidad; i++)
         {
-            if (codigosVentas[i] <= 0 ||
-                codigosProductosVendidos[i] <= 0 ||
+            if (codigosVentas[i] < 5001 ||
+                codigosProductosVendidos[i] < 4001 ||
                 cantidadesVendidas[i] <= 0 ||
-                totalesVentas[i] < 0 ||
-                preciosUnitariosVentas[i] < 0 ||
+                preciosUnitariosVentas[i] <= 0 ||
+                totalesVentas[i] <= 0 ||
                 string.IsNullOrWhiteSpace(nombresProductosVendidos[i]) ||
-                string.IsNullOrWhiteSpace(fechasVentas[i]) ||
                 codigosPropietariosVentas[i] < 0 ||
                 codigosMascotasVentas[i] < 0)
             {
                 return false;
             }
 
+            // VALIDAR FORMATO DE FECHA
+            if (!DateTime.TryParseExact(
+                fechasVentas[i],
+                "yyyy-MM-dd HH:mm:ss",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out _))
+            {
+                return false;
+            }
+
+            // UNA VENTA SIN PROPIETARIO NO PUEDE TENER MASCOTA
             if (codigosPropietariosVentas[i] == 0 &&
                 codigosMascotasVentas[i] != 0)
             {
                 return false;
             }
 
+            // VALIDAR QUE EL TOTAL COINCIDA CON EL PRECIO Y LA CANTIDAD
+            decimal totalCalculado;
+
+            try
+            {
+                totalCalculado = preciosUnitariosVentas[i] *
+                                 cantidadesVendidas[i];
+            }
+            catch (OverflowException)
+            {
+                return false;
+            }
+
+            if (Math.Abs(totalesVentas[i] - totalCalculado) > 0.01m)
+                return false;
+
+            // EVITAR CODIGOS DE VENTA DUPLICADOS
             for (int j = i + 1; j < cantidad; j++)
             {
                 if (codigosVentas[i] == codigosVentas[j])
@@ -273,7 +302,9 @@ partial class Program
 
         nombresProductosVendidos.Add(nombresProductos[posicion]);
         preciosUnitariosVentas.Add(precioUnitario);
-        fechasVentas.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+        fechasVentas.Add(DateTime.Now.ToString(
+            "yyyy-MM-dd HH:mm:ss",
+            CultureInfo.InvariantCulture));
 
         codigosPropietariosVentas.Add(codigoPropietario);
         codigosMascotasVentas.Add(codigoMascota);
