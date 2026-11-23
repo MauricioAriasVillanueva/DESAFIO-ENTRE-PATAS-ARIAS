@@ -175,98 +175,94 @@ partial class Program
         Console.WriteLine($"Total de servicios: {codigosServicios.Count}");
     }
 
-    // =========================================================
-    // 5 y 6. LISTADOS PENDIENTES DE MODULO PET SHOP (MAXIMO)
-    // =========================================================
-   
-static void ListarProductos()
-{
-    Console.WriteLine("\n========== LISTADO DE PRODUCTOS DEL PET SHOP ==========");
-
-    if (codigosProductos.Count == 0)
+    // 5. LISTAR PRODUCTOS DEL PET SHOP
+    static void ListarProductos()
     {
-        Console.WriteLine("No hay productos registrados.");
-        return;
-    }
+        Console.WriteLine();
+        Console.WriteLine("========== LISTADO DE PRODUCTOS DEL PET SHOP ==========");
 
-    if (codigosProductos.Count != nombresProductos.Count ||
-        codigosProductos.Count != preciosProductos.Count ||
-        codigosProductos.Count != stocksProductos.Count)
-    {
-        Console.WriteLine("Error: las listas de productos tienen distinta longitud.");
-        return;
-    }
-
-    for (int i = 0; i < codigosProductos.Count; i++)
-    {
-        Console.WriteLine("----------------------------------------");
-        Console.WriteLine("Codigo: " + codigosProductos[i]);
-        Console.WriteLine("Nombre: " + nombresProductos[i]);
-        Console.WriteLine("Precio: " + preciosProductos[i].ToString("0.00"));
-        Console.WriteLine("Stock: " + stocksProductos[i]);
-    }
-
-    Console.WriteLine("----------------------------------------");
-    Console.WriteLine("Total de productos: " + codigosProductos.Count);
-}
-
-
-    
-static void ListarVentas()
-{
-    Console.WriteLine("\n========== LISTADO DE VENTAS DEL PET SHOP ==========");
-
-    if (codigosVentas.Count == 0)
-    {
-        Console.WriteLine("No hay ventas registradas.");
-        return;
-    }
-
-    if (codigosVentas.Count != codigosProductosVendidos.Count ||
-        codigosVentas.Count != nombresProductosVendidos.Count ||
-        codigosVentas.Count != cantidadesVendidas.Count ||
-        codigosVentas.Count != preciosUnitariosVentas.Count ||
-        codigosVentas.Count != totalesVentas.Count ||
-        codigosVentas.Count != fechasVentas.Count ||
-        codigosVentas.Count != codigosPropietariosVentas.Count ||
-        codigosVentas.Count != codigosMascotasVentas.Count)
-    {
-        Console.WriteLine("Error: las listas de ventas tienen distinta longitud.");
-        return;
-    }
-
-    for (int i = 0; i < codigosVentas.Count; i++)
-    {
-        Console.WriteLine("----------------------------------------");
-        Console.WriteLine("Codigo de venta: " + codigosVentas[i]);
-        Console.WriteLine("Codigo de producto: " + codigosProductosVendidos[i]);
-        Console.WriteLine("Producto: " + nombresProductosVendidos[i]);
-        Console.WriteLine("Cantidad: " + cantidadesVendidas[i]);
-        Console.WriteLine("Precio unitario: " +
-            preciosUnitariosVentas[i].ToString("0.00"));
-        Console.WriteLine("Total: " + totalesVentas[i].ToString("0.00"));
-        Console.WriteLine("Fecha: " + fechasVentas[i]);
-
-        if (codigosPropietariosVentas[i] == 0)
+        if (codigosProductos.Count == 0)
         {
-            Console.WriteLine("Tipo: Venta libre");
+            Console.WriteLine("No hay productos registrados.");
+            return;
         }
-        else
-        {
-            Console.WriteLine("Codigo de propietario: " +
-                codigosPropietariosVentas[i]);
 
-            if (codigosMascotasVentas[i] != 0)
+        if (!ValidarIntegridadListasProductos())
+        {
+            Console.WriteLine("Error: las listas de productos no estan integras.");
+            return;
+        }
+
+        for (int i = 0; i < codigosProductos.Count; i++)
+        {
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine("Codigo: " + codigosProductos[i]);
+            Console.WriteLine("Nombre: " + nombresProductos[i]);
+            Console.WriteLine("Precio: S/ " +
+                preciosProductos[i].ToString("0.00"));
+            Console.WriteLine("Stock: " + stocksProductos[i]);
+        }
+
+        Console.WriteLine("----------------------------------------");
+        Console.WriteLine("Total de productos: " + codigosProductos.Count);
+    }
+    
+    // 6. LISTAR VENTAS DEL PET SHOP
+    
+    static void ListarVentas()
+    {
+        Console.WriteLine();
+        Console.WriteLine("========== LISTADO DE VENTAS DEL PET SHOP ==========");
+
+        if (codigosVentas.Count == 0)
+        {
+            Console.WriteLine("No hay ventas registradas.");
+            return;
+        }
+
+        if (!ValidarIntegridadListasVentas())
+        {
+            Console.WriteLine("Error: las listas de ventas no estan integras.");
+            return;
+        }
+
+        for (int i = 0; i < codigosVentas.Count; i++)
+        {
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine("Codigo de venta: " + codigosVentas[i]);
+            Console.WriteLine("Codigo de producto: " + codigosProductosVendidos[i]);
+            Console.WriteLine("Producto: " + nombresProductosVendidos[i]);
+            Console.WriteLine("Cantidad: " + cantidadesVendidas[i]);
+            Console.WriteLine("Precio unitario: S/ " +
+                preciosUnitariosVentas[i].ToString("0.00"));
+            Console.WriteLine("Total: S/ " +
+                totalesVentas[i].ToString("0.00"));
+            Console.WriteLine("Fecha: " + fechasVentas[i]);
+
+            if (codigosPropietariosVentas[i] == 0)
             {
-                Console.WriteLine("Codigo de mascota: " +
-                    codigosMascotasVentas[i]);
+                Console.WriteLine("Tipo: Venta libre");
+            }
+            else
+            {
+                Console.WriteLine("Codigo de propietario: " +
+                    codigosPropietariosVentas[i]);
+
+                if (codigosMascotasVentas[i] != 0)
+                {
+                    Console.WriteLine("Codigo de mascota: " +
+                        codigosMascotasVentas[i]);
+                }
+                else
+                {
+                    Console.WriteLine("Mascota: Sin asociar");
+                }
             }
         }
-    }
 
-    Console.WriteLine("----------------------------------------");
-    Console.WriteLine("Total de ventas: " + codigosVentas.Count);
-}
+        Console.WriteLine("----------------------------------------");
+        Console.WriteLine("Total de ventas: " + codigosVentas.Count);
+    }
 
 
     // =========================================================
