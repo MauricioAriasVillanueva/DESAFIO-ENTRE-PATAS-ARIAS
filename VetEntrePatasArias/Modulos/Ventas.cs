@@ -7,14 +7,16 @@ partial class Program
     // LISTAS PARA LA GESTION DE VENTAS
     static List<int> codigosVentas = new List<int>();
     static List<int> codigosProductosVendidos = new List<int>();
-    static List<string> nombresProductosVendidos = new List<string>();
     static List<int> cantidadesVendidas = new List<int>();
-    static List<decimal> preciosUnitariosVentas = new List<decimal>();
     static List<decimal> totalesVentas = new List<decimal>();
+
+    // DATOS HISTORICOS DE CADA VENTA
+    static List<string> nombresProductosVendidos = new List<string>();
+    static List<decimal> preciosUnitariosVentas = new List<decimal>();
     static List<string> fechasVentas = new List<string>();
 
-    // ASOCIACION OPCIONAL CON PROPIETARIOS Y MASCOTAS
-    // El codigo 0 indica que la venta no tiene asociacion.
+    // RELACION OPCIONAL CON PROPIETARIO Y MASCOTA
+    // El codigo 0 indica que no existe asociacion.
     static List<int> codigosPropietariosVentas = new List<int>();
     static List<int> codigosMascotasVentas = new List<int>();
 
@@ -26,12 +28,134 @@ partial class Program
         for (int i = 0; i < codigosVentas.Count; i++)
         {
             if (codigosVentas[i] > mayor)
-            {
                 mayor = codigosVentas[i];
-            }
         }
 
         return mayor == int.MaxValue ? -1 : mayor + 1;
+    }
+
+    // VALIDAR QUE TODAS LAS LISTAS DE VENTAS ESTEN ALINEADAS
+    static bool ValidarIntegridadListasVentas()
+    {
+        int cantidad = codigosVentas.Count;
+
+        if (codigosProductosVendidos.Count != cantidad ||
+            cantidadesVendidas.Count != cantidad ||
+            totalesVentas.Count != cantidad ||
+            nombresProductosVendidos.Count != cantidad ||
+            preciosUnitariosVentas.Count != cantidad ||
+            fechasVentas.Count != cantidad ||
+            codigosPropietariosVentas.Count != cantidad ||
+            codigosMascotasVentas.Count != cantidad)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < cantidad; i++)
+        {
+            if (codigosVentas[i] <= 0 ||
+                codigosProductosVendidos[i] <= 0 ||
+                cantidadesVendidas[i] <= 0 ||
+                totalesVentas[i] < 0 ||
+                preciosUnitariosVentas[i] < 0 ||
+                string.IsNullOrWhiteSpace(nombresProductosVendidos[i]) ||
+                string.IsNullOrWhiteSpace(fechasVentas[i]) ||
+                codigosPropietariosVentas[i] < 0 ||
+                codigosMascotasVentas[i] < 0)
+            {
+                return false;
+            }
+
+            if (codigosPropietariosVentas[i] == 0 &&
+                codigosMascotasVentas[i] != 0)
+            {
+                return false;
+            }
+
+            for (int j = i + 1; j < cantidad; j++)
+            {
+                if (codigosVentas[i] == codigosVentas[j])
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    // SOLICITAR ASOCIACION OPCIONAL CON PROPIETARIO Y MASCOTA
+    static bool SolicitarAsociacionVenta(
+        out int codigoPropietario,
+        out int codigoMascota)
+    {
+        codigoPropietario = 0;
+        codigoMascota = 0;
+
+        Console.Write("\nDesea asociar la venta a un propietario? (S/N): ");
+        string respuesta = (Console.ReadLine() ?? "").Trim().ToUpperInvariant();
+
+        if (respuesta == "N" || respuesta == "NO")
+            return true;
+
+        if (respuesta != "S" && respuesta != "SI")
+        {
+            Console.WriteLine("Respuesta invalida.");
+            return false;
+        }
+
+        Console.Write("Ingrese el codigo del propietario: ");
+
+        if (!int.TryParse(Console.ReadLine(), out codigoPropietario) ||
+            codigoPropietario <= 0)
+        {
+            Console.WriteLine("Codigo de propietario invalido.");
+            return false;
+        }
+
+        int posicionPropietario =
+            BuscarPosicionPropietario(codigoPropietario);
+
+        if (posicionPropietario == -1)
+        {
+            Console.WriteLine("Propietario no encontrado.");
+            return false;
+        }
+
+        Console.Write("Desea asociar tambien una mascota? (S/N): ");
+        respuesta = (Console.ReadLine() ?? "").Trim().ToUpperInvariant();
+
+        if (respuesta == "N" || respuesta == "NO")
+            return true;
+
+        if (respuesta != "S" && respuesta != "SI")
+        {
+            Console.WriteLine("Respuesta invalida.");
+            return false;
+        }
+
+        Console.Write("Ingrese el codigo de la mascota: ");
+
+        if (!int.TryParse(Console.ReadLine(), out codigoMascota) ||
+            codigoMascota <= 0)
+        {
+            Console.WriteLine("Codigo de mascota invalido.");
+            return false;
+        }
+
+        int posicionMascota = BuscarPosicionMascota(codigoMascota);
+
+        if (posicionMascota == -1)
+        {
+            Console.WriteLine("Mascota no encontrada.");
+            return false;
+        }
+
+        if (codigosPropietariosMascotas[posicionMascota] != codigoPropietario)
+        {
+            Console.WriteLine("La mascota no pertenece al propietario indicado.");
+            return false;
+        }
+
+        return true;
     }
 
     // REGISTRAR VENTA
@@ -42,6 +166,12 @@ partial class Program
         if (codigosProductos.Count == 0)
         {
             Console.WriteLine("No hay productos registrados.");
+            return;
+        }
+
+        if (!ValidarIntegridadListasVentas())
+        {
+            Console.WriteLine("Error: las listas de ventas no estan integras.");
             return;
         }
 
@@ -65,8 +195,8 @@ partial class Program
 
         Console.Write("\nIngrese la cantidad a vender: ");
 
-        if (!int.TryParse(Console.ReadLine(), out int cantidad)
-            || cantidad <= 0)
+        if (!int.TryParse(Console.ReadLine(), out int cantidad) ||
+            cantidad <= 0)
         {
             Console.WriteLine("La cantidad debe ser mayor que cero.");
             return;
@@ -79,92 +209,32 @@ partial class Program
         }
 
         decimal precioUnitario = preciosProductos[posicion];
-        decimal total = precioUnitario * cantidad;
+        decimal total;
 
-        // DATOS DE ASOCIACION OPCIONAL
-        int codigoPropietario = 0;
-        int codigoMascota = 0;
-
-        Console.Write("\nDesea asociar la venta a un propietario? (S/N): ");
-        string asociar = (Console.ReadLine() ?? "").Trim().ToUpperInvariant();
-
-        if (asociar != "S" && asociar != "SI"
-            && asociar != "N" && asociar != "NO")
+        try
         {
-            Console.WriteLine("Respuesta invalida.");
+            total = precioUnitario * cantidad;
+        }
+        catch (OverflowException)
+        {
+            Console.WriteLine("El importe de la venta es demasiado grande.");
             return;
         }
 
-        if (asociar == "S" || asociar == "SI")
+        int codigoPropietario;
+        int codigoMascota;
+
+        if (!SolicitarAsociacionVenta(
+            out codigoPropietario, out codigoMascota))
         {
-            if (codigosPropietarios.Count == 0)
-            {
-                Console.WriteLine("No hay propietarios registrados.");
-                return;
-            }
-
-            Console.Write("Ingrese el codigo del propietario: ");
-
-            if (!int.TryParse(Console.ReadLine(), out codigoPropietario))
-            {
-                Console.WriteLine("Codigo de propietario invalido.");
-                return;
-            }
-
-            int posicionPropietario =
-                BuscarPosicionPropietario(codigoPropietario);
-
-            if (posicionPropietario == -1)
-            {
-                Console.WriteLine("Propietario no encontrado.");
-                return;
-            }
-
-            Console.Write("\nDesea asociar tambien una mascota? (S/N): ");
-            string asociarMascota =
-                (Console.ReadLine() ?? "").Trim().ToUpperInvariant();
-
-            if (asociarMascota != "S" && asociarMascota != "SI"
-                && asociarMascota != "N" && asociarMascota != "NO")
-            {
-                Console.WriteLine("Respuesta invalida.");
-                return;
-            }
-
-            if (asociarMascota == "S" || asociarMascota == "SI")
-            {
-                Console.Write("Ingrese el codigo de la mascota: ");
-
-                if (!int.TryParse(Console.ReadLine(), out codigoMascota))
-                {
-                    Console.WriteLine("Codigo de mascota invalido.");
-                    return;
-                }
-
-                int posicionMascota = BuscarPosicionMascota(codigoMascota);
-
-                if (posicionMascota == -1)
-                {
-                    Console.WriteLine("Mascota no encontrada.");
-                    return;
-                }
-
-                if (codigosPropietariosMascotas[posicionMascota]
-                    != codigoPropietario)
-                {
-                    Console.WriteLine(
-                        "La mascota no pertenece al propietario indicado.");
-                    return;
-                }
-            }
+            Console.WriteLine("No se registro la venta.");
+            return;
         }
 
-        // RESUMEN DE LA VENTA
         Console.WriteLine("\n========== RESUMEN DE VENTA ==========");
         Console.WriteLine("Producto: " + nombresProductos[posicion]);
         Console.WriteLine("Cantidad: " + cantidad);
-        Console.WriteLine("Precio unitario: " +
-            precioUnitario.ToString("0.00"));
+        Console.WriteLine("Precio unitario: " + precioUnitario.ToString("0.00"));
         Console.WriteLine("Total: " + total.ToString("0.00"));
 
         if (codigoPropietario == 0)
@@ -174,18 +244,11 @@ partial class Program
         else
         {
             Console.WriteLine("Codigo de propietario: " + codigoPropietario);
-
-            if (codigoMascota != 0)
-            {
-                Console.WriteLine("Codigo de mascota: " + codigoMascota);
-            }
-            else
-            {
-                Console.WriteLine("Venta sin mascota asociada.");
-            }
+            Console.WriteLine("Codigo de mascota: " +
+                (codigoMascota == 0 ? "Sin asociar" : codigoMascota.ToString()));
         }
 
-        Console.Write("Confirmar venta? (S/N): ");
+        Console.Write("\nConfirmar venta? (S/N): ");
         string respuesta = (Console.ReadLine() ?? "").Trim().ToUpperInvariant();
 
         if (respuesta != "S" && respuesta != "SI")
@@ -202,14 +265,15 @@ partial class Program
             return;
         }
 
-        // GUARDAR LOS DATOS DE LA VENTA
+        // REGISTRAR TODOS LOS DATOS DE LA VENTA
         codigosVentas.Add(codigoVenta);
         codigosProductosVendidos.Add(codigoProducto);
-        nombresProductosVendidos.Add(nombresProductos[posicion]);
         cantidadesVendidas.Add(cantidad);
-        preciosUnitariosVentas.Add(precioUnitario);
         totalesVentas.Add(total);
-        fechasVentas.Add(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+
+        nombresProductosVendidos.Add(nombresProductos[posicion]);
+        preciosUnitariosVentas.Add(precioUnitario);
+        fechasVentas.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
         codigosPropietariosVentas.Add(codigoPropietario);
         codigosMascotasVentas.Add(codigoMascota);
@@ -239,6 +303,12 @@ partial class Program
             return;
         }
 
+        if (!ValidarIntegridadListasVentas())
+        {
+            Console.WriteLine("Error: las listas de ventas no estan integras.");
+            return;
+        }
+
         Console.Write("Ingrese el codigo de la venta: ");
 
         if (!int.TryParse(Console.ReadLine(), out int codigo))
@@ -257,63 +327,45 @@ partial class Program
 
         Console.WriteLine("\n========== DETALLE DE VENTA ==========");
         Console.WriteLine("Codigo de venta: " + codigosVentas[posicion]);
+        Console.WriteLine("Fecha: " + fechasVentas[posicion]);
         Console.WriteLine("Codigo de producto: " +
             codigosProductosVendidos[posicion]);
-        Console.WriteLine("Producto: " +
-            nombresProductosVendidos[posicion]);
-        Console.WriteLine("Cantidad vendida: " +
-            cantidadesVendidas[posicion]);
-        Console.WriteLine("Fecha: " + fechasVentas[posicion]);
+        Console.WriteLine("Producto: " + nombresProductosVendidos[posicion]);
+        Console.WriteLine("Cantidad vendida: " + cantidadesVendidas[posicion]);
         Console.WriteLine("Precio unitario: " +
             preciosUnitariosVentas[posicion].ToString("0.00"));
         Console.WriteLine("Total de venta: " +
             totalesVentas[posicion].ToString("0.00"));
 
-        // MOSTRAR PROPIETARIO ASOCIADO, SI EXISTE
         int codigoPropietario = codigosPropietariosVentas[posicion];
+        int codigoMascota = codigosMascotasVentas[posicion];
 
         if (codigoPropietario == 0)
         {
-            Console.WriteLine("Tipo de venta: Venta libre.");
+            Console.WriteLine("Tipo de venta: Venta libre");
         }
         else
         {
-            Console.WriteLine("\nPropietario asociado:");
+            Console.WriteLine("Codigo de propietario: " + codigoPropietario);
+
             int posicionPropietario =
                 BuscarPosicionPropietario(codigoPropietario);
 
             if (posicionPropietario != -1)
-            {
                 MostrarDatosPropietario(posicionPropietario);
-            }
-            else
-            {
-                Console.WriteLine("Codigo de propietario: " +
-                    codigoPropietario);
-            }
-
-            // MOSTRAR MASCOTA ASOCIADA, SI EXISTE
-            int codigoMascota = codigosMascotasVentas[posicion];
 
             if (codigoMascota != 0)
             {
-                Console.WriteLine("\nMascota asociada:");
-                int posicionMascota =
-                    BuscarPosicionMascota(codigoMascota);
+                Console.WriteLine("Codigo de mascota: " + codigoMascota);
+
+                int posicionMascota = BuscarPosicionMascota(codigoMascota);
 
                 if (posicionMascota != -1)
-                {
                     MostrarDatosMascota(posicionMascota);
-                }
-                else
-                {
-                    Console.WriteLine("Codigo de mascota: " +
-                        codigoMascota);
-                }
             }
             else
             {
-                Console.WriteLine("Venta sin mascota asociada.");
+                Console.WriteLine("Mascota: Sin asociar");
             }
         }
     }
