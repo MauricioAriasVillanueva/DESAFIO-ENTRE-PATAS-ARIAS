@@ -1,131 +1,386 @@
-using System.Collections.Generic;
+
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 partial class Program
 {
-    //DATOS DE PROPIETARIOS
-static List<int> codigosPropietarios = new List<int>();
-static List<string> propietarios = new List<string>();
-static List<string> telefonos = new List<string>();
-static List<string> dnisPropietarios = new List<string>();
-static List<string> direcciones = new List<string>();
-static List<string> correos = new List<string>();
 
-    //DATOS DE MASCOTAS
-static List<int> codigosMascotas = new List<int>();
-static List<string> mascotas = new List<string>();
-static List<string> especies = new List<string>();
-static List<string> tiposAnimales = new List<string>();
-static List<string> sexos = new List<string>();
-static List<DateTime> fechasNacimiento = new List<DateTime>();
-static List<int> codigosPropietariosMascotas = new List<int>();
+    // DATOS COMPARTIDOS DE PROPIETARIOS
 
-    //CODIGOS AUTOMATICOS
-static int codigoPropietario = 2001;
-static int codigoMascota = 1001;
+    static List<int> codigosPropietarios = new List<int>();
+    static List<string> propietarios = new List<string>();
+    static List<string> telefonos = new List<string>();
+    static List<string> dnisPropietarios = new List<string>();
+    static List<string> direcciones = new List<string>();
+    static List<string> correos = new List<string>();
+    static List<int> codigosPropietariosMascotas = new List<int>();
+
+    // DATOS COMPARTIDOS DE MASCOTAS
+
+    static List<int> codigosMascotas = new List<int>();
+    static List<string> mascotas = new List<string>();
+    static List<string> especies = new List<string>();
+    static List<string> tiposAnimales = new List<string>();
+    static List<string> sexos = new List<string>();
+    static List<DateTime> fechasNacimiento = new List<DateTime>();
+
+
+    // CODIGOS AUTOMATICOS
+
+
+    static int codigoPropietario = 2001;
+    static int codigoMascota = 1001;
+
+
+    // METODO PRINCIPAL
+
+
     static void Main()
     {
         int opcion;
 
         do
         {
-            Console.WriteLine("================================");
-            Console.WriteLine(" VETERINARIA ENTRE PATAS - ARIAS");
-            Console.WriteLine("================================");
-            Console.WriteLine("1. Registrar propietario y mascota");
-            Console.WriteLine("2. Buscar mascota");
-            Console.WriteLine("3. Buscar propietario");
-            Console.WriteLine("4. Modificar registro");
-            Console.WriteLine("5. Eliminar registro");
-            Console.WriteLine("6. Mostrar registros");
-            Console.WriteLine("7. Ordenar registros");
-            Console.WriteLine("8. Salir");
+            MostrarMenuPrincipal();
 
             Console.Write("Seleccione una opcion: ");
+            opcion = LeerOpcion();
 
-            if (!int.TryParse(Console.ReadLine(), out opcion))
+            switch (opcion)
             {
-                opcion = 0; // Opción inválida
+                case 1:
+                    MostrarSubmenu(
+                        "GESTIONAR PROPIETARIOS",
+                        new string[]
+                        {
+                            "Registrar propietario",
+                            "Buscar propietario por codigo",
+                            "Modificar propietario",
+                            "Eliminar propietario",
+                            "Ver mascotas asociadas"
+                        }, 1);
+                    break;
+
+                case 2:
+                    MostrarSubmenu(
+                        "GESTIONAR MASCOTAS",
+                        new string[]
+                        {
+                            "Registrar mascota",
+                            "Buscar mascota por codigo o nombre",
+                            "Modificar mascota",
+                            "Eliminar mascota"
+                        }, 2);
+                    break;
+
+                case 3:
+                    MostrarSubmenu(
+                        "ATENCIONES MEDICAS",
+                        new string[]
+                        {
+                            "Registrar atencion",
+                            "Buscar atencion por codigo",
+                            "Modificar atencion",
+                            "Anular atencion"
+                        }, 3);
+                    break;
+
+                case 4:
+                    MostrarSubmenu(
+                        "SERVICIOS VETERINARIOS",
+                        new string[]
+                        {
+                            "Registrar servicio",
+                            "Buscar servicio por codigo",
+                            "Modificar servicio",
+                            "Anular servicio"
+                        }, 4);
+                    break;
+
+                case 5:
+                    MostrarSubmenu(
+                        "PET SHOP",
+                        new string[]
+                        {
+                            "Gestion de productos",
+                            "Gestion de ventas"
+                        }, 5);
+                    break;
+
+                case 6:
+                    MostrarSubmenu(
+                        "HISTORIAL CLINICO DE MASCOTAS",
+                        new string[]
+                        {
+                            "Consultar historial completo por mascota"
+                        }, 6);
+                    break;
+
+                case 7:
+                    MostrarSubmenu(
+                        "LISTADOS Y ORDENAMIENTOS",
+                        new string[]
+                        {
+                            "Listar propietarios",
+                            "Listar mascotas",
+                            "Listar atenciones medicas",
+                            "Listar servicios veterinarios",
+                            "Listar productos del Pet Shop",
+                            "Listar ventas del Pet Shop",
+                            "Ordenar mascotas por codigo",
+                            "Ordenar mascotas por nombre"
+                        }, 7);
+                    break;
+
+                case 8:
+                    MostrarSubmenu(
+                        "ADMINISTRACION DE REGISTROS",
+                        new string[]
+                        {
+                            "Guardar datos en CSV",
+                            "Cargar datos desde CSV",
+                            "Crear respaldo binario",
+                            "Restaurar respaldo binario",
+                            "Consultar estado de carga"
+                        }, 8);
+                    break;
+
+                case 9:
+                    Console.WriteLine("Saliendo del programa...");
+                    break;
+
+                default:
+                    Console.WriteLine("Opcion no valida.");
+                    break;
             }
 
-            if (opcion == 2)
-            {
-            Buscar();
-            }
-            else if (opcion == 3)
-            {
-            BuscarPropietario();
-            }
+        } while (opcion != 9);
 
-        } while (opcion !=8);
+        Console.WriteLine("Programa finalizado.");
     }
 
-    // INTEGRANTE 4: BUSQUEDA LINEAL DE MASCOTAS POR CODIGO
-    static void Buscar()
+    // MENU PRINCIPAL
+
+    static void MostrarMenuPrincipal()
     {
-        if (codigosMascotas.Count == 0)
-        {
-            Console.WriteLine("No hay mascotas registradas.");
-            return;
-        }
-
-        Console.Write("Ingrese el codigo de la mascota: ");
-        int codigoBuscado;
-        if (!int.TryParse(Console.ReadLine(), out codigoBuscado))
-        {
-            Console.WriteLine("Codigo invalido. Debe ingresar un numero entero.");
-            return;
-        }
-
-        int posicion = -1;
-        for (int i = 0; i < codigosMascotas.Count; i++)
-        {
-            if (codigosMascotas[i] == codigoBuscado)
-            {
-                posicion = i;
-                break;
-            }
-        }
-
-        if (posicion == -1)
-        {
-            Console.WriteLine("No se encontro una mascota con ese codigo.");
-            return;
-        }
-// VERIFICAR INTEGRIDAD DE LOS DATOS DE LA MASCOTA
-if (posicion >= codigosPropietariosMascotas.Count ||
-    posicion >= mascotas.Count ||
-    posicion >= especies.Count ||
-    posicion >= tiposAnimales.Count ||
-    posicion >= sexos.Count ||
-    posicion >= fechasNacimiento.Count)
-{
-    Console.WriteLine("Error: los datos de la mascota estan incompletos.");
-    return;
-}
-
-// OBTENER EL PROPIETARIO ASOCIADO A LA MASCOTA
-int codigoPropietario = codigosPropietariosMascotas[posicion];
-int posicionPropietario = BuscarPosicionPropietario(codigoPropietario);
-
-if (posicionPropietario == -1)
-{
-    Console.WriteLine("Error: no se encontro el propietario asociado.");
-    return;
-}
-
-// MOSTRAR DATOS DEL PROPIETARIO
-Console.WriteLine("\n===== DATOS DEL PROPIETARIO =====");
-MostrarDatosPropietario(posicionPropietario);
-
-// MOSTRAR DATOS DE LA MASCOTA
-Console.WriteLine("\n===== DATOS DE LA MASCOTA =====");
-Console.WriteLine("Codigo de mascota: " + codigosMascotas[posicion]);
-Console.WriteLine("Nombre: " + mascotas[posicion]);
-Console.WriteLine("Especie: " + especies[posicion]);
-Console.WriteLine("Tipo de animal: " + tiposAnimales[posicion]);
-Console.WriteLine("Sexo: " + sexos[posicion]);
-Console.WriteLine("Fecha de nacimiento: " + fechasNacimiento[posicion].ToString("dd/MM/yyyy"));
-
+        Console.WriteLine();
+        Console.WriteLine("========================================");
+        Console.WriteLine("      VETERINARIA ENTRE PATAS - ARIAS");
+        Console.WriteLine("========================================");
+        Console.WriteLine("1. Gestionar propietarios");
+        Console.WriteLine("2. Gestionar mascotas");
+        Console.WriteLine("3. Atenciones medicas");
+        Console.WriteLine("4. Servicios veterinarios");
+        Console.WriteLine("5. Pet Shop");
+        Console.WriteLine("6. Historial clinico de mascotas");
+        Console.WriteLine("7. Listados y ordenamientos");
+        Console.WriteLine("8. Administracion de registros");
+        Console.WriteLine("9. Salir");
     }
 
+    static int LeerOpcion()
+    {
+        int opcion;
+
+        if (int.TryParse(Console.ReadLine(), out opcion))
+        {
+            return opcion;
+        }
+
+        return -1;
+    }
+
+    // SUBMENUS
+
+    static void MostrarSubmenu(
+        string titulo,
+        string[] opciones,
+        int modulo = 0,
+        string textoVolver = "Volver al menu principal")
+    {
+        int opcionSubmenu;
+
+        do
+        {
+            Console.WriteLine();
+            Console.WriteLine("========================================");
+            Console.WriteLine("          " + titulo);
+            Console.WriteLine("========================================");
+
+            for (int i = 0; i < opciones.Length; i++)
+            {
+                Console.WriteLine((i + 1) + ". " + opciones[i]);
+            }
+
+            Console.WriteLine("0. " + textoVolver);
+            Console.Write("Seleccione una opcion: ");
+
+            opcionSubmenu = LeerOpcion();
+
+            if (opcionSubmenu >= 1 &&
+                opcionSubmenu <= opciones.Length)
+            {
+                // PROPIETARIOS
+                if (modulo == 1 && opcionSubmenu == 1)
+                    RegistrarPropietario();
+
+                else if (modulo == 1 && opcionSubmenu == 2)
+                    BuscarPropietario();
+
+                else if (modulo == 1 && opcionSubmenu == 3)
+                    ModificarPropietario();
+
+                else if (modulo == 1 && opcionSubmenu == 4)
+                    EliminarPropietario();
+
+                else if (modulo == 1 && opcionSubmenu == 5)
+                    VerMascotasAsociadas();
+
+                // MASCOTAS
+                else if (modulo == 2 && opcionSubmenu == 1)
+                    RegistrarMascota();
+
+                else if (modulo == 2 && opcionSubmenu == 2)
+                    BuscarMascota();
+
+                else if (modulo == 2 && opcionSubmenu == 3)
+                    ModificarMascota();
+
+                else if (modulo == 2 && opcionSubmenu == 4)
+                    EliminarMascota();
+
+                // ATENCIONES MEDICAS
+                else if (modulo == 3 && opcionSubmenu == 1)
+                    RegistrarAtencion();
+
+                else if (modulo == 3 && opcionSubmenu == 2)
+                    BuscarAtencion();
+
+                else if (modulo == 3 && opcionSubmenu == 3)
+                    ModificarAtencion();
+
+                else if (modulo == 3 && opcionSubmenu == 4)
+                    AnularAtencion();
+
+                // SERVICIOS VETERINARIOS
+                else if (modulo == 4 && opcionSubmenu == 1)
+                    RegistrarServicio();
+
+                else if (modulo == 4 && opcionSubmenu == 2)
+                    BuscarServicio();
+
+                else if (modulo == 4 && opcionSubmenu == 3)
+                    ModificarServicio();
+
+                else if (modulo == 4 && opcionSubmenu == 4)
+                    AnularServicio();
+
+                // PET SHOP: SUBMENU DE PRODUCTOS
+                else if (modulo == 5 && opcionSubmenu == 1)
+                {
+                    MostrarSubmenu(
+                        "GESTION DE PRODUCTOS",
+                        new string[]
+                        {
+                            "Registrar producto",
+                            "Buscar producto por codigo o nombre",
+                            "Modificar producto",
+                            "Eliminar producto",
+                            "Registrar movimiento de stock"
+                        }, 51, "Volver a Pet Shop");
+                }
+
+                // PET SHOP: SUBMENU DE VENTAS
+                else if (modulo == 5 && opcionSubmenu == 2)
+                {
+                    MostrarSubmenu(
+                        "GESTION DE VENTAS",
+                        new string[]
+                        {
+                            "Registrar venta",
+                            "Consultar venta por codigo"
+                        }, 52, "Volver a Pet Shop");
+                }
+
+                // FUNCIONES DE PRODUCTOS
+                else if (modulo == 51 && opcionSubmenu == 1)
+                    RegistrarProducto();
+
+                else if (modulo == 51 && opcionSubmenu == 2)
+                    BuscarProducto();
+
+                else if (modulo == 51 && opcionSubmenu == 3)
+                    ModificarProducto();
+
+                else if (modulo == 51 && opcionSubmenu == 4)
+                    EliminarProducto();
+
+                else if (modulo == 51 && opcionSubmenu == 5)
+                    RegistrarMovimientoStock();
+
+                // FUNCIONES DE VENTAS
+                else if (modulo == 52 && opcionSubmenu == 1)
+                    RegistrarVenta();
+
+                else if (modulo == 52 && opcionSubmenu == 2)
+                    ConsultarVentaPorCodigo();
+
+                // HISTORIAL CLINICO
+                else if (modulo == 6 && opcionSubmenu == 1)
+                    HistorialClinico();
+
+                // LISTADOS Y ORDENAMIENTOS
+                else if (modulo == 7 && opcionSubmenu == 1)
+                    ListarPropietarios();
+
+                else if (modulo == 7 && opcionSubmenu == 2)
+                    ListarMascotas();
+
+                else if (modulo == 7 && opcionSubmenu == 3)
+                    ListarAtenciones();
+
+                else if (modulo == 7 && opcionSubmenu == 4)
+                    ListarServicios();
+
+                else if (modulo == 7 && opcionSubmenu == 5)
+                    ListarProductos();
+
+                else if (modulo == 7 && opcionSubmenu == 6)
+                    ListarVentas();
+
+                else if (modulo == 7 && opcionSubmenu == 7)
+                    OrdenarMascotasPorCodigo();
+
+                else if (modulo == 7 && opcionSubmenu == 8)
+                    OrdenarMascotasPorNombre();
+
+                // ADMINISTRACION DE REGISTROS
+                else if (modulo == 8 && opcionSubmenu == 1)
+                    GuardarDatosCSV();
+
+                else if (modulo == 8 && opcionSubmenu == 2)
+                    CargarDatosCSV();
+
+                else if (modulo == 8 && opcionSubmenu == 3)
+                    CrearRespaldoBinario();
+
+                else if (modulo == 8 && opcionSubmenu == 4)
+                    RestaurarRespaldoBinario();
+
+                else if (modulo == 8 && opcionSubmenu == 5)
+                    ConsultarEstadoCarga();
+
+                else
+                    Console.WriteLine(
+                        "Funcionalidad no implementada para esta opcion.");
+            }
+            else if (opcionSubmenu != 0)
+            {
+                Console.WriteLine(
+                    "Opcion no valida. Intente nuevamente.");
+            }
+
+        } while (opcionSubmenu != 0);
+    }
+}
