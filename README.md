@@ -41,8 +41,8 @@ Integrante-4/
 │   ├── Productos.cs
 │   ├── Ventas.cs
 │   ├── Historial.cs
-│   ├── Mascotas.cs
-│   └── Propietarios.cs
+│  
+│  
 │
 ├── BusquedaMascotas_Integrante4.psc
 ├── PetShop_Historial_Integrante4.psc
@@ -57,8 +57,6 @@ Integrante-4/
 | `Productos.cs` | Funciones de administración de productos e inventario. |
 | `Ventas.cs` | Registro y consulta de ventas del Pet Shop. |
 | `Historial.cs` | Consulta de atenciones médicas y servicios veterinarios. |
-| `Mascotas.cs` | Registro, búsqueda y administración de mascotas. |
-| `Propietarios.cs` | Funciones relacionadas con los propietarios. |
 | `BusquedaMascotas_Integrante4.psc` | Pseudocódigo del módulo de búsquedas. |
 | `PetShop_Historial_Integrante4.psc` | Pseudocódigo de Pet Shop e historial clínico. |
 | `Program.cs` | Código principal y organización de las operaciones. |
