@@ -4,11 +4,11 @@ using System.Globalization;
 
 partial class Program
 {
-    static List<int> codigosProductos = new();
-    static List<string> nombresProductos = new();
-    static List<decimal> preciosProductos = new();
-    static List<int> stocksProductos = new();
-    static List<int> codigosProductosVentas = new();
+    static List<int> codigosProductos = new List<int>();
+    static List<string> nombresProductos = new List<string>();
+    static List<decimal> preciosProductos = new List<decimal>();
+    static List<int> stocksProductos = new List<int>();
+    static List<int> codigosProductosVentas = new List<int>();
 
     // Utilidades compartidas del Pet Shop: entrada, confirmacion y codigos.
     static string LeerPetShop(string mensaje)
@@ -19,7 +19,7 @@ partial class Program
 
     static bool ConfirmarPetShop(string mensaje)
     {
-        string respuesta = LeerPetShop(mensaje).ToUpperInvariant();
+        string respuesta = LeerPetShop(mensaje).ToUpper();
         return respuesta == "S" || respuesta == "SI";
     }
 
@@ -30,12 +30,12 @@ partial class Program
         return mayor == int.MaxValue ? -1 : mayor + 1;
     }
 
-    static int BuscarPosicionProducto(int codigo) => codigosProductos.IndexOf(codigo);
-    static int SiguienteCodigoProducto() => CodigoPetShop(codigosProductos, 4000);
+    static int BuscarPosicionProducto(int codigo)\n    {\n        return codigosProductos.IndexOf(codigo);\n    }
+    static int SiguienteCodigoProducto()\n    {\n        return CodigoPetShop(codigosProductos, 4000);\n    }
 
     static int SolicitarProducto()
     {
-        if (!int.TryParse(LeerPetShop("Codigo de producto: "), out int codigo) || codigo <= 0)
+        int codigo;\n        if (!int.TryParse(LeerPetShop("Codigo de producto: "), out codigo) || codigo <= 0)
         {
             Console.WriteLine("Codigo invalido.");
             return -1;
@@ -68,7 +68,7 @@ partial class Program
     static void RegistrarProducto()
     {
         Console.WriteLine("\n========== REGISTRAR PRODUCTO ==========");
-        if (!LeerDatosProducto(out string nombre, out decimal precio, out int stock)) return;
+        string nombre;\n        decimal precio;\n        int stock;\n        if (!LeerDatosProducto(out nombre, out precio, out stock)) return;
         int codigo = SiguienteCodigoProducto();
         if (codigo == -1) { Console.WriteLine("No hay codigos disponibles."); return; }
         Console.WriteLine($"Producto: {nombre} | Precio: {precio} | Stock: {stock}");
@@ -98,7 +98,7 @@ partial class Program
         bool encontrado = false;
         for (int i = 0; i < nombresProductos.Count; i++)
         {
-            if (nombresProductos[i].IndexOf(nombre, StringComparison.OrdinalIgnoreCase) < 0) continue;
+            if (nombresProductos[i].ToUpper().IndexOf(nombre.ToUpper()) < 0) continue;
             MostrarDatosProducto(i);
             encontrado = true;
         }
@@ -110,7 +110,7 @@ partial class Program
         int i = SolicitarProducto();
         if (i < 0) return;
         MostrarDatosProducto(i);
-        if (!LeerDatosProducto(out string nombre, out decimal precio, out int stock)) return;
+        string nombre;\n        decimal precio;\n        int stock;\n        if (!LeerDatosProducto(out nombre, out precio, out stock)) return;
         if (!ConfirmarPetShop("Confirmar modificacion? (S/N): "))
         { Console.WriteLine("Modificacion cancelada."); return; }
         nombresProductos[i] = nombre;
@@ -145,7 +145,7 @@ partial class Program
         int i = SolicitarProducto();
         if (i < 0) return;
         MostrarDatosProducto(i);
-        if (!int.TryParse(LeerPetShop("Cantidad: "), out int cantidad) || cantidad <= 0)
+        int cantidad;\n        if (!int.TryParse(LeerPetShop("Cantidad: "), out cantidad) || cantidad <= 0)
         { Console.WriteLine("La cantidad debe ser mayor que cero."); return; }
         if (opcion == 1 && stocksProductos[i] > int.MaxValue - cantidad)
         { Console.WriteLine("La cantidad supera el limite permitido."); return; }
@@ -159,13 +159,13 @@ partial class Program
     {
         int n = codigosProductos.Count;
         if (nombresProductos.Count != n || preciosProductos.Count != n || stocksProductos.Count != n) return false;
-        var usados = new HashSet<int>();
+        List<int> usados = new List<int>();
         for (int i = 0; i < n; i++)
-            if (codigosProductos[i] < 4001 || !usados.Add(codigosProductos[i]) ||
-                string.IsNullOrWhiteSpace(nombresProductos[i]) || preciosProductos[i] <= 0 || stocksProductos[i] < 0) return false;
+            if (codigosProductos[i] < 4001 || usados.Contains(codigosProductos[i]) ||
+                string.IsNullOrWhiteSpace(nombresProductos[i]) || preciosProductos[i] <= 0 || stocksProductos[i] < 0) return false;\n            else usados.Add(codigosProductos[i]);
         usados.Clear();
         foreach (int codigo in codigosProductosVentas)
-            if (!codigosProductos.Contains(codigo) || !usados.Add(codigo)) return false;
+            if (!codigosProductos.Contains(codigo) || usados.Contains(codigo)) return false;
         return true;
     }
 }
